@@ -7,12 +7,22 @@ import warnings
 
 class TemplateInfo:
     def __init__(self, structure_id, chain_id, resolution, is_engineered):
-        self.id = structure_id
+        self.__set_id(structure_id)
         self.chain_id = chain_id
         self.resolution = resolution
         self.is_engineered = is_engineered
 
+    def __set_id(self, structure_id):
+        assert isinstance(structure_id, str)
+        self.id = structure_id.upper()
+
+    def get_id(self):
+        return self.id
+
+
+
 class TemplateInfoParser:
+    known_other_molecule_types = {'PROTEIN', 'DNA'}
     def __init__(self, path):
         self.file_path = path
         self.structure_id = self.__get_structure_id()
@@ -24,23 +34,20 @@ class TemplateInfoParser:
         return self.__get_template_info_impl()
 
     def __get_template_info_impl(self):
-        unique_chains = []
         compounds = self.header['compound']
         resolution = self.__get_resolution()
         for i in compounds:
             chain_info = compounds[i]
-            is_RNA_chain = self.__is_rna_chain(chain_info)
-            if is_RNA_chain:
-                chain_id = self.__get_chain_id(chain_info)
+            chains_id = self.__get_chains_id(chain_info)
+            for chain_id in chains_id:
                 is_engineered = self.__is_engineered(chain_info)
                 templ_info = TemplateInfo(self.structure_id, chain_id, resolution, is_engineered)
-                unique_chains.append(templ_info)
-        return unique_chains
+                yield chain_id, templ_info
 
     def __get_structure_id(self):
         filename = os.path.basename(self.file_path)
         filename_without_extension = os.path.splitext(filename)[0]
-        return filename_without_extension
+        return filename_without_extension[3:] #deleting "pdb" from begining
 
     def __read_pdb_header(self):
         structure_id = self.__get_structure_id()
@@ -54,24 +61,19 @@ class TemplateInfoParser:
             parser.get_structure(structure_id, self.file_path)
             if(len(w)>0):
                 for warn in w:
-                    print warn #TODO: logowanie
+                    print "WARN" + warn #TODO: logowanie
 
     def __get_resolution(self):
-        return float(self.header['resolution'])
-
-    def __is_rna_chain(self, chain_info):
-        molecule_info = chain_info['molecule']
-        molecule_type = molecule_info.split()[0].upper()
-        if molecule_type == "RNA":
-            return True
-        elif molecule_type =="PROTEIN":
-            return False
-        else:
-            #TODO: warning
-            return False
+        try:
+            return float(self.header['resolution'])
+        except: return -1
 
     def __is_engineered(self,chain_info):
-        return chain_info['engineered']=='yes'
+        try:
+            return chain_info['engineered']=='yes'
+        except:
+            return None
 
-    def __get_chain_id(self, chain_info):
-        return chain_info['chain'].upper()
+    def __get_chains_id(self, chain_info):
+        ids = chain_info['chain'].upper().split(",")
+        return map(str.strip, ids)
