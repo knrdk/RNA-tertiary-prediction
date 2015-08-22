@@ -55,36 +55,43 @@ class NeedlemanWunsch:
 
         for i in range(1,self.y_length+1,1):
             for j in range(1, self.x_length+1,1):
-                self.__calculate_value_for_M_matrix(i, j)
                 self.__calculate_value_for_IX_matrix(i, j)
                 self.__calculate_value_for_IY_matrix(i, j)
+                self.__calculate_value_for_M_matrix(i, j)
 
         self.score_for_alignment = self.M_matrix[self.y_length][self.x_length]
 
     def __calculate_value_for_M_matrix(self, i, j):
         points_for_match = self.__get_points_for_match(self.x_sequence[j-1], self.y_sequence[i-1])
-        match_score = self.M_matrix[i-1][j-1] + points_for_match
-        ix_gap_score = self.IX_matrix[i-1][j-1] + points_for_match
-        iy_gap_score = self.IY_matrix[i-1][j-1] + points_for_match
-        max_score = max(match_score, ix_gap_score, iy_gap_score)
+        #match_score = self.M_matrix[i-1][j-1] + points_for_match
+        #ix_gap_score = self.IX_matrix[i-1][j-1] + points_for_match
+        #iy_gap_score = self.IY_matrix[i-1][j-1] + points_for_match
 
-        try:
-            self.M_matrix[i][j] = max_score
-        except:
-            print i,j
+        match_score = self.M_matrix[i-1][j-1] + points_for_match
+        ix_gap_score = self.IX_matrix[i][j]
+        iy_gap_score = self.IY_matrix[i][j]
+
+        max_score = max(match_score, ix_gap_score, iy_gap_score)
+        self.M_matrix[i][j] = max_score
 
     def __calculate_value_for_IX_matrix(self, i, j):
-        open_score = self.M_matrix[i-1][j] + self.gap_opening
-        extend_score = self.IX_matrix[i-1][j] + self.gap_extending
-        max_score = max(open_score, extend_score)
+        #open_score = self.M_matrix[i-1][j] + self.gap_opening
+        #extend_score = self.IX_matrix[i-1][j] + self.gap_extending
 
+        open_score = self.M_matrix[i-1][j] + self.gap_opening + self.gap_extending
+        extend_score = self.IX_matrix[i-1][j] + self.gap_extending
+
+        max_score = max(open_score, extend_score)
         self.IX_matrix[i][j] = max_score
 
     def __calculate_value_for_IY_matrix(self, i, j):
-        open_score = self.M_matrix[i][j-1] + self.gap_opening
-        extend_score = self.IY_matrix[i][j-1] + self.gap_extending
-        max_score = max(open_score, extend_score)
+        #open_score = self.M_matrix[i][j-1] + self.gap_opening
+        #extend_score = self.IY_matrix[i][j-1] + self.gap_extending
 
+        open_score = self.M_matrix[i][j-1] + self.gap_opening + self.gap_extending
+        extend_score = self.IY_matrix[i][j-1] + self.gap_extending
+
+        max_score = max(open_score, extend_score)
         self.IY_matrix[i][j] = max_score
 
     def __create_matrices(self):
