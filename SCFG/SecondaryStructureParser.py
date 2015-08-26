@@ -2,13 +2,11 @@ __author__ = 'Konrad Kopciuch'
 
 from Nodes import *
 
+
 class SecondaryStructureParser:
 
-    def __init__(self, secondary_structure):
-        self.secondary_structure = secondary_structure
-
-    def get_tree(self):
-        return ROOT(self.__get_tree(self.secondary_structure))
+    def get_tree(self, secondary_structure):
+        return ROOT(self.__get_tree(secondary_structure))
 
     def __get_tree(self, ss):
         length = len(ss)
