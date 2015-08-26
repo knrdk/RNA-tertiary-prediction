@@ -2,6 +2,7 @@ __author__ = 'Konrad Kopciuch'
 
 from unittest import TestCase
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
+from NeedlemanWunsch.Alignment import Alingment
 
 #dane do testow: https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastSearch&PROG_DEF=blastn&BLAST_PROG_DEF=blastn&BLAST_SPEC=GlobalAln&LINK_LOC=BlastHomeLink
 class NeedlemanWunschTest(TestCase):
@@ -47,3 +48,28 @@ class NeedlemanWunschTest(TestCase):
         nw.align()
         score = nw.get_score()
         self.assertEqual(expected_score, score)
+
+    def test_alignment_score_3(self):
+        subject = "GGGAAA"
+        query = "GGG"
+        expected_score = -5
+        nw = NeedlemanWunsch(subject, query)
+        nw.set_points(2, -3, -5, -2)
+        nw.align()
+        score = nw.get_score()
+        self.assertEqual(expected_score, score)
+
+    def test_alignment(self):
+        subject = "GGCGCGUUAACAAAGCGGUUAUGUAGCGGAUUGCAAAUCCGUCUAGUCCGGUUCGACUCCGGAACGCGCCUCCA"
+        query = "CUCUGUUUACCAGGUCAGGUCCGGAAGGAAGCAGCCAAGGCAGAG"
+        nw = NeedlemanWunsch(subject, query)
+        nw.set_points(2,-3,-5,-2)
+        nw.align()
+        alingment = nw.get_alignment()
+
+        expected_subject_alignment = "GGCGCGUUAACAAAGCGGUUAUGUAGCGGAUUGCAAAUCCGUCUAGUCCGGUUCGACUCCGGAACGCGCCUCCA"
+        expected_query_alignment =   "CUCUGUUUACCA----GGUCAGGUC-CGGAAGG--AAGCAGCCAAGGCAGAG----------------------"
+        expected_alignment = Alingment(expected_subject_alignment,expected_query_alignment)
+
+        self.assertEqual(alingment.get_identity_percent(), expected_alignment.get_identity_percent())
+
