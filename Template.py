@@ -13,12 +13,12 @@ class Template:
     def get_sequence(self):
         seq = self.structure.get_sequence()
         assert isinstance(seq, ModernaSequence.Sequence)
-        return str(seq)
+        return str(seq).upper()
 
     def get_sequence_without_modifications(self):
         seq = self.structure.get_sequence()
         assert isinstance(seq, ModernaSequence.Sequence)
-        return str(seq.seq_without_modifications)
+        return str(seq.seq_without_modifications).upper()
 
     def get_secondary_structure(self):
         return self.structure.get_secstruc()
