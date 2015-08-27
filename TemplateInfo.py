@@ -6,7 +6,7 @@ import os.path
 import warnings
 
 class TemplateInfo:
-    def __init__(self, structure_id, chain_id, resolution, is_engineered):
+    def __init__(self, structure_id, chain_id, resolution=-1, is_engineered=True):
         self.__set_id(structure_id)
         self.chain_id = chain_id
         self.resolution = resolution

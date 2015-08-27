@@ -20,7 +20,7 @@ def get_config(path):
 def main():
     config = get_config("config.ini")
     inf = Infernal(config)
-    families = inf.get_families_for_sequence("GCGUCG")
+    families = inf.get_families_for_sequence("GCCGAUAUAGCUCAGUUGGUAGAGCAGCGCAUUCGUAAUGCGAAGGUCGUAGGUUCGACUCCUAUUAUCGGCACCA")
     print families
 
 if __name__ == "__main__":

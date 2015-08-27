@@ -7,8 +7,8 @@ import os
 from TemplateExtractorLogger import TemplateExtractorLogger
 from TemplateRepository import MongoTemplateRepository
 
-structures_directory = "C:\\RNA-structures\\"
-templates_directory = "C:\\RNA-templates\\"
+structures_directory = "/home/rna/RNA/Structures/"
+templates_directory = "/home/rna/RNA/Templates/"
 
 def main():
     logger = TemplateExtractorLogger()
@@ -28,6 +28,7 @@ def main():
                 tinfo = template.template_info
                 writer.write(template)
                 logger.log_template_extracted(id, tinfo)
+                print tinfo.id, tinfo.chain_id
 
 
 if __name__ == '__main__':

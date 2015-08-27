@@ -11,7 +11,7 @@ class CmScanOutputParser:
         data_in_next_line = False
         for line in self.output.split('\n'):
             if data_in_next_line:
-                if line[1:3] == "--":
+                if len(line) == 0 or line[1:3] == "--":
                     return families
                 x = self.__parse_line(line)
                 families.append(x)

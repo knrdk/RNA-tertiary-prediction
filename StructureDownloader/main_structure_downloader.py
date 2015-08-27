@@ -3,8 +3,8 @@ from NDBResultParser import NDBResultParser
 from PDBStructureDownloader import PDBStructureDownloader
 
 def main():
-    result_directory = "C:\\RNA-structures"
-    result_file_path = result_directory + "\\Result.xls"
+    result_directory = "/home/rna/RNA/Structures"
+    result_file_path = "/home/rna/RNA/Result.xls"
 
     structure_ids = NDBResultParser.get_pdb_ids(result_file_path)
 

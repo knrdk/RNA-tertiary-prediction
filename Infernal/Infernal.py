@@ -14,8 +14,9 @@ class Infernal:
         temp_file_path = self.config['tempscanfilepath']
         with open(temp_file_path,'w+') as f:
             f.write(">sequence")
+            f.write('\n')
             f.write(sequence)
-        output = Infernal.__scan(temp_file_path)
+        output = self.__scan(temp_file_path)
         parser = CmScanOutputParser(output)
         families = parser.get_families_above_threshold()
         Infernal.__delete_file_if_exist(temp_file_path)
