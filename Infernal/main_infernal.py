@@ -2,14 +2,10 @@ __author__ = 'rna'
 
 from Infernal import Infernal
 from FamilyFileParser import FamilyFileParser
-from CmScanOutputParser import CmScanOutputParser
 
 def main():
     inf = Infernal()
-    output = inf.scan()
-
-    parser = CmScanOutputParser(output)
-    families = parser.get_families_above_threshold()
+    families = inf.get_families_for_sequence("GCGUCG")
     print families
 
 

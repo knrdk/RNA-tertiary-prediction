@@ -1,7 +1,5 @@
 __author__ = 'Konrad Kopciuch'
 
-from FamilyFileParser import FamilyFileParser
-
 class CmScanOutputParser:
 
     def __init__(self, output):
