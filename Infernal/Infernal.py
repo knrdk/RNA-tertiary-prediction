@@ -15,4 +15,4 @@ class Infernal:
         input_path = "/home/rna/query/subject.fa"
         proc = subprocess.Popen([Infernal.__cmscan_path, Infernal.__cmdatabase, input_path], stdout=subprocess.PIPE)
         output = proc.stdout.read()
-        print output
+        return output

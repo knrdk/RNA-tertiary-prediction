@@ -4,7 +4,10 @@ from Infernal import Infernal
 
 def main():
     inf = Infernal()
-    inf.scan()
+    output = inf.scan()
+
+    with open("/home/rna/output.txt",'w') as file:
+        file.write(output)
 
 
 if __name__ == "__main__":
