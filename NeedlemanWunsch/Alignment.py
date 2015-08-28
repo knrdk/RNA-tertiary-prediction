@@ -17,3 +17,6 @@ class Alingment:
                 identical+=1
         return identical/self.length
 
+    def __str__(self):
+        return self.x + '\n' + self.y
+
