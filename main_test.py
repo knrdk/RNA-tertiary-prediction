@@ -1,7 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
 from Repository.MongoTemplateRepository import MongoTemplateRepository
-from NeedlemanWunsch import NeedlemanWunsch, Alignment
+from NeedlemanWunsch.NeedlemanWunsch import *
 
 def get_longest_and_average_sequence_length():
     repo = MongoTemplateRepository()
@@ -17,12 +17,18 @@ def get_longest_and_average_sequence_length():
 
 def align_query_sequence_to_database(query):
     repo = MongoTemplateRepository()
-    for sequence in repo.get_all_unmodified_sequences():
-        nw = NeedlemanWunsch(query, sequence)
+    scores = []
+    for id, sequence in repo.get_all_unmodified_sequences():
+        nw = NeedlemanWunsch(query, str(sequence))
         nw.align()
-        print nw.get_score()
+        alignment = nw.get_alignment()
+        assert isinstance(alignment, Alingment)
+        identity = alignment.get_identity_percent()
+        scores.append((identity, id, alignment))
+    s = sorted(scores, key=lambda tup: tup[0], reverse=True)[:10]
+    print s[0][2]
 
 
 if __name__ == '__main__':
     #print get_longest_and_average_sequence_length()
-    align_query_sequence_to_database("GCCGAUAUAGCUCAGUUGGUAGAGCAGCGCAUUCGUAAUGCGAAGGUCGUAGGUUCGACUCCUAUUAUCGGCACCA")
+    align_query_sequence_to_database("GGCUCGUUGGUCUAGGGGUAUGAUUCUCGCUUAGGGUGCGAGAGGUCCCGGGUUCAAAUCCCGGACGAGCC")

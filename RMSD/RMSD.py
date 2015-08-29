@@ -68,4 +68,4 @@ def get_rmsd(pdb_path_x, pdb_path_y):
     length, rmsd = pdb_rmsd(chain1, chain2)
     return rmsd
 
-print get_rmsd("C:\\4_solution_0.pdb", "C:\\4_chen_2.pdb")
+print get_rmsd("/home/rna/RNA/2MS0_B.pdb", "/home/rna/RNA/nw_model.pdb")
