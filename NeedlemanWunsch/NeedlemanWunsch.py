@@ -52,8 +52,8 @@ class NeedlemanWunsch:
         self.__create_matrices()
         self.__initialize_matrices()
 
-        for i in range(1,self.y_length+1,1):
-            for j in range(1, self.x_length+1,1):
+        for i in range(1, self.y_length+1, 1):
+            for j in range(1, self.x_length+1, 1):
                 self.__calculate_value_for_IX_matrix(i, j)
                 self.__calculate_value_for_IY_matrix(i, j)
                 self.__calculate_value_for_M_matrix(i, j)
@@ -64,38 +64,48 @@ class NeedlemanWunsch:
     def __find_alignment(self):
         assert self.aligned
 
-        start =  self.M_matrix[self.y_length][self.x_length]# MatrixElement(None, self.M_matrix, self.y_length, self.x_length)
-        (query_align, subject_align) = self.__find_alignment_private(self.x_sequence, self.y_sequence, start, self.M_matrix)
-        self.alignment = Alingment(query_align, subject_align)
+        x_position = self.x_length - 1
+        y_position = self.y_length - 1
 
-    def __find_alignment_private(self, subject, query, current, current_matrix):
-        if current is None:
-            return ("", "")
+        current_i = self.y_length
+        current_j = self.x_length
+        current_matrix = self.M_matrix
+        current_element = self.M_matrix[current_i][current_j]
 
-        if len(query) == 0 or len(subject) == 0:
-            return ("","")
+        while True:
+            previous_matrix = current_matrix
+            current_i, current_j, current_matrix = current_element.previous_i, current_element.previous_j, current_element.previous_matrix
+            if current_i == 0 and current_j == 0:
+                break
+            current_element = current_matrix[current_i][current_j]
 
-        previous = current.previous_matrix[current.previous_i][current.previous_j]
-        if current.previous_matrix == self.M_matrix:
-            pass
-        if current_matrix == self.M_matrix:
-            if current.previous_matrix == self.IX_matrix or current.previous_matrix == self.IY_matrix:
-                return self.__find_alignment_private(subject, query, previous, current.previous_matrix)
-
-        if current.previous_matrix == self.M_matrix:
-            subject_last = subject[-1]
-            query_last = query[-1]
-            (subject_alignment, query_alignment) = self.__find_alignment_private(subject[:-1], query[:-1], previous, current.previous_matrix)
-            return (subject_alignment + subject_last, query_alignment + query_last)
-        elif current.previous_matrix == self.IX_matrix:
-            query_last = query[-1]
-            (subject_alignment, query_alignment) = self.__find_alignment_private(subject, query[:-1], previous, current.previous_matrix)
-            return (subject + '-', query_alignment + query_last)
-        else:
-            subject_last = subject[-1]
-            (subject_alignment, query_alignment) = self.__find_alignment_private(subject[:-1], query, previous, current.previous_matrix)
-            return (subject_alignment + subject_last, query_alignment + '-')
-
+            if previous_matrix == self.M_matrix:
+                if current_matrix == self.M_matrix:
+                    print self.x_sequence[x_position], self.y_sequence[y_position]
+                    x_position-=1
+                    y_position-=1
+                elif current_matrix == self.IX_matrix:
+                    print '-', self.y_sequence[y_position]
+                    y_position -= 1
+                else:
+                    print self.x_sequence[x_position], '-'
+                    x_position -= 1
+            elif previous_matrix == self.IX_matrix:
+                if current_matrix == self.M_matrix:
+                    print self.x_sequence[x_position], self.y_sequence[y_position]
+                    x_position-=1
+                    y_position-=1
+                else:
+                    print '-', self.y_sequence[y_position]
+                    y_position -= 1
+            else:
+                if current_matrix == self.M_matrix:
+                    print self.x_sequence[x_position], self.y_sequence[y_position]
+                    x_position-=1
+                    y_position-=1
+                else:
+                    print self.x_sequence[x_position], '-'
+                    x_position -= 1
 
     def __calculate_value_for_M_matrix(self, i, j):
         points_for_match = self.__get_points_for_match(self.x_sequence[j-1], self.y_sequence[i-1])

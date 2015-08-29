@@ -1,50 +1,71 @@
 __author__ = 'Konrad Kopciuch'
 
-import Bio.PDB
+import Bio.PDB as bpdb
 
-start_id = 1
-end_id   = 70
-atoms_to_be_aligned = range(start_id, end_id + 1)
+def pdb_rmsd(c1, c2):
+    backbone_atoms = ['P', 'O5*', 'C5*', 'C4*', 'C3*', 'O3*']
+    backbone_atoms += ['P', "O5'", "C5'", "C4'", "C3'", "O3'"]
 
-ref_filename = "C:\\RNA-templates\\4WJ3_Q.pdb"
-sample_filename = "C:\\RNA-templates\\4WJ3_T.pdb"
+    a_5_names = ['P', 'O5*', 'C5*', 'C4*', 'O4*', 'O2*']
+    a_5_names += ['P', "O5'", "C5'", "C4'", "O4'", "O2'"]
+    a_3_names = ["C1*", "C2*", "C3*", "O3*"]
+    a_3_names += ["C1'", "C2'", "C3'", "O3'"]
 
-pdb_parser = Bio.PDB.PDBParser(QUIET = True)
-ref_structure = pdb_parser.get_structure("reference", ref_filename)
-sample_structure = pdb_parser.get_structure("samle", sample_filename)
+    a_names = dict()
+    a_names['U'] = a_5_names + ['N1', 'C2', 'O2', 'N3', 'C4', 'O4', 'C5', 'C6'] + a_3_names
+    a_names['C'] = a_5_names + ['N1', 'C2', 'O2', 'N3', 'C4', 'N4', 'C5', 'C6'] + a_3_names
 
-ref_model    = ref_structure[0]
-sample_model = sample_structure[0]
-'''
-# Make a list of the atoms (in the structures) you wish to align.
-# In this case we use CA atoms whose index is in the specified range
-ref_atoms = []
-sample_atoms = []
+    a_names['A'] = a_5_names + ['N1', 'C2', 'N3', 'C4', 'C5', 'C6', 'N6', 'N7', 'C8', 'N9'] + a_3_names
+    a_names['G'] = a_5_names + ['N1', 'C2', 'N2', 'N3', 'C4', 'C5', 'C6', 'O6', 'N7', 'C8', 'N9'] + a_3_names
 
-# Iterate of all chains in the model in order to find all residues
-for ref_chain in ref_model:
-  # Iterate of all residues in each model in order to find proper atoms
-  for ref_res in ref_chain:
-    # Check if residue number ( .get_id() ) is in the list
-    if ref_res.get_id()[1] in atoms_to_be_aligned:
-      # Append CA atom to list
-      ref_atoms.append(ref_res['CA'])
+    a_names['U'] = a_5_names + ['N1', 'C2', 'O2', 'N3', 'C4', 'O4', 'C5', 'C6'] + a_3_names
+    a_names['C'] = a_5_names + ['N1', 'C2', 'O2', 'N3', 'C4', 'N4', 'C5', 'C6'] + a_3_names
 
-# Do the same for the sample structure
-for sample_chain in sample_model:
-  for sample_res in sample_chain:
-    if sample_res.get_id()[1] in atoms_to_be_aligned:
-      sample_atoms.append(sample_res['CA'])
-'''
-ref_atoms = list(ref_model.get_atoms())
-sample_atoms = list(sample_model.get_atoms())
+    a_names['A'] = a_5_names + ['N1', 'C2', 'N3', 'C4', 'C5', 'C6', 'N6', 'N7', 'C8', 'N9'] + a_3_names
+    a_names['G'] = a_5_names + ['N1', 'C2', 'N2', 'N3', 'C4', 'C5', 'C6', 'O6', 'N7', 'C8', 'N9'] + a_3_names
 
-print len(ref_atoms)
+    all_atoms1 = []
+    all_atoms2 = []
 
-# Now we initiate the superimposer:
-super_imposer = Bio.PDB.Superimposer()
-super_imposer.set_atoms(ref_atoms, sample_atoms)
-super_imposer.apply(sample_model.get_atoms())
+    acceptable_residues = ['A','C','G','U','rA','rC','rG','rU','DG']
+    c1_list = [cr for cr in c1.get_list() if cr.resname.strip() in acceptable_residues]
+    c2_list = [cr for cr in c2.get_list() if cr.resname.strip() in acceptable_residues]
 
-# Print RMSD:
-print super_imposer.rms
+    if len(c1_list) != len(c2_list):
+        raise Exception("Chains of different length.")
+
+    for r1,r2 in zip(c1_list, c2_list):
+        anames = backbone_atoms
+
+        for a in anames:
+	    try:
+		at1 = r1[a]
+		at2 = r2[a]
+
+		all_atoms1 += [at1]
+		all_atoms2 += [at2]
+	    except:
+	        continue
+
+    sup = bpdb.Superimposer()
+    sup.set_atoms(all_atoms1, all_atoms2)
+
+    return len(all_atoms1), sup.rms
+
+def get_rmsd(pdb_path_x, pdb_path_y):
+    parser = bpdb.PDBParser()
+    str1 = parser.get_structure("1", pdb_path_x)
+    str2 = parser.get_structure("2", pdb_path_y)
+    chain1 = None
+    for x in str1.get_chains():
+        chain1 = x
+        continue
+    chain2 = None
+    for x in str2.get_chains():
+        chain2 = x
+        continue
+
+    length, rmsd = pdb_rmsd(chain1, chain2)
+    return rmsd
+
+print get_rmsd("C:\\4_solution_0.pdb", "C:\\4_chen_2.pdb")
