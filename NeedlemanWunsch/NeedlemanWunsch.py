@@ -58,86 +58,80 @@ class NeedlemanWunsch:
                 self.__calculate_value_for_IY_matrix(i, j)
                 self.__calculate_value_for_M_matrix(i, j)
 
-        self.score_for_alignment = self.M_matrix[self.y_length][self.x_length].value
+        self.score_for_alignment = self.M_matrix[self.y_length][self.x_length][0]
         self.aligned = True
 
     def __find_alignment(self):
-        assert self.aligned
-
-        x_position = self.x_length - 1
-        y_position = self.y_length - 1
-
-        current_i = self.y_length
-        current_j = self.x_length
-        current_matrix = self.M_matrix
-        current_element = self.M_matrix[current_i][current_j]
-
-        while True:
-            previous_matrix = current_matrix
-            current_i, current_j, current_matrix = current_element.previous_i, current_element.previous_j, current_element.previous_matrix
-            if current_i == 0 and current_j == 0:
-                break
-            current_element = current_matrix[current_i][current_j]
-
-            if previous_matrix == self.M_matrix:
-                if current_matrix == self.M_matrix:
-                    print self.x_sequence[x_position], self.y_sequence[y_position]
-                    x_position-=1
-                    y_position-=1
-                elif current_matrix == self.IX_matrix:
-                    print '-', self.y_sequence[y_position]
-                    y_position -= 1
+        #j - pozycja w sequence_x
+        #i - pozycja w sequence_y
+        current_matrix = 'M'
+        i, j = self.y_length, self.x_length
+        previous_matrix = self.M_matrix[i][j][1]
+        while i != 0 or j != 0:
+            if current_matrix == 'M':
+                if previous_matrix == 'M':
+                    print self.x_sequence[j-1], self.y_sequence[i-1]
+                    i,j = i-1, j-1
+                    previous_matrix = self.M_matrix[i][j][1]
+                elif previous_matrix == 'X':
+                    current_matrix = 'X'
+                    previous_matrix = self.IX_matrix[i][j][1]
                 else:
-                    print self.x_sequence[x_position], '-'
-                    x_position -= 1
-            elif previous_matrix == self.IX_matrix:
-                if current_matrix == self.M_matrix:
-                    print self.x_sequence[x_position], self.y_sequence[y_position]
-                    x_position-=1
-                    y_position-=1
+                    current_matrix = 'Y'
+                    previous_matrix = self.IY_matrix[i][j][1]
+            elif current_matrix == 'X':
+                print self.x_sequence[j-1], '-'
+                i,j = i, j-1
+                if previous_matrix == 'M':
+                    current_matrix = 'M'
+                    previous_matrix = self.M_matrix[i][j][1]
+                elif previous_matrix == 'X':
+                    previous_matrix = self.IX_matrix[i][j][1]
                 else:
-                    print '-', self.y_sequence[y_position]
-                    y_position -= 1
+                    j-=1
             else:
-                if current_matrix == self.M_matrix:
-                    print self.x_sequence[x_position], self.y_sequence[y_position]
-                    x_position-=1
-                    y_position-=1
+                print '-', self.y_sequence[i-1]
+                i,j = i,j-1
+                if previous_matrix == 'M':
+                    current_matrix = 'M'
+                    previous_matrix = self.M_matrix[i][j][1]
+                elif previous_matrix == 'Y':
+                    previous_matrix = self.IY_matrix[i][j][1]
                 else:
-                    print self.x_sequence[x_position], '-'
-                    x_position -= 1
+                    i-=1
+
 
     def __calculate_value_for_M_matrix(self, i, j):
         points_for_match = self.__get_points_for_match(self.x_sequence[j-1], self.y_sequence[i-1])
 
-        match_score = self.M_matrix[i-1][j-1].value + points_for_match
-        ix_gap_score = self.IX_matrix[i][j].value
-        iy_gap_score = self.IY_matrix[i][j].value
+        match_score = self.M_matrix[i-1][j-1][0] + points_for_match
+        ix_gap_score = self.IX_matrix[i][j][0]
+        iy_gap_score = self.IY_matrix[i][j][0]
 
         if match_score > max(ix_gap_score, iy_gap_score):
-            self.M_matrix[i][j] = MatrixElement(match_score, self.M_matrix, i-1, j-1)
+            self.M_matrix[i][j] = (match_score, 'M')
         elif ix_gap_score > iy_gap_score:
-            self.M_matrix[i][j] = MatrixElement(ix_gap_score, self.IX_matrix, i, j)
+            self.M_matrix[i][j] = (ix_gap_score, 'X')
         else:
-            self.M_matrix[i][j] = MatrixElement(iy_gap_score, self.IY_matrix, i, j)
+            self.M_matrix[i][j] = (iy_gap_score, 'Y')
 
     def __calculate_value_for_IX_matrix(self, i, j):
-        open_score = self.M_matrix[i-1][j].value + self.gap_opening + self.gap_extending
-        extend_score = self.IX_matrix[i-1][j].value + self.gap_extending
+        open_score = self.M_matrix[i-1][j][0] + self.gap_opening + self.gap_extending
+        extend_score = self.IX_matrix[i-1][j][0] + self.gap_extending
 
         if open_score > extend_score:
-            self.IX_matrix[i][j] = MatrixElement(open_score, self.M_matrix, i-1, j)
+            self.IX_matrix[i][j] = (open_score, 'M')
         else:
-            self.IX_matrix[i][j] = MatrixElement(extend_score, self.IX_matrix, i-1, j)
+            self.IX_matrix[i][j] = (extend_score, 'X')
 
     def __calculate_value_for_IY_matrix(self, i, j):
-        open_score = self.M_matrix[i][j-1].value + self.gap_opening + self.gap_extending
-        extend_score = self.IY_matrix[i][j-1].value + self.gap_extending
+        open_score = self.M_matrix[i][j-1][0] + self.gap_opening + self.gap_extending
+        extend_score = self.IY_matrix[i][j-1][0] + self.gap_extending
 
         if open_score > extend_score:
-            self.IY_matrix[i][j] = MatrixElement(open_score, self.M_matrix, i, j-1)
+            self.IY_matrix[i][j] = (open_score, 'M')
         else:
-            self.IY_matrix[i][j] = MatrixElement(extend_score, self.IY_matrix, i, j-1)
+            self.IY_matrix[i][j] = (extend_score, 'Y')
 
     def __create_matrices(self):
         width = 1 + self.x_length
@@ -152,41 +146,32 @@ class NeedlemanWunsch:
         self.__initialize_IY_matrix()
 
     def __initialize_M_matrix(self):
-        self.M_matrix[0][0] = MatrixElement(0)
+        self.M_matrix[0][0] = (0, None)
         for i in range(self.x_length):
             value = self.gap_opening + (i+1)*self.gap_extending
-            self.M_matrix[0][1+i] = MatrixElement(value, self.M_matrix, 0, i)
+            self.M_matrix[0][1+i] = (value, 'X')
         for i in range(self.y_length):
             value = self.gap_opening + (i+1)*self.gap_extending
-            self.M_matrix[1+i][0] = MatrixElement(value, self.M_matrix, i, 0)
+            self.M_matrix[1+i][0] = (value, 'Y')
 
     def __initialize_IX_matrix(self):
         minus_inf = -float("inf")
-        self.IX_matrix[0][0] = MatrixElement(minus_inf)
         for i in range(self.x_length):
             value = self.gap_opening + (i+1)*self.gap_extending
-            self.IX_matrix[0][1+i] = MatrixElement(value, self.IX_matrix, 0, i)
-        for i in range(self.y_length):
-            self.IX_matrix[1+i][0] = MatrixElement(minus_inf)
+            self.IX_matrix[0][1+i] = (value, 'X')
+        for i in range(0, self.y_length+1, 1):
+            self.IX_matrix[i][0] = (minus_inf, None)
 
     def __initialize_IY_matrix(self):
         minus_inf = -float("inf")
-        self.IY_matrix[0][0] = MatrixElement(minus_inf)
-        for i in range(self.x_length):
-            self.IY_matrix[0][1+i] = MatrixElement(minus_inf)
+        for i in range(0, self.x_length+1, 1):
+            self.IY_matrix[0][i] = (minus_inf, None)
         for i in range(self.y_length):
             value = self.gap_opening + (i+1)*self.gap_extending
-            self.IY_matrix[1+i][0] = MatrixElement(value, self.IY_matrix, i, 0)
+            self.IY_matrix[1+i][0] = (value, 'Y')
 
     def __get_points_for_match(self, a, b):
         if a == b:
             return self.match
         else:
             return self.mismatch
-
-class MatrixElement:
-    def __init__(self, value, previous_matrix = None, previous_i = None, previous_j = None):
-        self.value = value
-        self.previous_matrix = previous_matrix
-        self.previous_i = previous_i
-        self.previous_j = previous_j
