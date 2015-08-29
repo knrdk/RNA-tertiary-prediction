@@ -5,7 +5,7 @@ from TemplateExtractor import TemplateExtractor
 import Template
 import os
 from TemplateExtractorLogger import TemplateExtractorLogger
-from TemplateRepository import MongoTemplateRepository
+from Repository import MongoTemplateRepository
 
 structures_directory = "/home/rna/RNA/Structures/"
 templates_directory = "/home/rna/RNA/Templates/"
