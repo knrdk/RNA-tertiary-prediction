@@ -64,13 +64,15 @@ class NeedlemanWunsch:
     def __find_alignment(self):
         #j - pozycja w sequence_x
         #i - pozycja w sequence_y
+        algn_x, algn_y = '', ''
         current_matrix = 'M'
         i, j = self.y_length, self.x_length
         previous_matrix = self.M_matrix[i][j][1]
-        while i != 0 or j != 0:
+        while not (i==0 and j==0):
             if current_matrix == 'M':
                 if previous_matrix == 'M':
-                    print self.x_sequence[j-1], self.y_sequence[i-1]
+                    algn_x = self.x_sequence[j-1] + algn_x
+                    algn_y = self.y_sequence[i-1] + algn_y
                     i,j = i-1, j-1
                     previous_matrix = self.M_matrix[i][j][1]
                 elif previous_matrix == 'X':
@@ -80,8 +82,9 @@ class NeedlemanWunsch:
                     current_matrix = 'Y'
                     previous_matrix = self.IY_matrix[i][j][1]
             elif current_matrix == 'X':
-                print self.x_sequence[j-1], '-'
-                i,j = i, j-1
+                algn_x = '-' + algn_x
+                algn_y = self.y_sequence[i-1] + algn_y
+                i,j = i-1,j
                 if previous_matrix == 'M':
                     current_matrix = 'M'
                     previous_matrix = self.M_matrix[i][j][1]
@@ -90,7 +93,8 @@ class NeedlemanWunsch:
                 else:
                     j-=1
             else:
-                print '-', self.y_sequence[i-1]
+                algn_x = self.x_sequence[j-1] + algn_x
+                algn_y = '-' + algn_y
                 i,j = i,j-1
                 if previous_matrix == 'M':
                     current_matrix = 'M'
@@ -99,6 +103,7 @@ class NeedlemanWunsch:
                     previous_matrix = self.IY_matrix[i][j][1]
                 else:
                     i-=1
+        self.alignment = Alingment(algn_x, algn_y)
 
 
     def __calculate_value_for_M_matrix(self, i, j):
@@ -149,10 +154,10 @@ class NeedlemanWunsch:
         self.M_matrix[0][0] = (0, None)
         for i in range(self.x_length):
             value = self.gap_opening + (i+1)*self.gap_extending
-            self.M_matrix[0][1+i] = (value, 'X')
+            self.M_matrix[0][1+i] = (value, 'Y')
         for i in range(self.y_length):
             value = self.gap_opening + (i+1)*self.gap_extending
-            self.M_matrix[1+i][0] = (value, 'Y')
+            self.M_matrix[1+i][0] = (value, 'X')
 
     def __initialize_IX_matrix(self):
         minus_inf = -float("inf")
@@ -160,12 +165,12 @@ class NeedlemanWunsch:
             value = self.gap_opening + (i+1)*self.gap_extending
             self.IX_matrix[0][1+i] = (value, 'X')
         for i in range(0, self.y_length+1, 1):
-            self.IX_matrix[i][0] = (minus_inf, None)
+            self.IX_matrix[i][0] = (minus_inf, 'X')
 
     def __initialize_IY_matrix(self):
         minus_inf = -float("inf")
         for i in range(0, self.x_length+1, 1):
-            self.IY_matrix[0][i] = (minus_inf, None)
+            self.IY_matrix[0][i] = (minus_inf, 'Y')
         for i in range(self.y_length):
             value = self.gap_opening + (i+1)*self.gap_extending
             self.IY_matrix[1+i][0] = (value, 'Y')
