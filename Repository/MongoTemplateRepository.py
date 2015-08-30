@@ -8,6 +8,7 @@ field_chain_id = "chain_id"
 field_sequence = "sequence"
 field_sequence_without_modifications = "sequence_without_modifications"
 field_secondary_structure = "secondary_structure"
+field_resolution = "resolution"
 
 class MongoTemplateRepository():
     def __init__(self):
@@ -23,20 +24,26 @@ class MongoTemplateRepository():
                 field_chain_id : tinfo.chain_id,
                 field_sequence : template.get_sequence(),
                 field_sequence_without_modifications : template.get_sequence_without_modifications(),
-                "secondary_structure" : template.get_secondary_structure()
+                field_secondary_structure : template.get_secondary_structure(),
+                field_resolution : tinfo.resolution
                 }
-        table = self.__get_templates_table()
-        id = table.insert_one(data).inserted_id
+        collection = self.__get_templates_collection()
+        id = collection.insert_one(data).inserted_id
         return id
 
     def get_all_unmodified_sequences(self):
-        table = self.__get_templates_table()
-        projection = [field_structure_id, field_chain_id, field_sequence_without_modifications]
-        results = table.find(projection=projection)
+        collection = self.__get_templates_collection()
+        projection = [field_structure_id, field_chain_id, field_sequence_without_modifications, field_resolution]
+        results = collection.find(projection=projection)
         for result in results:
             id = result[field_structure_id] + "_" + result[field_chain_id]
-            sequence = result[field_sequence_without_modifications]
-            yield id, sequence
+            sequence = str(result[field_sequence_without_modifications])
+            resolution = float(result[field_resolution])
+            yield id, sequence, resolution
 
-    def __get_templates_table(self):
+    def delete_template(self, structure_id, chain_id):
+        collection = self.__get_templates_collection()
+        collection.remove({field_structure_id: structure_id, field_chain_id: chain_id})
+
+    def __get_templates_collection(self):
         return self.db.templates

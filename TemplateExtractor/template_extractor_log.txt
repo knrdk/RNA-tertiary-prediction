@@ -5081,3 +5081,144 @@ File found: pdb4wfl.ent
 Structure in file: 4WFL
 Chain id: A
 Template added to database id: 55db625f4d129a0f24dfb992, structure_id: 4WFL, chain_id: A
+TemplateExtractor started: 2015-08-29 23:15:40.679004
+Structures directory: /home/rna/RNA/Structures/
+Templates directory: /home/rna/RNA/Templates/
+File found: pdb1ehz.ent
+Structure in file: 1EHZ
+Chain id: A
+Template added to database id: 55e29fa81d41c80ea106970d, structure_id: 1EHZ, chain_id: A
+File found: pdb2zy6.ent
+Structure in file: 2ZY6
+Chain id: A
+Template added to database id: 55e29faa1d41c80ea106970e, structure_id: 2ZY6, chain_id: A
+File found: pdb3rg5.ent
+Structure in file: 3RG5
+Chain id: A
+Template added to database id: 55e29fb11d41c80ea106970f, structure_id: 3RG5, chain_id: A
+Chain id: B
+Template added to database id: 55e29fb61d41c80ea1069710, structure_id: 3RG5, chain_id: B
+File found: pdb3add.ent
+Structure in file: 3ADD
+Chain id: A
+Not RNA chain: A
+Chain id: B
+Not RNA chain: B
+Chain id: C
+The chain contains some features that may cause problems during modeling:
+- Chain is discontinuous.
+
+Chain is discontinuous
+Chain is not valid: C
+Chain id: D
+The chain contains some features that may cause problems during modeling:
+- Chain is discontinuous.
+
+Chain is discontinuous
+Chain is not valid: D
+File found: pdb3foz.ent
+Structure in file: 3FOZ
+Chain id: A
+Not RNA chain: A
+Chain id: B
+Not RNA chain: B
+Chain id: C
+Template added to database id: 55e29fbb1d41c80ea1069711, structure_id: 3FOZ, chain_id: C
+Chain id: D
+Template added to database id: 55e29fbe1d41c80ea1069712, structure_id: 3FOZ, chain_id: D
+File found: pdb1c0a.ent
+Structure in file: 1C0A
+Chain id: B
+Template added to database id: 55e29fc31d41c80ea1069713, structure_id: 1C0A, chain_id: B
+Chain id: A
+Not RNA chain: A
+File found: pdb1qu2.ent
+Structure in file: 1QU2
+Chain id: T
+Template added to database id: 55e29fc71d41c80ea1069714, structure_id: 1QU2, chain_id: T
+Chain id: A
+Not RNA chain: A
+File found: pdb4p5j.ent
+Structure in file: 4P5J
+Chain id: A
+Template added to database id: 55e29fcc1d41c80ea1069715, structure_id: 4P5J, chain_id: A
+File found: pdb2dlc.ent
+Structure in file: 2DLC
+Chain id: X
+Template added to database id: 55e29fcc1d41c80ea1069716, structure_id: 2DLC, chain_id: X
+Chain id: Y
+The chain contains some features that may cause problems during modeling:
+- Unidentified RNA residues present in the chain: 539, 540, 541, 547
+- Chain is discontinuous.
+
+Chain is discontinuous
+Chain is not valid: Y
+File found: pdb1j1u.ent
+Structure in file: 1J1U
+Chain id: B
+Template added to database id: 55e29fd11d41c80ea1069717, structure_id: 1J1U, chain_id: B
+Chain id: A
+Not RNA chain: A
+File found: pdb2cv1.ent
+Structure in file: 2CV1
+Chain id: C
+Template added to database id: 55e29fd51d41c80ea1069718, structure_id: 2CV1, chain_id: C
+Chain id: D
+Template added to database id: 55e29fd81d41c80ea1069719, structure_id: 2CV1, chain_id: D
+Chain id: A
+Not RNA chain: A
+Chain id: B
+Not RNA chain: B
+File found: pdb2zuf.ent
+Structure in file: 2ZUF
+Chain id: A
+Not RNA chain: A
+Chain id: B
+The chain contains some features that may cause problems during modeling:
+- Chain is discontinuous.
+- Atoms of some residues may have alternative location (only the first coordinates set taken): 973
+
+Chain is discontinuous
+Chain is not valid: B
+File found: pdb1u0b.ent
+Structure in file: 1U0B
+Chain id: A
+Template added to database id: 55e29fde1d41c80ea106971a, structure_id: 1U0B, chain_id: A
+Chain id: B
+Not RNA chain: B
+File found: pdb4aq7.ent
+Structure in file: 4AQ7
+Chain id: A
+Not RNA chain: A
+Chain id: B
+The chain contains some features that may cause problems during modeling:
+- Chain is discontinuous.
+
+Chain is discontinuous
+Chain is not valid: B
+Chain id: D
+Not RNA chain: D
+Chain id: E
+The chain contains some features that may cause problems during modeling:
+- Chain is discontinuous.
+
+Chain is discontinuous
+Chain is not valid: E
+File found: pdb3am1.ent
+Structure in file: 3AM1
+Chain id: A
+Not RNA chain: A
+Chain id: B
+Template added to database id: 55e29fe61d41c80ea106971b, structure_id: 3AM1, chain_id: B
+File found: pdb1f7u.ent
+Structure in file: 1F7U
+Chain id: B
+Template added to database id: 55e29feb1d41c80ea106971c, structure_id: 1F7U, chain_id: B
+Chain id: A
+Not RNA chain: A
+File found: pdb1qtq.ent
+Structure in file: 1QTQ
+Chain id: B
+Template added to database id: 55e29ff01d41c80ea106971d, structure_id: 1QTQ, chain_id: B
+Chain id: A
+Not RNA chain: A
