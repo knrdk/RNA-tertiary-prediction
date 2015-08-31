@@ -2,10 +2,12 @@ __author__ = 'Konrad Kopciuch'
 
 from AffiniteNeedlemanWunsch import AffiniteNeedlemanWunsch
 from LinearNeedlemanWunsch import LinearNeedlemanWunsch
+from Ribosum85NeedlemanWunsch import Ribosum85NeedlemanWunsch
 from DifferenceInLenght import DifferenceInLenght
 
 methods = [AffiniteNeedlemanWunsch,
            LinearNeedlemanWunsch,
+           Ribosum85NeedlemanWunsch,
            DifferenceInLenght]
 
 database = [
