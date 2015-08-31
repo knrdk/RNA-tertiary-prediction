@@ -13,6 +13,7 @@ class NeedlemanWunsch:
         self.mismatch = NeedlemanWunsch.default_mismatch
         self.gap_opening = NeedlemanWunsch.default_gap_opening
         self.gap_extending = NeedlemanWunsch.default_gap_extending
+        self.substitution_matrix = None
 
         assert isinstance(query_sequence, str)
         assert isinstance(subject_sequence, str)
@@ -35,6 +36,9 @@ class NeedlemanWunsch:
         self.mismatch = mismatch
         self.gap_opening = gap_opening
         self.gap_extending = gap_extending
+
+    def set_substitution_matrix(self, matrix):
+        self.substitution_matrix = matrix
 
     def get_score(self):
         if not self.aligned:
@@ -176,7 +180,13 @@ class NeedlemanWunsch:
             self.IY_matrix[1+i][0] = (value, 'Y')
 
     def __get_points_for_match(self, a, b):
-        if a == b:
-            return self.match
+        if self.substitution_matrix == None:
+            if a == b:
+                return self.match
+            else:
+                return self.mismatch
         else:
-            return self.mismatch
+            try:
+                return self.substitution_matrix[a][b]
+            except:
+                return self.substitution_matrix[b][a]
