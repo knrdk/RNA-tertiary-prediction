@@ -2,11 +2,13 @@
 __author__ = 'Konrad Kopciuch'
 
 from Bio.PDB.Chain import Chain
+import os
+
 from moderna import load_model, clean_structure, examine_structure
 import moderna.Template
+
 from TemplateInfo import *
 import Template
-import os
 
 
 class TemplateExtractor:
@@ -37,7 +39,7 @@ class TemplateExtractor:
             self.logger.log_chain_id(chain_id)
             chain = load_model(data_type='chain', data=chain)
             clean_structure(chain)
-            if self.__is_structure_valid(chain):
+            if self.__is_structure_valid(chain, chain_id):
                 if self.__is_rna_structure(chain):
                     template_info = self.__get_template_info(chain_id, templates_info)
                     yield Template.Template(template_info, chain)
@@ -50,19 +52,23 @@ class TemplateExtractor:
         assert isinstance(structure, moderna.RnaModel)
         return len(structure)
 
-    def __is_structure_valid(self, chain):
+    def __is_structure_valid(self, chain, chain_id):
         pdb_controller = examine_structure(chain, verbose=False)
         assert isinstance(pdb_controller, moderna.PdbController)
 
         if pdb_controller.has_problems():
             self.logger.log_moderna_pdb_controller(pdb_controller)
+            full_id = self.__get_full_id(chain_id)
             if not pdb_controller.continuous:
-                self.logger.log_chain_discontinuous()
+                self.logger.log_chain_discontinuous(full_id)
             if pdb_controller.disconnected_residues:
-                self.logger.log_disconected_residues()
+                self.logger.log_disconected_residues(full_id)
             #TODO: inne bledy: moderna/CheckPdb.py
             return False
         return True
+
+    def __get_full_id(self, chain_id):
+        return self.structure_id + "_" + chain_id
 
     def __get_structure_id(self):
         filename = os.path.basename(self.file_path)
