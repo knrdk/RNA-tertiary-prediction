@@ -1,11 +1,12 @@
 __author__ = 'Konrad Kopciuch'
 
 from ConfigParser import ConfigParser
+import time
+
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Infernal import Infernal
 from FamilyFileParser import FamilyFileParser
 
-import time
 
 def get_config(path):
     config = ConfigParser()
@@ -35,7 +36,7 @@ def main():
     infernal = __get_infernal()
     repo = MongoTemplateRepository()
 
-    for (id, sequence) in repo.get_all_unmodified_sequences():
+    for (id, sequence, resolution) in repo.get_all_unmodified_sequences():
         families = infernal.get_families_for_sequence(sequence)
         if len(families) > 0:
             print id
