@@ -3,7 +3,7 @@ __author__ = 'Konrad Kopciuch'
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
 from NeedlemanWunsch.Alignment import Alingment
 
-class AffiniteNeedlemanWunsch:
+class AffiniteNeedlemanWunschIdentity:
 
     @staticmethod
     def get_score(seq1, seq2, secondary_structure_2):

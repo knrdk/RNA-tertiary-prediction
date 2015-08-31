@@ -1,20 +1,25 @@
 __author__ = 'Konrad Kopciuch'
 
-from AffiniteNeedlemanWunsch import AffiniteNeedlemanWunsch
-from LinearNeedlemanWunsch import LinearNeedlemanWunsch
-from Ribosum85NeedlemanWunsch import Ribosum85NeedlemanWunsch
+from AffiniteNeedlemanWunschIdentity import AffiniteNeedlemanWunschIdentity
+from AffiniteNeedlemanWunschScore import AffiniteNeedlemanWunschScore
+from LinearNeedlemanWunschIdentity import LinearNeedlemanWunschIdentity
+from Ribosum85NeedlemanWunschIdentity import Ribosum85NeedlemanWunschIdentity
+from Ribosum85NeedlemanWunschScore import Ribosum85NeedlemanWunschScore
 from DifferenceInLenght import DifferenceInLenght
 
-methods = [AffiniteNeedlemanWunsch,
-           LinearNeedlemanWunsch,
-           Ribosum85NeedlemanWunsch,
+methods = [AffiniteNeedlemanWunschIdentity,
+           AffiniteNeedlemanWunschScore,
+           LinearNeedlemanWunschIdentity,
+           Ribosum85NeedlemanWunschIdentity,
+           Ribosum85NeedlemanWunschScore,
            DifferenceInLenght]
 
 database = [
-    ("GAAUUGCGGGAAAGGGGUCAACAGCCGUUCAGUACCAAGUCUCAGGGGAAACUUUGAGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGACGGACAUGGUCCUAACCACGCAGCCAAGUCCUAAGUCAACAGAUCUUCUGUUGAUAUGGAUGCAGUUC", ""),
-    ("GAACGUUC", "")
+    ("GAAUUGCGGGAAAGGGGUCAACAGCCGUUCAGUACCAAGUCUCAGGGGAAACUUUGAGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGACGGACAUGGUCCUAACCACGCAGCCAAGUCCUAAGUCAACAGAUCUUCUGUUGAUAUGGAUGCAGUUC", None),
+    ("GAACGUUC", None),
+    ("UGGGAGGUCGUCUAACGGUAGGACGGCGGACUCUGGAUCCGCUGGUGGAGGUUCGAGUCCUCCCCUCCCAGCCA", None)
 ]
-query = "GUGUACC"
+query = "GGCCAGGUAGCUCAGUUGGUAGAGCACUGGACUGAAAAUCCAGGUGUCGGCGGUUCGAUUCCGCCCCUGGCCA"
 
 for (template_sequence, template_secondary_structure) in database:
     for method in methods:
