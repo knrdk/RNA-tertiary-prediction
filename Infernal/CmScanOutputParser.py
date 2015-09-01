@@ -21,6 +21,6 @@ class CmScanOutputParser:
     def __parse_line(self, line):
         splitted = line.split(' ')
         removed_empty_strings = [x for x in splitted if len(x)>0]
-        score = removed_empty_strings[3]
+        score = float(removed_empty_strings[3])/100
         family_name = removed_empty_strings[5]
         return family_name, score

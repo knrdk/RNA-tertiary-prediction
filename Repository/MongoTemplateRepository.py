@@ -1,7 +1,8 @@
 __author__ = 'Konrad Kopciuch'
 
-import Template
 from pymongo import MongoClient
+
+import Template
 
 field_structure_id = "structure_id"
 field_chain_id = "chain_id"
@@ -40,6 +41,16 @@ class MongoTemplateRepository():
             sequence = str(result[field_sequence_without_modifications])
             resolution = float(result[field_resolution])
             yield id, sequence, resolution
+
+    def get_templates_info(self):
+        collection = self.__get_templates_collection()
+        projection = [field_structure_id, field_chain_id, field_sequence_without_modifications, field_secondary_structure]
+        results = collection.find(projection=projection)
+        for result in results:
+            id = result[field_structure_id] + "_" + result[field_chain_id]
+            sequence = str(result[field_sequence_without_modifications])
+            secondary_structure = str(result[field_secondary_structure])
+            yield id, sequence, secondary_structure
 
     def delete_template(self, structure_id, chain_id):
         collection = self.__get_templates_collection()

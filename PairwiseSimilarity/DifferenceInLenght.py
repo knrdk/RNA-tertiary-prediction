@@ -3,8 +3,8 @@ __author__ = 'Konrad Kopciuch'
 class DifferenceInLenght:
 
     @staticmethod
-    def get_score(seq1, seq2, secondary_structure_2):
-        l1, l2 = len(seq1), len(seq2)
+    def get_score(query_sequence, template_id, template_sequence, template_secondary_structure):
+        l1, l2 = len(query_sequence), len(template_sequence)
         if l1 + l2 == 0:
             return 0
         else:

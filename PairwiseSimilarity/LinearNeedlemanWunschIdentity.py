@@ -5,8 +5,8 @@ from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
 class LinearNeedlemanWunschIdentity:
 
     @staticmethod
-    def get_score(seq1, seq2, secondary_structure_2):
-        nw = NeedlemanWunsch(seq1, seq2)
+    def get_score(query_sequence, template_id, template_sequence, template_secondary_structure):
+        nw = NeedlemanWunsch(query_sequence, template_sequence)
         nw.set_points(2, -3, 0, -3.1)
         nw.align()
 

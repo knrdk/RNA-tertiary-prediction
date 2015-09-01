@@ -5,10 +5,10 @@ from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
 class AffiniteNeedlemanWunschScore:
 
     @staticmethod
-    def get_score(seq1, seq2, secondary_structure_2):
-        alignment_score = AffiniteNeedlemanWunschScore.__get_nw_score(seq1, seq2)
-        seq1_score = AffiniteNeedlemanWunschScore.__get_nw_score(seq1, seq1)
-        seq2_score = AffiniteNeedlemanWunschScore.__get_nw_score(seq2, seq2)
+    def get_score(query_sequence, template_id, template_sequence, template_secondary_structure):
+        alignment_score = AffiniteNeedlemanWunschScore.__get_nw_score(query_sequence, template_sequence)
+        seq1_score = AffiniteNeedlemanWunschScore.__get_nw_score(query_sequence, query_sequence)
+        seq2_score = AffiniteNeedlemanWunschScore.__get_nw_score(template_sequence, template_sequence)
         maximum = max(seq1_score, seq2_score)
 
         if maximum == 0:

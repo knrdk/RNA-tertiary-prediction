@@ -4,6 +4,7 @@ from ConfigParser import ConfigParser
 import time
 
 from Repository.MongoTemplateRepository import MongoTemplateRepository
+from Repository.MongoInfernalRepository import MongoInfernalRepository
 from Infernal import Infernal
 from FamilyFileParser import FamilyFileParser
 
@@ -34,18 +35,20 @@ def __get_family_name_rfam_id_mapping():
 def main():
     family_name_rfam_id_mapping = __get_family_name_rfam_id_mapping()
     infernal = __get_infernal()
-    repo = MongoTemplateRepository()
+    template_repository = MongoTemplateRepository()
+    infernal_repository = MongoInfernalRepository()
 
-    for (id, sequence, resolution) in repo.get_all_unmodified_sequences():
+    for (template_id, sequence, resolution) in template_repository.get_all_unmodified_sequences():
         families = infernal.get_families_for_sequence(sequence)
         if len(families) > 0:
-            print id
-            print sequence
             for (family_name, score) in families:
-                print family_name_rfam_id_mapping[family_name]
-                print family_name
-                print score
-            print "---"
+                try:
+                    rfam_family_id = family_name_rfam_id_mapping[family_name]
+                except:
+                    print 'Brak identyfikatora RFAM dla rodziny: ', family_name
+                    continue
+                infernal_repository.add_rfam_family_for_template(template_id, rfam_family_id, score)
+
 
 if __name__ == "__main__":
     start_time = time.time()

@@ -1,28 +1,26 @@
 __author__ = 'Konrad Kopciuch'
 
-from AffiniteNeedlemanWunschIdentity import AffiniteNeedlemanWunschIdentity
-from AffiniteNeedlemanWunschScore import AffiniteNeedlemanWunschScore
-from LinearNeedlemanWunschIdentity import LinearNeedlemanWunschIdentity
-from Ribosum85NeedlemanWunschIdentity import Ribosum85NeedlemanWunschIdentity
-from Ribosum85NeedlemanWunschScore import Ribosum85NeedlemanWunschScore
-from DifferenceInLenght import DifferenceInLenght
+import time
 
-methods = [AffiniteNeedlemanWunschIdentity,
-           AffiniteNeedlemanWunschScore,
-           LinearNeedlemanWunschIdentity,
-           Ribosum85NeedlemanWunschIdentity,
-           Ribosum85NeedlemanWunschScore,
-           DifferenceInLenght]
+from FeatureVectorCalculator import FeatureVectorCalculator
+from Repository.MongoTemplateRepository import MongoTemplateRepository
 
-database = [
-    ("GAAUUGCGGGAAAGGGGUCAACAGCCGUUCAGUACCAAGUCUCAGGGGAAACUUUGAGAUGGCCUUGCAAAGGGUAUGGUAAUAAGCUGACGGACAUGGUCCUAACCACGCAGCCAAGUCCUAAGUCAACAGAUCUUCUGUUGAUAUGGAUGCAGUUC", None),
-    ("GAACGUUC", None),
-    ("UGGGAGGUCGUCUAACGGUAGGACGGCGGACUCUGGAUCCGCUGGUGGAGGUUCGAGUCCUCCCCUCCCAGCCA", None)
-]
-query = "GGCCAGGUAGCUCAGUUGGUAGAGCACUGGACUGAAAAUCCAGGUGUCGGCGGUUCGAUUCCGCCCCUGGCCA"
 
-for (template_sequence, template_secondary_structure) in database:
-    for method in methods:
-        print method.__name__
-        print method.get_score(query, template_sequence, template_secondary_structure)
-    print "---"
+def main():
+    repo = MongoTemplateRepository()
+    templates = repo.get_templates_info()
+    query = "GGCCAGGUAGCUCAGUUGGUAGAGCACUGGACUGAAAAUCCAGGUGUCGGCGGUUCGAUUCCGCCCCUGGCCA"
+
+    all_vectors = []
+    for (template_id, template_sequence, template_secondary_structure) in templates:
+        fv = FeatureVectorCalculator.get_feature_vector(query, template_id, template_sequence, template_secondary_structure)
+        all_vectors.append((template_id, fv))
+
+    x = sorted(all_vectors, key=lambda z: z[1][0], reverse=True)
+    for best in x[:5]:
+        print best
+
+if __name__ == '__main__':
+    start_time = time.time()
+    main()
+    print("--- %s seconds ---" % (time.time() - start_time))
