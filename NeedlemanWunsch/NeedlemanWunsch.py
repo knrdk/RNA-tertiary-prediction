@@ -189,4 +189,7 @@ class NeedlemanWunsch:
             try:
                 return self.substitution_matrix[a][b]
             except:
-                return self.substitution_matrix[b][a]
+                try:
+                    return self.substitution_matrix[b][a]
+                except:
+                    return self.mismatch
