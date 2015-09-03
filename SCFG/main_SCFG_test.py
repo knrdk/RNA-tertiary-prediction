@@ -2,8 +2,8 @@ __author__ = 'Konrad Kopciuch'
 
 from SecondaryStructureParser import SecondaryStructureParser
 
-#ss, sq = "..(((....).)).((.(...)))", "ACGUACGUACGUACGUACGUACGU"
-ss, sq = ".()()", "AGCAU"
+ss, sq = "..(((....).)).((.(...)))", "ACGUACGUACGUACGUACGUACGU"
+#ss, sq = ".()()", "AGCAU"
 #ss, sq = ".()", "AGC"
 
 parser = SecondaryStructureParser()
