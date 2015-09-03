@@ -5,30 +5,30 @@ from Nodes import *
 
 class SecondaryStructureParser:
 
-    def get_tree(self, secondary_structure):
-        return ROOT(self.__get_tree(secondary_structure))
+    def get_tree(self, secondary_structure, sequence):
+        return ROOT(self.__get_tree(secondary_structure, sequence))
 
-    def __get_tree(self, ss):
+    def __get_tree(self, ss, sequence):
         length = len(ss)
         if length == 0:
             return END()
         elif length == 1:
-            return MATL(END())
+            return MATL(END(), sequence[0])
 
         first = ss[0]
         last = ss[-1]
 
         if first == '.':
-            child_tree = self.__get_tree(ss[1:])
-            return MATL(child_tree)
+            child_tree = self.__get_tree(ss[1:], sequence[1:])
+            return MATL(child_tree, sequence[0])
         else:
             if last == '.':
-                child_tree = self.__get_tree(ss[:-1])
-                return MATR(child_tree)
+                child_tree = self.__get_tree(ss[:-1], sequence[:-1])
+                return MATR(child_tree, sequence[-1])
             else:
                 if self.__is_first_and_last_basepair(ss):
-                    child_tree = self.__get_tree(ss[1:-1])
-                    return MATP(child_tree)
+                    child_tree = self.__get_tree(ss[1:-1], sequence[1:-1])
+                    return MATP(child_tree, sequence[0], sequence[-1])
                 else:
                     (min_part, max_part) = self.__find_partition(ss)
                     if min_part > (length/2):
@@ -37,8 +37,8 @@ class SecondaryStructureParser:
                         partition_point = max_part
                     else:
                         partition_point = int(length/2)
-                    left_child = BEGL(self.__get_tree(ss[:partition_point]))
-                    right_child = BEGR(self.__get_tree(ss[partition_point:]))
+                    left_child = BEGL(self.__get_tree(ss[:partition_point], sequence[:partition_point]))
+                    right_child = BEGR(self.__get_tree(ss[partition_point:], sequence[partition_point:]))
                     return BIF(left_child, right_child)
 
     def __is_first_and_last_basepair(self,ss):
