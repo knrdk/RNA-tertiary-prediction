@@ -3,7 +3,7 @@ __author__ = 'Konrad Kopciuch'
 from Nodes import *
 
 
-class SecondaryStructureParser:
+class SecondaryStructureToNodesTreeParser:
 
     def get_tree(self, secondary_structure, sequence):
         return ROOT(self.__get_tree(secondary_structure, sequence))
@@ -63,7 +63,6 @@ class SecondaryStructureParser:
             return self.__is_first_and_last_basepair(ss[1:-1])
         else:
             return False
-
 
     def __find_partition(self, ss):
         assert len(ss)>3 #musza byc conajmniej dwie pary

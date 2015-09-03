@@ -1,12 +1,11 @@
 __author__ = 'Konrad Kopciuch'
 
-from SecondaryStructureParser import SecondaryStructureParser
+from SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 
 ss, sq = "..(((....).)).((.(...)))", "ACGUACGUACGUACGUACGUACGU"
 #ss, sq = ".()()", "AGCAU"
 #ss, sq = ".()", "AGC"
 
-parser = SecondaryStructureParser()
-tree = parser.get_tree(ss, sq)
-print tree
-print tree.get_number_of_states()
+
+parser = SecondaryStructureToSCFGParser()
+parser.get_SCFG(ss, sq)
