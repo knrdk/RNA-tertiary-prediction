@@ -31,14 +31,18 @@ class SecondaryStructureParser:
                     return MATP(child_tree, sequence[0], sequence[-1])
                 else:
                     (min_part, max_part) = self.__find_partition(ss)
-                    if min_part > (length/2):
+                    if min_part == max_part:
+                        partition_point = min_part + 1
+                    elif min_part > (length/2):
                         partition_point = min_part
                     elif max_part < (length/2):
                         partition_point = max_part
                     else:
                         partition_point = int(length/2)
-                    left_child = BEGL(self.__get_tree(ss[:partition_point], sequence[:partition_point]))
-                    right_child = BEGR(self.__get_tree(ss[partition_point:], sequence[partition_point:]))
+                    left_structure, left_sequence = ss[:partition_point], sequence[:partition_point]
+                    right_structure, right_sequence = ss[partition_point:], sequence[partition_point:]
+                    left_child = BEGL(self.__get_tree(left_structure, left_sequence))
+                    right_child = BEGR(self.__get_tree(right_structure, right_sequence))
                     return BIF(left_child, right_child)
 
     def __is_first_and_last_basepair(self,ss):
