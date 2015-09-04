@@ -33,7 +33,7 @@ def main(result_directory, input_file_path):
 
 
 if __name__ == '__main__':
-    config = Config()
+    config = Config('./../config.ini')
     result_directory = config.get_structure_directory()
     input_file_path = config.get_ndb_result_file_path()
     main(result_directory, input_file_path)

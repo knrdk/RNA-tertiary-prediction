@@ -11,7 +11,7 @@ from Config import Config
 
 
 def main():
-    config = Config()
+    config = Config('./../config.ini')
     structures_directory = config.get_structure_directory()
     templates_directory = config.get_template_directory()
 

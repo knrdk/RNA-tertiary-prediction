@@ -7,7 +7,7 @@ from Config import Config
 
 
 def delete_template(repository, template_id):
-    config = Config()
+    config = Config('./../config.ini')
     structure_id, chain_id = template_id.split('_')
     repository.delete_template(structure_id, chain_id)
     template_file_path = path.join(config.get_template_directory(), template_id+'.pdb')

@@ -2,12 +2,12 @@ __author__ = 'rna'
 
 from ConfigParser import ConfigParser
 
-class Config:
-    config_file_path = './../config.ini'
 
-    def __init__(self):
+class Config:
+
+    def __init__(self, config_file):
         self.config = ConfigParser()
-        self.config.read(self.config_file_path)
+        self.config.read(config_file)
 
     def get_structure_directory(self):
         section = 'Template'
