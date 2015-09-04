@@ -3,6 +3,7 @@ __author__ = 'Konrad Kopciuch'
 import Bio.PDB as bpdb
 
 def pdb_rmsd(c1, c2):
+
     backbone_atoms = ['P', 'O5*', 'C5*', 'C4*', 'C3*', 'O3*']
     backbone_atoms += ['P', "O5'", "C5'", "C4'", "C3'", "O3'"]
 
@@ -24,12 +25,14 @@ def pdb_rmsd(c1, c2):
     a_names['A'] = a_5_names + ['N1', 'C2', 'N3', 'C4', 'C5', 'C6', 'N6', 'N7', 'C8', 'N9'] + a_3_names
     a_names['G'] = a_5_names + ['N1', 'C2', 'N2', 'N3', 'C4', 'C5', 'C6', 'O6', 'N7', 'C8', 'N9'] + a_3_names
 
+    #backbone_atoms = ['P', 'C4*'] # dodane
+
     all_atoms1 = []
     all_atoms2 = []
 
     acceptable_residues = ['A','C','G','U','rA','rC','rG','rU','DG']
-    c1_list = [cr for cr in c1.get_list() if cr.resname.strip() in acceptable_residues]
-    c2_list = [cr for cr in c2.get_list() if cr.resname.strip() in acceptable_residues]
+    c1_list = [cr for cr in c1.get_list() ]#if cr.resname.strip() in acceptable_residues]
+    c2_list = [cr for cr in c2.get_list() ]#if cr.resname.strip() in acceptable_residues]
 
     if len(c1_list) != len(c2_list):
         raise Exception("Chains of different length.")
@@ -64,8 +67,5 @@ def get_rmsd(pdb_path_x, pdb_path_y):
     for x in str2.get_chains():
         chain2 = x
         continue
-
     length, rmsd = pdb_rmsd(chain1, chain2)
     return rmsd
-
-print get_rmsd("/home/rna/RNA/2MS0_B.pdb", "/home/rna/RNA/nw_model.pdb")
