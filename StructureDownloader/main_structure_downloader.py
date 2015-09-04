@@ -3,6 +3,7 @@ import logging
 import sys
 from datetime import datetime
 
+from Config import Config
 from NDBResultParser import NDBResultParser
 from PDBStructureDownloader import PDBStructureDownloader
 
@@ -32,8 +33,7 @@ def main(result_directory, input_file_path):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 3:
-        print "main_structure_downloader.py result_directory input_file_path"
-    result_directory = sys.argv[1]
-    input_file_path = sys.argv[2]
+    config = Config()
+    result_directory = config.get_structure_directory()
+    input_file_path = config.get_ndb_result_file_path()
     main(result_directory, input_file_path)
