@@ -1,24 +1,29 @@
 __author__ = 'Konrad Kopciuch'
 
+import os
+
 from Template import *
 from TemplateExtractor import TemplateExtractor
 import Template
-import os
 from TemplateExtractorLogger import TemplateExtractorLogger
 from Repository import MongoTemplateRepository
+from Config import Config
 
-structures_directory = "/home/rna/RNA/Structures/"
-templates_directory = "/home/rna/RNA/Templates/"
 
 def main():
+    config = Config()
+    structures_directory = config.get_structure_directory()
+    templates_directory = config.get_template_directory()
+
     logger = TemplateExtractorLogger()
     logger.log_start(structures_directory, templates_directory)
     writer = TemplateWriter(templates_directory)
     repo = MongoTemplateRepository.MongoTemplateRepository()
-    for file in os.listdir(structures_directory):
-        if file.endswith(".ent") or file.endswith(".pdb"):
-            logger.log_filename(file)
-            structure_path = structures_directory + file
+    for file_path in os.listdir(structures_directory):
+        if file_path.endswith(".ent") or file_path.endswith(".pdb"):
+            print 'Wyodrebnianie szablonow z pliku: ', file_path
+            logger.log_filename(file_path)
+            structure_path = structures_directory + file_path
             logger.log_structure_path(structure_path)
             te = TemplateExtractor(structure_path, logger)
             templates = te.get_templates()

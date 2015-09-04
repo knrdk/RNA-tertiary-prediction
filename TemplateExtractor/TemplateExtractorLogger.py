@@ -48,7 +48,7 @@ class TemplateExtractorLogger(object):
         self.logger.debug(pc)
 
     def log_chain_discontinuous(self, id):
-        self.logger.warning("Chain is discontinuous")
+        self.logger.warning("Chain is discontinuous: %s", id)
 
     def log_disconected_residues(self, id):
-        self.logger.warning("Some residues are disconnected")
+        self.logger.warning("Some residues are disconnected: %s", id)

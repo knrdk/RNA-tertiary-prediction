@@ -1,6 +1,19 @@
 __author__ = 'Konrad Kopciuch'
 
+from os import remove, path
+
 from Repository.MongoTemplateRepository import MongoTemplateRepository
+from Config import Config
+
+
+def delete_template(repository, template_id):
+    config = Config()
+    structure_id, chain_id = template_id.split('_')
+    repository.delete_template(structure_id, chain_id)
+    template_file_path = path.join(config.get_template_directory(), template_id+'.pdb')
+    print template_file_path
+    remove(template_file_path)
+
 
 def delete_redundant():
     repo = MongoTemplateRepository()
@@ -11,9 +24,9 @@ def delete_redundant():
     for group in groupped:
         s = sorted(group, key=lambda x: x[1]) #sortowanie po rozdzielczosci
         for x in s[1:]:
-            print "usuwanie szablonu" + x[0]
-            structure_id, chain_id = x[0].split('_')
-            repo.delete_template(structure_id, chain_id)
+            template_id = x[0] #id w formacie: STRUCTURE_CHAIN
+            print "usuwanie szablonu: " + template_id
+            delete_template(repo, template_id)
 
 
 if __name__ == "__main__":
