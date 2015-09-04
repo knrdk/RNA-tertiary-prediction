@@ -1,8 +1,13 @@
 __author__ = 'Konrad Kopciuch'
 
 from SecondaryStructureToNodesTreeParser import SecondaryStructureToNodesTreeParser
+from SCFG import SCFG
 
 class SecondaryStructureToSCFGParser:
+
+    def __init__(self, single_scoring_matrix, double_scoring_matrix):
+        self.single_matrix = single_scoring_matrix
+        self.double_matrix = double_scoring_matrix
 
     def get_SCFG(self, secondary_structure, sequence):
         parser = SecondaryStructureToNodesTreeParser()
@@ -13,5 +18,4 @@ class SecondaryStructureToSCFGParser:
         for index, state in enumerate(states):
             state.set_index(index)
 
-        for state in states:
-            print state, list(state.get_connected_indexes())
+        return SCFG(states, self.single_matrix, self.double_matrix)

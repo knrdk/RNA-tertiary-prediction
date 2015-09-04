@@ -1,6 +1,10 @@
 __author__ = 'Konrad Kopciuch'
 
 
+class StateTypes:
+    P, L, R, B, D, S, E = range(7)
+
+
 class State(object):
 
     def __init__(self, value = None):
@@ -16,6 +20,12 @@ class State(object):
     def get_index(self):
         return self.index
 
+    def set_gap_class(self, gap_class):
+        self.gap_class = gap_class
+
+    def get_gap_class(self):
+        return self.gap_class
+
     def add_connection(self, state):
         self.connected.append(state)
 
@@ -23,16 +33,21 @@ class State(object):
         for state in self.connected:
             yield state.get_index()
 
+
 class S(State):
-    pass
+    state_type = StateTypes.S
+
 
 class E(State):
-    pass
+    state_type = StateTypes.E
+
 
 class B(State):
-    pass
+    state_type = StateTypes.B
+
 
 class MP(State):
+    state_type = StateTypes.P
 
     def __init__(self, value):
         self.value = value
@@ -41,7 +56,9 @@ class MP(State):
     def __str__(self):
         return str(self.get_index()) + '\t' + self.__class__.__name__ + ' ' + self.value
 
+
 class ML(State):
+    state_type = StateTypes.L
 
     def __init__(self, value):
         self.value = value[0]
@@ -50,7 +67,9 @@ class ML(State):
     def __str__(self):
         return str(self.get_index()) + '\t' + self.__class__.__name__ + ' ' + self.value
 
+
 class MR(State):
+    state_type = StateTypes.R
 
     def __init__(self, value):
         self.value = value[-1]
@@ -59,15 +78,22 @@ class MR(State):
     def __str__(self):
         return str(self.get_index()) + '\t' + self.__class__.__name__ + ' ' + self.value
 
+
 class D(State):
-    pass
+    state_type = StateTypes.D
+
 
 class IL(State):
+    state_type = StateTypes.L
+
     def __init__(self):
         super(IL, self).__init__()
         self.add_connection(self)
 
+
 class IR(State):
+    state_type = StateTypes.R
+
     def __init__(self):
         super(IR, self).__init__()
         self.add_connection(self)

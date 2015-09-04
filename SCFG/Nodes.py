@@ -1,6 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
 from States import *
+from GapClasses import *
 
 class Node(object):
     split = []
@@ -18,12 +19,16 @@ class Node(object):
     def initialize_split_states(self):
         self.split_states = []
         for t in self.__class__.split:
-            self.split_states.append(t())
+            x = t()
+            x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
+            self.split_states.append(x)
 
     def initialize_insert_states(self):
         self.insert_states = []
         for t in self.__class__.insert:
-            self.insert_states.append(t())
+            x = t()
+            x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
+            self.insert_states.append(x)
 
     def update_connected(self):
         for split_state in self.split_states:
@@ -147,7 +152,9 @@ class MATP(Node):
         value = self.nucleotide1 + self.nucleotide2
         self.split_states = []
         for t in self.__class__.split:
-            self.split_states.append(t(value))
+            x = t(value)
+            x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
+            self.split_states.append(x)
 
 
 class MAT_SingleNode(Node):
@@ -162,7 +169,9 @@ class MAT_SingleNode(Node):
         value = self.nucleotide
         self.split_states = []
         for t in self.__class__.split:
-            self.split_states.append(t(value))
+            x = t(value)
+            x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
+            self.split_states.append(x)
 
 
 class MATL(MAT_SingleNode):
@@ -192,3 +201,42 @@ class END(Node):
 
     def get_child_split_states(self):
         return []
+
+gap_classes_for_node_state = {
+    ROOT: {
+        S: M_cl,
+        IL: IL_cl,
+        IR: IR_cl
+    },
+    BEGL: {
+        S: M_cl
+    },
+    BEGR: {
+        S: M_cl,
+        IL: IL_cl
+    },
+    MATP: {
+        MP: M_cl,
+        ML: DR_cl,
+        MR: DL_cl,
+        D: DB_cl,
+        IL: IL_cl,
+        IR: IR_cl
+    },
+    MATL: {
+        ML: M_cl,
+        D: DL_cl,
+        IL: IL_cl
+    },
+    MATR: {
+        MR: M_cl,
+        D: DR_cl,
+        IR: IR_cl
+    },
+    END: {
+        E: M_cl
+    },
+    BIF: {
+        B: M_cl
+    }
+}

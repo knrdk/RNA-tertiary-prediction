@@ -1,3 +1,5 @@
+# coding=UTF-8
+
 __author__ = 'Konrad Kopciuch'
 
 from GapClasses import *
@@ -7,7 +9,7 @@ def get_penalties_dictionary(a, b):
     Zwraca macierz zawierajaca kary za przerwy w dopasowaniu sekewncji
     :param a: parametr alfa z publikacji "RSEARCH: Finding homologs of single structured RNA sequences" Klein, Eddy
     :param b: parametr beta z tej publikacji
-    :return: s≥ownik dwuwymiarowy indeksowany klasami kar za otwarcie. Pierwszy argument From_class, drugi To_class
+    :return: s≈Çownik dwuwymiarowy indeksowany klasami kar za otwarcie. Pierwszy argument From_class, drugi To_class
     """
     return {
         M_cl: {
