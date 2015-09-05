@@ -89,6 +89,7 @@ class IL(State):
     def __init__(self):
         super(IL, self).__init__()
         self.add_connection(self)
+        self.value = None
 
 
 class IR(State):
@@ -97,3 +98,4 @@ class IR(State):
     def __init__(self):
         super(IR, self).__init__()
         self.add_connection(self)
+        self.value = None
