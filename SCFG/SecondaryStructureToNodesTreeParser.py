@@ -53,6 +53,19 @@ class SecondaryStructureToNodesTreeParser:
         close_index = self.__get_close_basepair_index(ss, 0)
         return close_index == (length - 1)
 
+    def __find_partition(self, ss):
+        assert len(ss)>3 #musza byc conajmniej dwie pary
+        first = ss[0]
+        assert first == '('
+
+        close_for_first = self.__get_close_basepair_index(ss, 0)
+        min = close_for_first + 1
+        for i in range(min, len(ss),1):
+            if ss[i] == '(':
+                return (min,max)
+        '''wiadomo ze wyjdziemy w petli for bo jesli funkcja zostala wywolana
+        to byla koniecznosc podzialu'''
+
     @staticmethod
     def __get_close_basepair_index(secondary_structure, open_index):
         assert secondary_structure[open_index] == '('
@@ -69,26 +82,3 @@ class SecondaryStructureToNodesTreeParser:
                 return index
 
         raise AttributeError("bledna struktura drugorzedowa")
-
-
-    def __find_partition(self, ss):
-        assert len(ss)>3 #musza byc conajmniej dwie pary
-        first = ss[0]
-        assert first == '('
-
-        number_of_opened_braces = 1
-        min_point = 0
-        for i in range(1,len(ss),1):
-            if ss[i]=='(':
-                number_of_opened_braces+=1
-            elif ss[i]==')':
-                number_of_opened_braces-=1
-
-            if min_point==0 and number_of_opened_braces==0:
-                min_point = i
-
-            if min_point!=0 and number_of_opened_braces!=0:
-                return (min_point, i-1)
-
-            elif min_point!=0 and i==len(ss)-1:
-                return (min_point, i)

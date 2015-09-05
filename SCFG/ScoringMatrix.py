@@ -1,18 +1,14 @@
 __author__ = 'Konrad Kopciuch'
 
-from ConfigParser import ConfigParser
+from Config import Config
 from RibosumMatrix.RibosumParser import RibosumParser
 
 
 def __get_ribosum_matrix_path(config_path):
-    config = ConfigParser()
-    config.read(config_path)
-    section = 'Ribosum'
-    matrix_path = "matrixpath"
-    return config.get(section, matrix_path)
+    config = Config('./../config.ini')
+    return config.get_ribosum_matrix_path()
 
-
-def get_ribosum_matrices():
+def get_scoring_matrices():
     ribosum_matrix_path = __get_ribosum_matrix_path("config.ini")
     parser = RibosumParser(ribosum_matrix_path)
     sm = parser.get_single_matrix()
