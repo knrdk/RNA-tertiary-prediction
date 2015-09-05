@@ -32,7 +32,7 @@ class SecondaryStructureToNodesTreeParser:
                 else:
                     (min_part, max_part) = self.__find_partition(ss)
                     if min_part == max_part:
-                        partition_point = min_part + 1
+                        partition_point = min_part
                     elif min_part > (length/2):
                         partition_point = min_part
                     elif max_part < (length/2):
@@ -62,7 +62,7 @@ class SecondaryStructureToNodesTreeParser:
         min = close_for_first + 1
         for i in range(min, len(ss),1):
             if ss[i] == '(':
-                return (min,max)
+                return (min,i)
         '''wiadomo ze wyjdziemy w petli for bo jesli funkcja zostala wywolana
         to byla koniecznosc podzialu'''
 
