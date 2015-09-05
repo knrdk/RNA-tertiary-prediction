@@ -16,7 +16,7 @@ class SCFG:
         n_states = len(self.states)
         n_sequence = len(sequence)
         self.alpha = self.__get_3D_array(n_states, n_sequence+1, n_sequence+1)
-        self.CYK_Inside(0, n_states-1, 0, n_sequence-1)
+        self.__CYK_Inside(0, n_states-1, 0, n_sequence-1)
         score = self.alpha[0][0][n_sequence - 1]
         return score
 
@@ -40,7 +40,7 @@ class SCFG:
         except:
             return self.single_matrix[residuum][state.value]
 
-    def CYK_Inside(self, r, z, g, q):
+    def __CYK_Inside(self, r, z, g, q):
         for v in range(z, r-1, -1):
             for j in range(g-1, q+1, 1):
                 for i in range(j+1, g-1, -1):
