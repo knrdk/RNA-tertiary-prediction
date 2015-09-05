@@ -23,3 +23,8 @@ class Config:
         section = 'Template'
         option = 'ndb_result_file'
         return self.config.get(section, option)
+
+    def get_ribosum_matrix_path(self):
+        section = 'SCFG'
+        option = 'ribosum_matrix'
+        return self.config.get(section, option)
