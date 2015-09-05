@@ -50,19 +50,26 @@ class SecondaryStructureToNodesTreeParser:
         if length == 0:
             return True
 
-        first = ss[0]
-        last = ss[-1]
-        if first == '.':
-            if last == '.':
-                return self.__is_first_and_last_basepair(ss[1:-1])
-            else:
-                return self.__is_first_and_last_basepair(ss[1:])
-        elif last == '.':
-            return self.__is_first_and_last_basepair(ss[:-1])
-        elif first== '(' and last == ')':
-            return self.__is_first_and_last_basepair(ss[1:-1])
-        else:
-            return False
+        close_index = self.__get_close_basepair_index(ss, 0)
+        return close_index == (length - 1)
+
+    @staticmethod
+    def __get_close_basepair_index(secondary_structure, open_index):
+        assert secondary_structure[open_index] == '('
+
+        length = len(secondary_structure)
+        opened = 1
+        for index in range(open_index+1, length, 1):
+            if secondary_structure[index] == '(':
+                opened += 1
+            elif secondary_structure[index] == ')':
+                opened -= 1
+
+            if opened == 0:
+                return index
+
+        raise AttributeError("bledna struktura drugorzedowa")
+
 
     def __find_partition(self, ss):
         assert len(ss)>3 #musza byc conajmniej dwie pary

@@ -3,7 +3,7 @@ __author__ = 'Konrad Kopciuch'
 from unittest import TestCase
 from SCFG.SecondaryStructureToNodesTreeParser import SecondaryStructureToNodesTreeParser
 
-class SecondaryStructureParserTest(TestCase):
+class SecondaryStructureToNodesTreeParserTest(TestCase):
 
     def test_number_of_states_test1(self):
         expected_number_of_states = 13
