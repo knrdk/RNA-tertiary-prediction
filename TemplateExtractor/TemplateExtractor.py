@@ -50,7 +50,7 @@ class TemplateExtractor:
 
     def __is_rna_structure(self, structure): #structure must be cleaned before invoking this function
         assert isinstance(structure, moderna.RnaModel)
-        return len(structure)
+        return len(structure) > 1
 
     def __is_structure_valid(self, chain, chain_id):
         pdb_controller = examine_structure(chain, verbose=False)
