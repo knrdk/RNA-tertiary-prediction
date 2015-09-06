@@ -19,14 +19,14 @@ class Node(object):
     def initialize_split_states(self):
         self.split_states = []
         for t in self.__class__.split:
-            x = t()
+            x = t(self)
             x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
             self.split_states.append(x)
 
     def initialize_insert_states(self):
         self.insert_states = []
         for t in self.__class__.insert:
-            x = t()
+            x = t(self)
             x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
             self.insert_states.append(x)
 
@@ -152,7 +152,7 @@ class MATP(Node):
         value = self.nucleotide1 + self.nucleotide2
         self.split_states = []
         for t in self.__class__.split:
-            x = t(value)
+            x = t(self, value)
             x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
             self.split_states.append(x)
 
@@ -169,7 +169,7 @@ class MAT_SingleNode(Node):
         value = self.nucleotide
         self.split_states = []
         for t in self.__class__.split:
-            x = t(value)
+            x = t(self, value)
             x.set_gap_class(gap_classes_for_node_state[self.__class__][t])
             self.split_states.append(x)
 

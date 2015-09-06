@@ -7,8 +7,9 @@ class StateTypes:
 
 class State(object):
 
-    def __init__(self, value = None):
+    def __init__(self, parent_node, value = None):
         self.connected = []
+        self.parent_node = parent_node
         self.index = None
 
     def __str__(self):
@@ -49,9 +50,9 @@ class B(State):
 class MP(State):
     state_type = StateTypes.P
 
-    def __init__(self, value):
+    def __init__(self, parent_node, value):
         self.value = value
-        super(MP, self).__init__()
+        super(MP, self).__init__(parent_node)
 
     def __str__(self):
         return self.__class__.__name__ + ' ' + self.value
@@ -60,9 +61,9 @@ class MP(State):
 class ML(State):
     state_type = StateTypes.L
 
-    def __init__(self, value):
+    def __init__(self,parent_node, value):
         self.value = value[0]
-        super(ML, self).__init__()
+        super(ML, self).__init__(parent_node)
 
     def __str__(self):
         return self.__class__.__name__ + ' ' + self.value
@@ -71,9 +72,9 @@ class ML(State):
 class MR(State):
     state_type = StateTypes.R
 
-    def __init__(self, value):
+    def __init__(self, parent_node, value):
         self.value = value[-1]
-        super(MR, self).__init__()
+        super(MR, self).__init__(parent_node)
 
     def __str__(self):
         return self.__class__.__name__ + ' ' + self.value
@@ -86,8 +87,8 @@ class D(State):
 class IL(State):
     state_type = StateTypes.L
 
-    def __init__(self):
-        super(IL, self).__init__()
+    def __init__(self, parent_node):
+        super(IL, self).__init__(parent_node)
         self.add_connection(self)
         self.value = None
 
@@ -95,7 +96,7 @@ class IL(State):
 class IR(State):
     state_type = StateTypes.R
 
-    def __init__(self):
-        super(IR, self).__init__()
+    def __init__(self, parent_node):
+        super(IR, self).__init__(parent_node)
         self.add_connection(self)
         self.value = None
