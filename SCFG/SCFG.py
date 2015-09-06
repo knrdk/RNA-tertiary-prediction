@@ -37,7 +37,7 @@ class SCFG:
             state = x[0]
             state_type = state.state_type
             parent_node = state.parent_node
-
+            print state, parent_node.__class__.__name__
             if isinstance(state, D):
                 if isinstance(parent_node, MATP):
                     template_left += parent_node.nucleotide1
@@ -49,7 +49,7 @@ class SCFG:
                     query_left += '-'
                 elif isinstance(parent_node, MATR):
                     template_right += parent_node.nucleotide
-                    query_right = '-'
+                    query_right += '-'
             elif isinstance(state, MP):
                 template_left += parent_node.nucleotide1
                 template_right += parent_node.nucleotide2

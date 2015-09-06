@@ -7,8 +7,8 @@ from ScoringMatrix import get_scoring_matrices
 
 start_time = time()
 
-#ss, sq = "((((((((....(.(((...(((.....)))......))))(((..(((....))).)))...(....(((((....)))))..))))))))).", "GGCUUAUCAAGAGAGGUGGAGGGACUGGCCCGACGAAACCCGGCAACCAGAAAUGGUGCCAAUUCCUGCAGCGGAAACGUUGAAAGAUGAGCCG"
-ss, sq = "((((........))))......(((((....)))))...............", "GGCGAUGAGGCCCGCCCAAACUGCCCUGAAAAGGGCUGAUGGCCUCUACUG"
+ss, sq = "(((....(.(((...(((.....)))......))))(((..(((....))).)))...(....(((((....)))))..))))", "UCAAGAGAGGUGGAGGGACUGGCCCGACGAAACCCGGCAACCAGAAAUGGUGCCAAUUCCUGCAGCGGAAACGUUGAAAGAUGAG"
+#ss, sq = "((((........))))......(((((....)))))...............", "GGCGAUGAGGCCCGCCCAAACUGCCCUGAAAAGGGCUGAUGGCCUCUACUG"
 #ss, sq = ".()()()", "AGCAUGC"
 #ss, sq = ".()", "AGC"
 #ss = "((((((((.((((.(((.....))))))......)..)))).....(((...((((......))))...)))..))))."
@@ -16,7 +16,8 @@ ss, sq = "((((........))))......(((((....)))))...............", "GGCGAUGAGGCCCGC
 single_matrix, double_matrix = get_scoring_matrices()
 parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
 scfg = parser.get_SCFG(ss, sq)
-sequence = "GGCUUAUCAAGAGAGGUGGAGGGACUGGCCCGACGAAACCCGGCAACCAGAAAUGGUGCCAAUUCCUGCAGCGGAAACGUUGAAAGAUGAGCCG"
+#sequence = "GGCUUAUCAAGAGAGGUGGAGGGACUGGCCCGACGAAACCCGGCAACCAGAAAUGGUGCCAAUUCCUGCAGCGGAAACGUUGAAAGAUGAGCCG"
+sequence = "GGCGAUGAGGCCCGCCCAAACUGCCCU"
 #sequence = "AGCGAGCGAGCG"
 scfg.align(sequence)
 score = scfg.get_score()
