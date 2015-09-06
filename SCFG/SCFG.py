@@ -11,10 +11,6 @@ class SCFG:
         self.single_matrix = single_scoring_matrix
         self.double_matrix = double_scoring_matrix
 
-    def get_score(self):
-        score = self.alpha[0][0][len(self.sequence) - 1]
-        return score
-
     def align(self, sequence):
         self.sequence = sequence
         states_length = len(self.states)
@@ -22,6 +18,13 @@ class SCFG:
         self.alpha = self.__get_3D_array(states_length, sequence_length+1, sequence_length+1)
         self.tau = self.__get_3D_array(states_length, sequence_length+1, sequence_length+1)
         self.__CYK_Inside(0, states_length-1, 0, sequence_length-1)
+
+    def get_score(self):
+        score = self.alpha[0][0][len(self.sequence) - 1]
+        return score
+
+    def get_alingment(self):
+        self.__Traceback(0, 0, len(self.sequence)-1)
 
     def get_transition_cost(self, begin_state, end_state):
         begin_class = begin_state.get_gap_class()
@@ -34,7 +37,6 @@ class SCFG:
         except:
             return self.double_matrix[base_pair][state.value]
 
-
     def get_single_emission_cost(self, state, residuum):
         if not state.value:
             return 0
@@ -44,16 +46,17 @@ class SCFG:
             return self.single_matrix[residuum][state.value]
 
     def __CYK_Inside(self, r, z, g, q):
+        minus_inf = float("-inf")
         for v in range(z, r-1, -1):
             for j in range(g-1, q+1, 1):
                 for i in range(j+1, g-1, -1):
                     d = j-i+1
                     state = self.states[v]
                     state_type = state.state_type
-                    maximum, index_max = float("-inf"), -1
+                    maximum, index_max = minus_inf, -1
 
-                    if state_type in {StateTypes.D, StateTypes.S}:
-                        maximum, index_max = float("-inf"), -1
+                    if state_type == StateTypes.D or state_type == StateTypes.S:
+                        maximum, index_max = minus_inf, -1
                         for gamma in state.get_connected_indexes():
                             gamma_value = self.alpha[gamma][i][j]
                             transition_cost = self.get_transition_cost(state, self.states[gamma])
@@ -101,6 +104,30 @@ class SCFG:
 
                     self.alpha[v][i][j] = maximum
                     self.tau[v][i][j] = index_max
+
+    def __Traceback(self, v, i, j):
+        state = self.states[v]
+        state_type = state.state_type
+
+        if state_type == StateTypes.E:
+            print v
+        elif state_type == StateTypes.S or state_type == StateTypes.D:
+            print v
+            self.__Traceback(self.tau[v][i][j], i, j)
+        elif state_type == StateTypes.P:
+            print self.sequence[i], v, self.sequence[j]
+            self.__Traceback(self.tau[v][i][j], i+1, j-1)
+        elif state_type == StateTypes.L:
+            print self.sequence[i], v
+            self.__Traceback(self.tau[v][i][j], i+1, j)
+        elif state_type == StateTypes.R:
+            print v, self.sequence[j]
+            self.__Traceback(self.tau[v][i][j], i, j-1)
+        elif state_type == StateTypes.S:
+            left, right = state.get_connected_indexes()
+            print v
+            self.__Traceback(left, i, self.tau[v][i][j])
+            self.__Traceback(right, self.tau[v][i][j] + 1, j)
 
     def __get_3D_array(self, depth, width, height):
         return [self.__get_2D_array(width, height) for x in range(depth)]
