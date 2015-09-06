@@ -7,7 +7,7 @@ class AffiniteNeedlemanWunschIdentity:
 
     @staticmethod
     def get_score(query_sequence, template_id, template_sequence, template_secondary_structure):
-        nw = NeedlemanWunsch(query_sequence, template_sequence)
+        nw = NeedlemanWunsch(template_sequence, query_sequence)
         nw.set_points(2, -3, -5, -2)
         nw.align()
 
