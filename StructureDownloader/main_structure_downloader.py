@@ -1,6 +1,5 @@
 __author__ = 'Konrad Kopciuch'
 import logging
-import sys
 from datetime import datetime
 
 from Config import Config
@@ -15,7 +14,7 @@ def __get_logger():
     logger.setLevel(logging.INFO)
     return logger
 
-def main(result_directory, input_file_path):
+def main_structure_downloader(result_directory, input_file_path):
     loggger = __get_logger()
     loggger.info("Downloading started: %s", datetime.now())
 
@@ -34,6 +33,6 @@ def main(result_directory, input_file_path):
 
 if __name__ == '__main__':
     config = Config('./../config.ini')
-    result_directory = config.get_structure_directory()
+    structures_directory = config.get_structure_directory()
     input_file_path = config.get_ndb_result_file_path()
-    main(result_directory, input_file_path)
+    main_structure_downloader(structures_directory, input_file_path)

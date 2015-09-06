@@ -10,11 +10,7 @@ from Repository import MongoTemplateRepository
 from Config import Config
 
 
-def main():
-    config = Config('./../config.ini')
-    structures_directory = config.get_structure_directory()
-    templates_directory = config.get_template_directory()
-
+def main_template_extractor(structures_directory, templates_directory):
     logger = TemplateExtractorLogger()
     logger.log_start(structures_directory, templates_directory)
     writer = TemplateWriter(templates_directory)
@@ -37,4 +33,7 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    config = Config('./../config.ini')
+    structures_directory = config.get_structure_directory()
+    templates_directory = config.get_template_directory()
+    main_template_extractor(structures_directory, templates_directory)
