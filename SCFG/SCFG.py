@@ -2,6 +2,7 @@ __author__ = 'Konrad Kopciuch'
 
 from GapPenalties import get_penalties_dictionary
 from Nodes import *
+from Utils.Alignment import Alignment
 
 class SCFG:
 
@@ -23,11 +24,12 @@ class SCFG:
         score = self.alpha[0][0][len(self.sequence) - 1]
         return score
 
-    def get_alingment(self):
+    def get_alignment(self):
         states = []
         self.__Traceback(0, 0, len(self.sequence)-1, states) #wypelnia states stanami dla dopasowania self.sequence
 
-        return self.__get_alingment_from_states(states)
+        (template_algn, query_algn) = self.__get_alingment_from_states(states)
+        return Alignment(template_algn, query_algn)
 
     def __get_alingment_from_states(self, states):
         template_left, template_right = '', ''
@@ -35,9 +37,7 @@ class SCFG:
         while len(states) > 0:
             x = states.pop(0)
             state = x[0]
-            state_type = state.state_type
             parent_node = state.parent_node
-            print state, parent_node.__class__.__name__
             if isinstance(state, D):
                 if isinstance(parent_node, MATP):
                     template_left += parent_node.nucleotide1

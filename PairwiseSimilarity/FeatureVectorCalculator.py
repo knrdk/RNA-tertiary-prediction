@@ -1,14 +1,16 @@
 __author__ = 'rna'
 
 from AffiniteNeedlemanWunschIdentity import AffiniteNeedlemanWunschIdentity
+from AffiniteNeedlemanWunschScore import AffiniteNeedlemanWunschScore
+from DifferenceInLenght import DifferenceInLenght
 from SCFGScore import SCFGScore
 
 methods = [AffiniteNeedlemanWunschIdentity,
-           #AffiniteNeedlemanWunschScore,
+           AffiniteNeedlemanWunschScore,
            #LinearNeedlemanWunschIdentity,
            #Ribosum85NeedlemanWunschIdentity,
            #Ribosum85NeedlemanWunschScore,
-           #DifferenceInLenght,
+           DifferenceInLenght,
            #InfernalBestFamilyScore,
            #InfernalAlignmentIdentity,
            SCFGScore]

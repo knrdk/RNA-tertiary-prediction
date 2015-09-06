@@ -13,7 +13,7 @@ ss, sq = "(((....(.(((...(((.....)))......))))(((..(((....))).)))...(....(((((..
 #ss, sq = ".()", "AGC"
 #ss = "((((((((.((((.(((.....))))))......)..)))).....(((...((((......))))...)))..))))."
 #sq = "GGCGAUGAGGCCCGCCCAAACUGCCCUGAAAAGGGCUGAUGGCCUCUACUGGGCGAUGAGGCCCGCCCAAACUGCCCUG"
-single_matrix, double_matrix = get_scoring_matrices()
+single_matrix, double_matrix = get_scoring_matrices('./../config.ini')
 parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
 scfg = parser.get_SCFG(ss, sq)
 #sequence = "GGCUUAUCAAGAGAGGUGGAGGGACUGGCCCGACGAAACCCGGCAACCAGAAAUGGUGCCAAUUCCUGCAGCGGAAACGUUGAAAGAUGAGCCG"
@@ -22,9 +22,8 @@ sequence = "GGCGAUGAGGCCCGCCCAAACUGCCCU"
 scfg.align(sequence)
 score = scfg.get_score()
 print score
-t,q = scfg.get_alingment()
-print t
-print q
+algn = scfg.get_alignment()
+print algn
 
 end_time = time()
 print "Time: ", end_time-start_time

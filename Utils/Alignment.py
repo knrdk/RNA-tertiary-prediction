@@ -72,10 +72,10 @@ class Alignment:
         self.query = z
 
     def __str__(self):
-        line1 = '>'+self.template_description
-        line2 = self.template
-        line3 = '>'+self.query_description
-        line4 = self.query
+        line1 = '>'+self.query_description
+        line2 = self.query
+        line3 = '>'+self.template_description
+        line4 = self.template
         return line1 + '\n' + line2 + '\n' + line3 + '\n' + line4
 
 def write_alignment(alignment, file_path):
