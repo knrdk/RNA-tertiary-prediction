@@ -12,7 +12,7 @@ class State(object):
         self.index = None
 
     def __str__(self):
-        return str(self.get_index()) + '\t' + self.__class__.__name__
+        return self.__class__.__name__
 
     def set_index(self, index):
         self.index = index
@@ -54,7 +54,7 @@ class MP(State):
         super(MP, self).__init__()
 
     def __str__(self):
-        return str(self.get_index()) + '\t' + self.__class__.__name__ + ' ' + self.value
+        return self.__class__.__name__ + ' ' + self.value
 
 
 class ML(State):
@@ -65,7 +65,7 @@ class ML(State):
         super(ML, self).__init__()
 
     def __str__(self):
-        return str(self.get_index()) + '\t' + self.__class__.__name__ + ' ' + self.value
+        return self.__class__.__name__ + ' ' + self.value
 
 
 class MR(State):
@@ -76,7 +76,7 @@ class MR(State):
         super(MR, self).__init__()
 
     def __str__(self):
-        return str(self.get_index()) + '\t' + self.__class__.__name__ + ' ' + self.value
+        return self.__class__.__name__ + ' ' + self.value
 
 
 class D(State):

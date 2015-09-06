@@ -110,22 +110,25 @@ class SCFG:
         state_type = state.state_type
 
         if state_type == StateTypes.E:
-            print v
+            print self.states[v]
         elif state_type == StateTypes.S or state_type == StateTypes.D:
-            print v
+            print self.states[v]
             self.__Traceback(self.tau[v][i][j], i, j)
         elif state_type == StateTypes.P:
-            print self.sequence[i], v, self.sequence[j]
+            print self.states[v]
+            print self.sequence[i], self.sequence[j]
             self.__Traceback(self.tau[v][i][j], i+1, j-1)
         elif state_type == StateTypes.L:
-            print self.sequence[i], v
+            print self.states[v]
+            print self.sequence[i]
             self.__Traceback(self.tau[v][i][j], i+1, j)
         elif state_type == StateTypes.R:
-            print v, self.sequence[j]
+            print self.states[v]
+            print self.sequence[j]
             self.__Traceback(self.tau[v][i][j], i, j-1)
-        elif state_type == StateTypes.S:
+        elif state_type == StateTypes.B:
             left, right = state.get_connected_indexes()
-            print v
+            print self.states[v]
             self.__Traceback(left, i, self.tau[v][i][j])
             self.__Traceback(right, self.tau[v][i][j] + 1, j)
 
