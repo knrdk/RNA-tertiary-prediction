@@ -1,7 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
 from NeedlemanWunsch import NeedlemanWunsch
-from Alignment import Alingment
+from Utils.Alignment import Alingment
 
 substitution_matrix = {'A': {'A': 1.88, 'C': -1.23, 'G': -0.84, 'U': -0.83}, 'C': {'C': -0.95, 'G': -1.64, 'U':-0.57}, 'G':{'G': 0.82, 'U': -1.03}, 'U': {'U': 1.31}}
 

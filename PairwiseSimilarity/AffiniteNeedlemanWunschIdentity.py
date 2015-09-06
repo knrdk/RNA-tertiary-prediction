@@ -1,7 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
-from NeedlemanWunsch.Alignment import Alingment
+from Utils.Alignment import Alingment
 
 class AffiniteNeedlemanWunschIdentity:
 

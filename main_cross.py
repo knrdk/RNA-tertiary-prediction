@@ -1,10 +1,12 @@
 __author__ = 'rna'
 
-from Config import Config
 from os import listdir
-from moderna import load_template, load_alignment, create_model, clean_structure
+
+from moderna import load_template, load_alignment, create_model
+
+from Config import Config
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
-from NeedlemanWunsch.Alignment import *
+from Utils.Alignment import *
 from RMSD.RMSD import get_rmsd
 
 
@@ -54,10 +56,10 @@ def main():
             nw = NeedlemanWunsch(query_sequence_without_modifications,template_sequence_without_modifications)
             nw.align()
             algn = nw.get_alignment()
-            algn.change_sequence_x(query_sequence)
-            algn.change_sequence_y(template_sequence)
-            algn.set_sequence_x_description("Template")
-            algn.set_sequence_y_description("Query")
+            algn.change_template_sequence(query_sequence)
+            algn.change_query_sequence(template_sequence)
+            algn.set_template_description("Template")
+            algn.set_query_description("Query")
             write_alignment(algn, 'temp.fasta')
 
             try:

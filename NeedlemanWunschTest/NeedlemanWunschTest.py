@@ -1,8 +1,10 @@
 __author__ = 'Konrad Kopciuch'
 
 from unittest import TestCase
+
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
-from NeedlemanWunsch.Alignment import Alingment
+from Utils.Alignment import Alingment
+
 
 #dane do testow: https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastSearch&PROG_DEF=blastn&BLAST_PROG_DEF=blastn&BLAST_SPEC=GlobalAln&LINK_LOC=BlastHomeLink
 class NeedlemanWunschTest(TestCase):

@@ -1,6 +1,6 @@
 __author__ = 'Konrad Kopciuch'
 
-from Alignment import Alingment
+from Utils.Alignment import Alingment
 
 class NeedlemanWunsch:
     default_match = 2
