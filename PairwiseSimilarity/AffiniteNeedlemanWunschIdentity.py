@@ -1,7 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
-from Utils.Alignment import Alingment
+from Utils.Alignment import Alignment
 
 class AffiniteNeedlemanWunschIdentity:
 
@@ -12,5 +12,5 @@ class AffiniteNeedlemanWunschIdentity:
         nw.align()
 
         alignment = nw.get_alignment()
-        assert isinstance(alignment, Alingment)
+        assert isinstance(alignment, Alignment)
         return alignment.get_identity_percent()

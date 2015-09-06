@@ -3,7 +3,7 @@ __author__ = 'Konrad Kopciuch'
 from unittest import TestCase
 
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
-from Utils.Alignment import Alingment
+from Utils.Alignment import Alignment
 
 
 #dane do testow: https://blast.ncbi.nlm.nih.gov/Blast.cgi?PAGE_TYPE=BlastSearch&PROG_DEF=blastn&BLAST_PROG_DEF=blastn&BLAST_SPEC=GlobalAln&LINK_LOC=BlastHomeLink
@@ -71,7 +71,7 @@ class NeedlemanWunschTest(TestCase):
 
         expected_subject_alignment = "GGCGCGUUAACAAAGCGGUUAUGUAGCGGAUUGCAAAUCCGUCUAGUCCGGUUCGACUCCGGAACGCGCCUCCA"
         expected_query_alignment =   "CUCUGUUUACCA----GGUCAGGUC-CGGAAGG--AAGCAGCCAAGGCAGAG----------------------"
-        expected_alignment = Alingment(expected_subject_alignment,expected_query_alignment)
+        expected_alignment = Alignment(expected_subject_alignment,expected_query_alignment)
 
         self.assertEqual(alingment.get_identity_percent(), expected_alignment.get_identity_percent())
 

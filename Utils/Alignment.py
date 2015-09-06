@@ -1,6 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
-class Alingment:
+
+class Alignment:
     def __init__(self, template_sequence, query_sequence):
         assert len(template_sequence) == len(query_sequence)
 

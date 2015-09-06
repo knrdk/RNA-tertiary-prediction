@@ -11,8 +11,11 @@ class SCFGScore:
         parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
         scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
 
-        self_score = scfg.get_score(template_sequence)
-        query_score = scfg.get_score(query_sequence)
+        scfg.align(template_sequence)
+        self_score = scfg.get_score()
+
+        scfg.align(query_sequence)
+        query_score = scfg.get_score()
 
         if self_score == 0:
             if query_score > 0:

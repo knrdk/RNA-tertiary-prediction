@@ -1,6 +1,6 @@
 __author__ = 'Konrad Kopciuch'
 
-from Utils.Alignment import Alingment
+from Utils.Alignment import Alignment
 
 class NeedlemanWunsch:
     default_match = 2
@@ -107,7 +107,7 @@ class NeedlemanWunsch:
                     previous_matrix = self.IY_matrix[i][j][1]
                 else:
                     i-=1
-        self.alignment = Alingment(algn_x, algn_y)
+        self.alignment = Alignment(algn_x, algn_y)
 
 
     def __calculate_value_for_M_matrix(self, i, j):
