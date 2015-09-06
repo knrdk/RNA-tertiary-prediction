@@ -28,3 +28,18 @@ class Config:
         section = 'SCFG'
         option = 'ribosum_matrix'
         return self.config.get(section, option)
+
+    def get_training_results_path(self):
+        section = 'Training'
+        option = 'training_results_file_path'
+        return self.config.get(section, option)
+
+    def get_training_templates_directory(self):
+        section = 'Training'
+        option = 'training_templates_directory'
+        return self.config.get(section, option)
+
+    def get_training_structures_directory(self):
+        section = 'Training'
+        option = 'training_structures_directory'
+        return self.config.get(section, option)
