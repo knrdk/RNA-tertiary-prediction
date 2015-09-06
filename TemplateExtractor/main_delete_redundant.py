@@ -20,13 +20,16 @@ def main_delete_redundant(template_directory):
     distinct_sequences = set(map(lambda x: x[1], all_sequences))
     grouped = [[(y[0], y[2]) for y in all_sequences if y[1] == x] for x in distinct_sequences]
 
+    templates_to_delete = set() #zbior bo moga byc te same szablony wielokrotnie, a chcemy usunac tylko raz
     for group in grouped:
         s = sorted(group, key=lambda x: x[1]) #sortowanie po rozdzielczosci
         for x in s[1:]:
             template_id = x[0] #id w formacie: STRUCTURE_CHAIN
-            print "usuwanie szablonu: " + template_id
-            delete_template(repo, template_id, template_directory)
+            templates_to_delete.add(template_id)
 
+    for template_id in templates_to_delete:
+        print "usuwanie szablonu: " + template_id
+        delete_template(repo, template_id, template_directory)
 
 if __name__ == "__main__":
     config = Config('./../config.ini')

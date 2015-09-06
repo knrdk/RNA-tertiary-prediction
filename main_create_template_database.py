@@ -1,5 +1,7 @@
 __author__ = 'rna'
 
+from time import time
+
 from Config import Config
 from StructureDownloader.main_structure_downloader import main_structure_downloader
 from TemplateExtractor.main_template_extractor import main_template_extractor
@@ -30,4 +32,6 @@ def main_create_template_database():
 
 
 if __name__ == '__main__':
+    start_time = time()
     main_create_template_database()
+    print("--- %s seconds ---" % (time() - start_time))
