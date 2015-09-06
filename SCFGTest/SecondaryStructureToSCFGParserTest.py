@@ -1,8 +1,10 @@
 __author__ = 'rna'
 
 from unittest import TestCase
+
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from SCFG.ScoringMatrix import get_scoring_matrices
+
 
 class SecondaryStructureToSCFGParserTest(TestCase):
 
@@ -13,7 +15,8 @@ class SecondaryStructureToSCFGParserTest(TestCase):
         parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
         scfg = parser.get_SCFG(ss, sq)
         sequence = "AGC"
-        score = scfg.get_score(sequence)
+        scfg.align(sequence)
+        score = scfg.get_score()
         self.assertEqual(expected_score, score)
 
     def test_short_sequences_2(self):
@@ -23,7 +26,8 @@ class SecondaryStructureToSCFGParserTest(TestCase):
         parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
         scfg = parser.get_SCFG(ss, sq)
         sequence = "AAC"
-        score = scfg.get_score(sequence)
+        scfg.align(sequence)
+        score = scfg.get_score()
         self.assertEqual(expected_score, score)
 
     def test_medium_sequences_1(self):
@@ -34,5 +38,6 @@ class SecondaryStructureToSCFGParserTest(TestCase):
         parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
         scfg = parser.get_SCFG(ss, sq)
         sequence = "GGCGAUGAGGCCCGCCCAAACUGCCCUGAAAAGGGCUGAUGGCCUCUACUG"
-        score = scfg.get_score(sequence)
+        scfg.align(sequence)
+        score = scfg.get_score()
         self.assertEqual(expected_score, score)

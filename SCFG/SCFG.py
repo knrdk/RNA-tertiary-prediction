@@ -1,7 +1,7 @@
 __author__ = 'Konrad Kopciuch'
 
 from GapPenalties import get_penalties_dictionary
-from States import StateTypes
+from Nodes import *
 
 class SCFG:
 
@@ -24,7 +24,83 @@ class SCFG:
         return score
 
     def get_alingment(self):
-        self.__Traceback(0, 0, len(self.sequence)-1)
+        states = []
+        self.__Traceback(0, 0, len(self.sequence)-1, states) #wypelnia states stanami dla dopasowania self.sequence
+
+        return self.__get_alingment_from_states(states)
+
+    def __get_alingment_from_states(self, states):
+        template_left, template_right = '', ''
+        query_left, query_right = '', ''
+        while len(states) > 0:
+            x = states.pop(0)
+            state = x[0]
+            state_type = state.state_type
+            parent_node = state.parent_node
+
+            if isinstance(state, D):
+                if isinstance(parent_node, MATP):
+                    template_left += parent_node.nucleotide1
+                    template_right += parent_node.nucleotide2
+                    query_left += '-'
+                    query_right += '-'
+                elif isinstance(parent_node, MATL):
+                    template_left += parent_node.nucleotide
+                    query_left += '-'
+                elif isinstance(parent_node, MATR):
+                    template_right += parent_node.nucleotide
+                    query_right = '-'
+            elif isinstance(state, MP):
+                template_left += parent_node.nucleotide1
+                template_right += parent_node.nucleotide2
+                query_left += x[1]
+                query_right += x[2]
+            elif isinstance(state, ML):
+                if isinstance(parent_node, MATP):
+                    template_left += parent_node.nucleotide1
+                    template_right += parent_node.nucleotide2
+                    query_left += x[1]
+                    query_right += '-'
+                elif isinstance(parent_node, MATL):
+                    template_left += parent_node.nucleotide
+                    query_left += x[1]
+            elif isinstance(state, MR):
+                if isinstance(parent_node, MATP):
+                    template_left += parent_node.nucleotide1
+                    template_right += parent_node.nucleotide2
+                    query_left += '-'
+                    query_right += x[1]
+                elif isinstance(parent_node, MATR):
+                    template_right += parent_node.nucleotide
+                    query_right += x[1]
+            elif isinstance(state, IL):
+                template_left += '-'
+                query_left += x[1]
+            elif isinstance(state, IR):
+                template_right += '-'
+                query_right += x[1]
+            elif isinstance(state, B):
+                left, right = self.split_states_in_bifurcation(states)
+                l_t, l_q = self.__get_alingment_from_states(left)
+                r_t, r_q = self.__get_alingment_from_states(right)
+                template_left = template_left + l_t
+                template_right = r_t + template_right
+                query_left = query_left + l_q
+                query_right = r_q + query_right
+
+        template = template_left + template_right
+        query = query_left + query_right
+        return template, query
+
+    def split_states_in_bifurcation(self, states):
+        left = []
+        while True:
+            x = states.pop(0)
+            left.append(x)
+            if isinstance(x[0], E):
+                break
+        return left, states
+
 
     def get_transition_cost(self, begin_state, end_state):
         begin_class = begin_state.get_gap_class()
@@ -105,32 +181,29 @@ class SCFG:
                     self.alpha[v][i][j] = maximum
                     self.tau[v][i][j] = index_max
 
-    def __Traceback(self, v, i, j):
+    def __Traceback(self, v, i, j, list_of_states):
         state = self.states[v]
         state_type = state.state_type
 
         if state_type == StateTypes.E:
-            print self.states[v]
+            list_of_states.append((self.states[v], None, None))
         elif state_type == StateTypes.S or state_type == StateTypes.D:
-            print self.states[v]
-            self.__Traceback(self.tau[v][i][j], i, j)
+            list_of_states.append((self.states[v], None, None))
+            self.__Traceback(self.tau[v][i][j], i, j, list_of_states)
         elif state_type == StateTypes.P:
-            print self.states[v]
-            print self.sequence[i], self.sequence[j]
-            self.__Traceback(self.tau[v][i][j], i+1, j-1)
+            list_of_states.append((self.states[v], self.sequence[i], self.sequence[j]))
+            self.__Traceback(self.tau[v][i][j], i+1, j-1, list_of_states)
         elif state_type == StateTypes.L:
-            print self.states[v]
-            print self.sequence[i]
-            self.__Traceback(self.tau[v][i][j], i+1, j)
+            list_of_states.append((self.states[v], self.sequence[i], None))
+            self.__Traceback(self.tau[v][i][j], i+1, j, list_of_states)
         elif state_type == StateTypes.R:
-            print self.states[v]
-            print self.sequence[j]
-            self.__Traceback(self.tau[v][i][j], i, j-1)
+            list_of_states.append((self.states[v], self.sequence[j], None))
+            self.__Traceback(self.tau[v][i][j], i, j-1, list_of_states)
         elif state_type == StateTypes.B:
             left, right = state.get_connected_indexes()
-            print self.states[v]
-            self.__Traceback(left, i, self.tau[v][i][j])
-            self.__Traceback(right, self.tau[v][i][j] + 1, j)
+            list_of_states.append((self.states[v], None, None))
+            self.__Traceback(left, i, self.tau[v][i][j], list_of_states)
+            self.__Traceback(right, self.tau[v][i][j] + 1, j, list_of_states)
 
     def __get_3D_array(self, depth, width, height):
         return [self.__get_2D_array(width, height) for x in range(depth)]
