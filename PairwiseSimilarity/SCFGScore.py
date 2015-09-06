@@ -16,10 +16,8 @@ class SCFGScore:
 
         if self_score == 0:
             if query_score > 0:
-                score = 1
-            else:
-                score = 0
+                return 1
+            return 0
 
         score = float(query_score) / self_score
-        print score
         return score
