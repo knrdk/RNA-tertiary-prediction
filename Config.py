@@ -43,3 +43,8 @@ class Config:
         section = 'Training'
         option = 'training_structures_directory'
         return self.config.get(section, option)
+
+    def get_training_ndb_result_file(self):
+        section = 'Training'
+        option = 'ndb_result_file'
+        return self.config.get(section, option)
