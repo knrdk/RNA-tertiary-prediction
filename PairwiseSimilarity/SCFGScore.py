@@ -1,5 +1,6 @@
 __author__ = 'rna'
 
+from Repository.MongoSCFGRepository import MongoSCFGRepository
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from SCFG.ScoringMatrix import get_scoring_matrices
 
@@ -7,12 +8,13 @@ class SCFGScore:
 
     @staticmethod
     def get_score(query_sequence, template_id, template_sequence, template_secondary_structure):
-        single_matrix, double_matrix = get_scoring_matrices()
+        repo = MongoSCFGRepository()
+
+        single_matrix, double_matrix = get_scoring_matrices('./../config.ini')
         parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
         scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
 
-        scfg.align(template_sequence)
-        self_score = scfg.get_score()
+        self_score = repo.get_scfg_self_score(template_id)
 
         scfg.align(query_sequence)
         query_score = scfg.get_score()
