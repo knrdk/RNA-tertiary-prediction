@@ -9,12 +9,13 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 def main():
     repo = MongoTemplateRepository()
     templates = repo.get_templates_info()
-    query = "GGCCAGGUAGCUCAGUUGGUAGAGCACUGGACUGAAAAUCCAGGUGUCGGCGGUUCGAUUCCGCCCCUGGCCA"
+    query = "CUCUGGAGAGAACCGUUUAAUCGGUCGCCGAAGGAGCAAGCUCUGCGCAUAUGCAGAGUGAAACUCUCAGGCAAAAGGACAGAG"
 
     all_vectors = []
     for (template_id, template_sequence, template_secondary_structure) in templates:
         fv = FeatureVectorCalculator.get_feature_vector(query, template_id, template_sequence, template_secondary_structure)
         all_vectors.append((template_id, fv))
+        print template_id, fv
 
     x = sorted(all_vectors, key=lambda z: z[1][0], reverse=True)
     for best in x[:5]:
