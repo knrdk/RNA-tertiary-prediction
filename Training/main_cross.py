@@ -76,7 +76,7 @@ def get_alignment(template_sequence_provider, query_sequence_provider, template_
 def main():
     cfg = Config('config.ini')
     templates_directory = cfg.get_template_directory()
-    training_templates_directory = cfg.get_training_templates_directory()
+    training_templates_directory = cfg.get_training_set_directory()
     training_results_file = cfg.get_training_results_path()
     templates_sequence_provider = SequenceProvider(templates_directory)
     training_sequence_provider = SequenceProvider(training_templates_directory)

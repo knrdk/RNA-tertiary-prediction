@@ -32,10 +32,21 @@ class MongoTrainingTemplateRepository():
         projection = [field_structure_id, field_chain_id, field_sequence]
         results = collection.find(projection=projection)
         for result in results:
-            id = result[field_structure_id] + "_" + result[field_chain_id]
+            template_id = self.__get_template_id(result[field_structure_id], result[field_chain_id])
             sequence = str(result[field_sequence])
             resolution = 0
-            yield id, sequence, resolution
+            yield template_id, sequence, resolution
+
+    def get_chains_lengths(self):
+        collection = self.__get_templates_collection()
+        projection = [field_structure_id, field_chain_id, field_sequence]
+        results = collection.find(projection=projection)
+        out = dict()
+        for result in results:
+            id = self.__get_template_id(result[field_structure_id], result[field_chain_id])
+            length = len(result[field_sequence])
+            out[id] = length
+        return out
 
     def delete_template(self, structure_id, chain_id):
         collection = self.__get_templates_collection()
@@ -43,3 +54,6 @@ class MongoTrainingTemplateRepository():
 
     def __get_templates_collection(self):
         return self.db.training_templates
+
+    def __get_template_id(self, structure_id, chain_id):
+        return str(structure_id) + '_' + str(chain_id)
