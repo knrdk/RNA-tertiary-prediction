@@ -6,7 +6,7 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Config import Config
 
 
-def delete_template(repository, template_id, template_directory):
+def __delete_template(repository, template_id, template_directory):
     structure_id, chain_id = template_id.split('_')
     repository.delete_template(structure_id, chain_id)
     template_file_path = path.join(template_directory, template_id+'.pdb')
@@ -29,7 +29,7 @@ def main_delete_redundant(template_directory):
 
     for template_id in templates_to_delete:
         print "usuwanie szablonu: " + template_id
-        delete_template(repo, template_id, template_directory)
+        __delete_template(repo, template_id, template_directory)
 
 if __name__ == "__main__":
     config = Config('./../config.ini')
