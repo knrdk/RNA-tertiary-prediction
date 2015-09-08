@@ -34,9 +34,9 @@ class Config:
         option = 'training_results_file_path'
         return self.config.get(section, option)
 
-    def get_training_templates_directory(self):
+    def get_training_set_directory(self):
         section = 'Training'
-        option = 'training_templates_directory'
+        option = 'training_set_directory'
         return self.config.get(section, option)
 
     def get_training_structures_directory(self):
