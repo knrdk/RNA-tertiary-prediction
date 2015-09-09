@@ -5,7 +5,28 @@ from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Repository.MongoSCFGRepository import MongoSCFGRepository
 
-def main_calculate_self_scfg_score(config_file, print_info=False):
+from functools import partial
+from multiprocessing import Pool, cpu_count
+
+def __get_thread_pool():
+    try:
+        cpus = cpu_count()
+    except NotImplementedError:
+        cpus = 1   # arbitrary default
+
+    return Pool(processes=cpus)
+
+
+def process_template(parser, scfg_repository, template_info):
+    (template_id, template_sequence, template_secondary_structure) = template_info
+    scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
+    scfg.align(template_sequence)
+    self_score = scfg.get_score()
+
+    scfg_repository.add_scfg_self_score(template_id, self_score)
+    print template_id, self_score
+
+def main_calculate_self_scfg_score(config_file):
     '''
     Funkcja dla szablonow zapisanych w bazie danych tworzy SCFG, nastepnie wylicza dopasowanie sekwencji szablonu
     do wlasnej SCFG i zapisuje ta wartosc w bazie danych. Dzieki temu przy obliczani wzglednego wyniku dopasowania do
@@ -18,15 +39,11 @@ def main_calculate_self_scfg_score(config_file, print_info=False):
     template_repository = MongoTemplateRepository()
     scfg_repository = MongoSCFGRepository()
 
-    for (template_id, template_sequence, template_secondary_structure) in template_repository.get_templates_info():
-        scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
-        scfg.align(template_sequence)
-        self_score = scfg.get_score()
+    func = partial(process_template, parser, scfg_repository)
+    tinfos = list(template_repository.get_templates_info())
 
-        scfg_repository.add_scfg_self_score(template_id, self_score)
-        if print_info:
-            print template_id, self_score
-
+    pool = __get_thread_pool()
+    pool.map(func, tinfos)
 
 if __name__ == '__main__':
-    main_calculate_self_scfg_score('./../config.ini', True)
+    main_calculate_self_scfg_score('./../config.ini')

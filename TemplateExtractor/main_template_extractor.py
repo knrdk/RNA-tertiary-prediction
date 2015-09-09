@@ -11,6 +11,14 @@ from Config import Config
 from multiprocessing import Pool, cpu_count
 from functools import partial
 
+def __get_thread_pool():
+    try:
+        cpus = cpu_count()
+    except NotImplementedError:
+        cpus = 1   # arbitrary default
+
+    return Pool(processes=cpus)
+
 def process_structure_file(structures_directory, templates_directory, file_path):
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
@@ -30,18 +38,13 @@ def process_structure_file(structures_directory, templates_directory, file_path)
                 print tinfo.id, tinfo.chain_id
 
 def main_template_extractor(structures_directory, templates_directory):
-    logger = TemplateExtractorLogger()
-    logger.log_start(structures_directory, templates_directory)
-    structures_path = list(os.listdir(structures_directory))
-
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 2   # arbitrary default
+    #logger = TemplateExtractorLogger()
+    #logger.log_start(structures_directory, templates_directory)
 
     func = partial(process_structure_file, structures_directory, templates_directory)
 
-    pool = Pool(processes=cpus)
+    structures_path = list(os.listdir(structures_directory))
+    pool = __get_thread_pool()
     pool.map(func, structures_path)
 
 
