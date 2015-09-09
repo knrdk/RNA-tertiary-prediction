@@ -26,7 +26,7 @@ def main_delete_redundant(template_directory):
             template_id = x[0] #id w formacie: STRUCTURE_CHAIN
             templates_to_delete.add(template_id)
 
-    print 'Szablony do usuniecia: ', len(set)
+    print 'Szablony do usuniecia: ', len(templates_to_delete)
 
     for template_id in templates_to_delete:
         #print "usuwanie szablonu: " + template_id

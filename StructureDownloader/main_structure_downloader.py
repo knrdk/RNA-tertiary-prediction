@@ -34,7 +34,7 @@ def download_pdb_file(result_directory, pdb_id):
 
 def main_structure_downloader(result_directory, input_file_path):
     loggger = __get_logger()
-    loggger.info("Downloading started: %s", datetime.now())
+    loggger.info("Sciaganie rozpoczete: %s", datetime.now())
 
     func = partial(download_pdb_file, result_directory)
     ids = list(NDBResultParser.get_pdb_ids(input_file_path))
