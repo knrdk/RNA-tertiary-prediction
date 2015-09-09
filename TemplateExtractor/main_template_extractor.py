@@ -10,12 +10,14 @@ from Repository import MongoTemplateRepository
 from Config import Config
 import multiprocessing
 
-def process_structure_file(file_path, repo, writer, logger):
+def process_structure_file(file_path, templates_directory):
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
+            repo = MongoTemplateRepository()
+            writer = TemplateWriter(templates_directory)
             print 'Wyodrebnianie szablonow z pliku: ', file_path
-            logger.log_filename(file_path)
+            #logger.log_filename(file_path)
             structure_path = structures_directory + file_path
-            logger.log_structure_path(structure_path)
+            #logger.log_structure_path(structure_path)
             te = TemplateExtractor(structure_path, logger)
             templates = te.get_templates()
             for template in templates:
@@ -23,17 +25,15 @@ def process_structure_file(file_path, repo, writer, logger):
                 id = repo.add_template(template)
                 tinfo = template.template_info
                 writer.write(template)
-                logger.log_template_extracted(id, tinfo)
+                #logger.log_template_extracted(id, tinfo)
                 print tinfo.id, tinfo.chain_id
 
 def main_template_extractor(structures_directory, templates_directory):
     logger = TemplateExtractorLogger()
     logger.log_start(structures_directory, templates_directory)
-    writer = TemplateWriter(templates_directory)
-    repo = MongoTemplateRepository.MongoTemplateRepository()
     structures_path = list()
     for file_path in os.listdir(structures_directory):
-        structures_path.append((file_path, repo, writer, logger))
+        structures_path.append((file_path, templates_directory))
 
     try:
         cpus = multiprocessing.cpu_count()
