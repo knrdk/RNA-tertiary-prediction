@@ -8,9 +8,10 @@ from Utils import Template
 from TemplateExtractorLogger import TemplateExtractorLogger
 from Repository import MongoTemplateRepository
 from Config import Config
-import multiprocessing
+from multiprocessing import Pool, cpu_count
+from functools import partial
 
-def process_structure_file((file_path, templates_directory)):
+def process_structure_file(templates_directory, file_path):
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
             writer = TemplateWriter(templates_directory)
@@ -31,17 +32,17 @@ def process_structure_file((file_path, templates_directory)):
 def main_template_extractor(structures_directory, templates_directory):
     logger = TemplateExtractorLogger()
     logger.log_start(structures_directory, templates_directory)
-    structures_path = list()
-    for file_path in os.listdir(structures_directory):
-        structures_path.append((file_path, templates_directory))
+    structures_path = list(os.listdir(structures_directory))
 
     try:
-        cpus = multiprocessing.cpu_count()
+        cpus = cpu_count()
     except NotImplementedError:
         cpus = 2   # arbitrary default
 
-    pool = multiprocessing.Pool(processes=cpus)
-    pool.map(process_structure_file, structures_path)
+    func = partial(process_structure_file, templates_directory)
+
+    pool = Pool(processes=cpus)
+    pool.map(func, structures_path)
 
 
 

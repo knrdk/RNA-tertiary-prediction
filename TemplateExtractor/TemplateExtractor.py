@@ -14,7 +14,7 @@ from Utils import Template
 class TemplateExtractor:
     structure = None
 
-    def __init__(self, file_path, logger):
+    def __init__(self, file_path, logger=None):
         self.file_path = file_path
         self.structure_id = self.__get_structure_id().upper()
         self.logger = logger
@@ -36,7 +36,7 @@ class TemplateExtractor:
         for chain in self.structure.get_chains():
             assert isinstance(chain, Chain)
             chain_id = chain.get_id()
-            self.logger.log_chain_id(chain_id)
+            #self.logger.log_chain_id(chain_id)
             chain = load_model(data_type='chain', data=chain)
             clean_structure(chain)
             if self.__is_structure_valid(chain, chain_id):
@@ -44,9 +44,11 @@ class TemplateExtractor:
                     template_info = self.__get_template_info(chain_id, templates_info)
                     yield Template.Template(template_info, chain)
                 else:
-                    self.logger.log_not_rna_chain(chain_id)
+                    pass
+                    #self.logger.log_not_rna_chain(chain_id)
             else:
-                self.logger.log_chain_not_valid(chain_id)
+                pass
+                #self.logger.log_chain_not_valid(chain_id)
 
     def __is_rna_structure(self, structure): #structure must be cleaned before invoking this function
         assert isinstance(structure, moderna.RnaModel)
@@ -57,12 +59,14 @@ class TemplateExtractor:
         assert isinstance(pdb_controller, moderna.PdbController)
 
         if pdb_controller.has_problems():
-            self.logger.log_moderna_pdb_controller(pdb_controller)
+            #self.logger.log_moderna_pdb_controller(pdb_controller)
             full_id = self.__get_full_id(chain_id)
             if not pdb_controller.continuous:
-                self.logger.log_chain_discontinuous(full_id)
+                pass
+                #self.logger.log_chain_discontinuous(full_id)
             if pdb_controller.disconnected_residues:
-                self.logger.log_disconected_residues(full_id)
+                pass
+                #self.logger.log_disconected_residues(full_id)
             #TODO: inne bledy: moderna/CheckPdb.py
             return False
         return True
