@@ -8,6 +8,7 @@ from Repository.MongoSCFGRepository import MongoSCFGRepository
 from functools import partial
 from multiprocessing import Pool, cpu_count
 
+
 def __get_thread_pool():
     try:
         cpus = cpu_count()
@@ -16,9 +17,12 @@ def __get_thread_pool():
 
     return Pool(processes=cpus)
 
+def process_template(config_file, tinfo):
+    single_matrix, double_matrix = get_scoring_matrices(config_file)
+    parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
+    scfg_repository = MongoSCFGRepository()
 
-def process_template(parser, scfg_repository, template_info):
-    (template_id, template_sequence, template_secondary_structure) = template_info
+    (template_id, template_sequence, template_secondary_structure) = tinfo
     scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
     scfg.align(template_sequence)
     self_score = scfg.get_score()
@@ -33,15 +37,10 @@ def main_calculate_self_scfg_score(config_file):
     SCFG danego szablonu nie trzeba tej wartosci obliczac ponownie.
     :return: Funkcja nic nie zwraca
     '''
-    single_matrix, double_matrix = get_scoring_matrices(config_file)
-    parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
-
     template_repository = MongoTemplateRepository()
-    scfg_repository = MongoSCFGRepository()
 
-    func = partial(process_template, parser, scfg_repository)
+    func = partial(process_template, config_file)
     tinfos = list(template_repository.get_templates_info())
-
     pool = __get_thread_pool()
     pool.map(func, tinfos)
 

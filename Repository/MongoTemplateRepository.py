@@ -47,10 +47,10 @@ class MongoTemplateRepository():
         projection = [field_structure_id, field_chain_id, field_sequence_without_modifications, field_secondary_structure]
         results = collection.find(projection=projection)
         for result in results:
-            id = result[field_structure_id] + "_" + result[field_chain_id]
+            id = str(result[field_structure_id] + "_" + result[field_chain_id])
             sequence = str(result[field_sequence_without_modifications])
             secondary_structure = str(result[field_secondary_structure])
-            yield id, sequence, secondary_structure
+            yield (id, sequence, secondary_structure)
 
     def delete_template(self, structure_id, chain_id):
         collection = self.__get_templates_collection()
