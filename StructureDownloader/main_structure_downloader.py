@@ -15,8 +15,8 @@ def __get_logger():
     return logger
 
 def main_structure_downloader(result_directory, input_file_path):
-    loggger = __get_logger()
-    loggger.info("Downloading started: %s", datetime.now())
+    logger = __get_logger()
+    logger.info("Downloading started: %s", datetime.now())
 
     all_structures, failed_structures = 0, 0
     for id in NDBResultParser.get_pdb_ids(input_file_path):
@@ -25,7 +25,7 @@ def main_structure_downloader(result_directory, input_file_path):
             PDBStructureDownloader.download_and_write(id, result_directory)
         except:
             failed_structures+=1
-            loggger.error("ERROR %s", str(id))
+            logger.error("ERROR %s", str(id))
     downloaded_structure = all_structures - failed_structures
     print 'liczba sciagnietych plikow pdb: ', downloaded_structure
     print 'liczba plikow przy pobieraniu ktorych wystapily bledy: ', failed_structures
