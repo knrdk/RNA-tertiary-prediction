@@ -130,7 +130,7 @@ def main():
                 (q_seq, q_unm, q_ss) = training_sequences[query_path]
                 (t_seq, t_unm, t_ss) = templates_sequences[template_path]
                 record = (template_path, query_path, q_seq, q_unm, t_seq, t_unm, t_ss)
-            data.append(record)
+                data.append(record)
 
     func = partial(process_pair, templates_directory, training_templates_directory)
     pool = __get_thread_pool()
