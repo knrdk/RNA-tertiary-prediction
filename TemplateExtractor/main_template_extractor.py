@@ -11,7 +11,7 @@ from Config import Config
 from multiprocessing import Pool, cpu_count
 from functools import partial
 
-def process_structure_file(templates_directory, file_path):
+def process_structure_file(structures_directory, templates_directory, file_path):
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
             writer = TemplateWriter(templates_directory)
@@ -39,7 +39,7 @@ def main_template_extractor(structures_directory, templates_directory):
     except NotImplementedError:
         cpus = 2   # arbitrary default
 
-    func = partial(process_structure_file, templates_directory)
+    func = partial(process_structure_file, structures_directory, templates_directory)
 
     pool = Pool(processes=cpus)
     pool.map(func, structures_path)
