@@ -28,7 +28,7 @@ def main_create_template_database():
     print 'Zakonczono usuwanie powtarzajacych sie szablonow'
 
     print 'Zapisywanie informacji o wlasnych wynikach SCFG'
-    main_calculate_self_scfg_score()
+    main_calculate_self_scfg_score('config.ini')
     print 'Zakonczono zapisywanie informacji o wynikach SCFG'
 
 

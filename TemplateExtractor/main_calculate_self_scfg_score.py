@@ -5,14 +5,14 @@ from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Repository.MongoSCFGRepository import MongoSCFGRepository
 
-def main_calculate_self_scfg_score(print_info=False):
+def main_calculate_self_scfg_score(config_file, print_info=False):
     '''
     Funkcja dla szablonow zapisanych w bazie danych tworzy SCFG, nastepnie wylicza dopasowanie sekwencji szablonu
     do wlasnej SCFG i zapisuje ta wartosc w bazie danych. Dzieki temu przy obliczani wzglednego wyniku dopasowania do
     SCFG danego szablonu nie trzeba tej wartosci obliczac ponownie.
     :return: Funkcja nic nie zwraca
     '''
-    single_matrix, double_matrix = get_scoring_matrices('./../config.ini')
+    single_matrix, double_matrix = get_scoring_matrices(config_file)
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
 
     template_repository = MongoTemplateRepository()
@@ -29,4 +29,4 @@ def main_calculate_self_scfg_score(print_info=False):
 
 
 if __name__ == '__main__':
-    main_calculate_self_scfg_score(True)
+    main_calculate_self_scfg_score('./../config.ini', True)
