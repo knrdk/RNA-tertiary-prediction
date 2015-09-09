@@ -3,7 +3,7 @@ __author__ = 'Konrad Kopciuch'
 import logging
 from datetime import datetime
 
-from TemplateInfo import TemplateInfo
+from Utils.TemplateInfo import TemplateInfo
 
 log_file = "template_extractor_log.txt"
 

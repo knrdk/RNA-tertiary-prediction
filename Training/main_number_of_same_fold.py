@@ -7,7 +7,7 @@ repo = MongoTrainingTemplateRepository()
 chains_lengths = repo.get_chains_lengths()
 
 all, same_fold = 0, 0
-with open('/home/rna/RNA/PLIKI DO PRACY/TrainingResults-1-NW.txt','r') as f:
+with open('/home/rna/RNA/TrainingResults.txt','r') as f:
     for line in f:
         all +=1
         (query, template, rmsd) = line.split('\t')

@@ -2,9 +2,9 @@ __author__ = 'Konrad Kopciuch'
 
 import os
 
-from Template import *
+from Utils.Template import *
 from TemplateExtractor import TemplateExtractor
-import Template
+from Utils import Template
 from TemplateExtractorLogger import TemplateExtractorLogger
 from Repository import MongoTemplateRepository
 from Config import Config

@@ -34,6 +34,11 @@ class Config:
         option = 'training_results_file_path'
         return self.config.get(section, option)
 
+    def get_feature_vectors_path(self):
+        section = 'Training'
+        option = 'feature_vectors_file_path'
+        return self.config.get(section, option)
+
     def get_training_set_directory(self):
         section = 'Training'
         option = 'training_set_directory'

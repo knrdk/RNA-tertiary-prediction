@@ -7,8 +7,8 @@ import os
 from moderna import load_model, clean_structure, examine_structure
 import moderna.Template
 
-from TemplateInfo import *
-import Template
+from Utils.TemplateInfo import *
+from Utils import Template
 
 
 class TemplateExtractor:

@@ -2,8 +2,6 @@ __author__ = 'Konrad Kopciuch'
 
 from pymongo import MongoClient
 
-import Template
-
 field_template_id = "template_id"
 field_self_score = "score"
 

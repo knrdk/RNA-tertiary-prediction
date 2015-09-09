@@ -2,7 +2,7 @@ __author__ = 'Konrad Kopciuch'
 
 from pymongo import MongoClient
 
-import Template
+from Utils import Template
 
 field_structure_id = "structure_id"
 field_chain_id = "chain_id"
