@@ -28,7 +28,7 @@ def process_template(config_file, tinfo):
     self_score = scfg.get_score()
 
     scfg_repository.add_scfg_self_score(template_id, self_score)
-    print template_id, self_score
+    #print template_id, self_score
 
 def main_calculate_self_scfg_score(config_file):
     '''
