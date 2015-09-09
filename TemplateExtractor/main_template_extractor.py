@@ -6,14 +6,12 @@ from Utils.Template import *
 from TemplateExtractor import TemplateExtractor
 from Utils import Template
 from TemplateExtractorLogger import TemplateExtractorLogger
-from Repository import MongoTemplateRepository
+from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Config import Config
 from multiprocessing import Pool, cpu_count
 from functools import partial
 
 def process_structure_file(templates_directory, file_path):
-    print templates_directory
-    return
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
             writer = TemplateWriter(templates_directory)
