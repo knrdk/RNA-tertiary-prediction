@@ -32,6 +32,6 @@ def main_delete_redundant(template_directory):
         delete_template(repo, template_id, template_directory)
 
 if __name__ == "__main__":
-    config = Config('./../config.ini')
+    config = Config('config.ini')
     template_directory = config.get_training_set_directory()
     main_delete_redundant(template_directory)
