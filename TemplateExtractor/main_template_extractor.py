@@ -12,6 +12,8 @@ from multiprocessing import Pool, cpu_count
 from functools import partial
 
 def process_structure_file(templates_directory, file_path):
+    print file_path
+    return
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
             writer = TemplateWriter(templates_directory)
