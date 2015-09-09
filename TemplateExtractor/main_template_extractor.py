@@ -19,7 +19,7 @@ def process_structure_file(templates_directory, file_path):
             #logger.log_filename(file_path)
             structure_path = structures_directory + file_path
             #logger.log_structure_path(structure_path)
-            te = TemplateExtractor(structure_path, logger)
+            te = TemplateExtractor(structure_path)
             templates = te.get_templates()
             for template in templates:
                 assert isinstance(template, Template.Template)
