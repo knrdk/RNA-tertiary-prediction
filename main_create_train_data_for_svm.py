@@ -39,7 +39,7 @@ def get_folds_dict(file_with_rmsd):
 
 
 def main():
-    cfg = Config('./../config.ini')
+    cfg = Config('config.ini')
     models_rmsd_file = cfg.get_training_results_path()
     feature_vectors_file = cfg.get_feature_vectors_path()
 

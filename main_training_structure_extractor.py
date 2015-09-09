@@ -29,7 +29,7 @@ def main_template_extractor(structures_directory, templates_directory):
 
 
 if __name__ == '__main__':
-    config = Config('./../config.ini')
+    config = Config('config.ini')
     structures_directory = config.get_training_structures_directory()
     templates_directory = config.get_training_set_directory()
     main_template_extractor(structures_directory, templates_directory)

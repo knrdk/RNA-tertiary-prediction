@@ -29,7 +29,7 @@ def __nw_align(template_sequence, query_sequence):
     return nw.get_alignment()
 
 def __scfg_align(template_secstruct, template_sequence, query_sequence):
-    single_matrix, double_matrix = get_scoring_matrices('./../config.ini')
+    single_matrix, double_matrix = get_scoring_matrices('config.ini')
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
     scfg = parser.get_SCFG(template_secstruct, template_sequence)
     scfg.align(query_sequence)
@@ -102,7 +102,7 @@ def get_sequences(directory, paths):
     return output
 
 def main():
-    cfg = Config('./../config.ini')
+    cfg = Config('config.ini')
     templates_directory = cfg.get_template_directory()
     training_templates_directory = cfg.get_training_set_directory()
     training_results_file = cfg.get_training_results_path()

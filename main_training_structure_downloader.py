@@ -18,7 +18,7 @@ def main_structure_downloader(result_directory, input_file_path):
 
 
 if __name__ == '__main__':
-    config = Config('./../config.ini')
+    config = Config('./config.ini')
     structures_directory = config.get_training_structures_directory()
     input_file_path = config.get_training_ndb_result_file()
     main_structure_downloader(structures_directory, input_file_path)
