@@ -10,7 +10,7 @@ from Repository import MongoTemplateRepository
 from Config import Config
 import multiprocessing
 
-def process_structure_file(file_path, templates_directory):
+def process_structure_file((file_path, templates_directory)):
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
             writer = TemplateWriter(templates_directory)
