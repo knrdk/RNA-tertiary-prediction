@@ -10,7 +10,6 @@ def __delete_template(repository, template_id, template_directory):
     structure_id, chain_id = template_id.split('_')
     repository.delete_template(structure_id, chain_id)
     template_file_path = path.join(template_directory, template_id+'.pdb')
-    print template_file_path
     remove(template_file_path)
 
 
@@ -27,8 +26,10 @@ def main_delete_redundant(template_directory):
             template_id = x[0] #id w formacie: STRUCTURE_CHAIN
             templates_to_delete.add(template_id)
 
+    print 'Szablony do usuniecia: ', len(templates_to_delete)
+
     for template_id in templates_to_delete:
-        print "usuwanie szablonu: " + template_id
+        #print "usuwanie szablonu: " + template_id
         __delete_template(repo, template_id, template_directory)
 
 if __name__ == "__main__":
