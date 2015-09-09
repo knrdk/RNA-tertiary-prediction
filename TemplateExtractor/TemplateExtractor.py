@@ -18,7 +18,7 @@ class TemplateExtractor:
         self.file_path = file_path
         self.structure_id = self.__get_structure_id().upper()
         self.logger = logger
-        self.logger.log_structure_id(self.structure_id)
+        #self.logger.log_structure_id(self.structure_id)
 
     def __load_structure(self):
         if None == self.structure:
