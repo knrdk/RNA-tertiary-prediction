@@ -77,9 +77,13 @@ def process_pair(templates_directory,
         rmsd = get_rmsd(query_full_path, tmp_filename + '.pdb')
     except:
         rmsd = float("inf")
-    finally:
+
+    try:
         remove(tmp_filename + '.fasta')
         remove(tmp_filename + '.pdb')
+    except:
+        pass
+
     print query_path, template_path, rmsd
     return (query_path, template_path, rmsd)
 
