@@ -32,7 +32,7 @@ def __get_family_name_rfam_id_mapping():
     mapping = parser.get_family_name_rfam_id_mapping()
     return mapping
 
-def main():
+def main_make_template_rfam_mapping():
     family_name_rfam_id_mapping = __get_family_name_rfam_id_mapping()
     infernal = __get_infernal()
     template_repository = MongoTemplateRepository()

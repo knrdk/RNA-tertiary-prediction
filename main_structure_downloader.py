@@ -4,29 +4,37 @@ import logging
 from datetime import datetime
 
 from Config import Config
-from NDBResultParser import NDBResultParser
-from PDBStructureDownloader import PDBStructureDownloader
+from StructureDownloader.NDBResultParser import NDBResultParser
+from StructureDownloader.PDBStructureDownloader import PDBStructureDownloader
 
 
 def __get_logger():
     logger = logging.getLogger()
-    fh = logging.FileHandler('log.txt')
+    fh = logging.FileHandler('structure_downloader_log.txt')
     logger.addHandler(fh)
     logger.setLevel(logging.INFO)
     return logger
 
+
+def __download_structure(result_directory, pdb_id):
+    try:
+        PDBStructureDownloader.download_and_write(pdb_id, result_directory)
+        return True
+    except: return False
+
+
 def main_structure_downloader(result_directory, input_file_path):
-    loggger = __get_logger()
-    loggger.info("Downloading started: %s", datetime.now())
+    logger = __get_logger()
+    logger.info("Downloading started: %s", datetime.now())
 
     all_structures, failed_structures = 0, 0
-    for id in NDBResultParser.get_pdb_ids(input_file_path):
-        all_structures+=1
-        try:
-            PDBStructureDownloader.download_and_write(id, result_directory)
-        except:
-            failed_structures+=1
-            loggger.error("ERROR %s", str(id))
+    for pdb_id in NDBResultParser.get_pdb_ids(input_file_path):
+        all_structures += 1
+        result = __download_structure(result_directory, pdb_id)
+        if not result:
+            failed_structures += 1
+            logger.error("ERROR while downloading structure from PDB, id: %s", pdb_id)
+
     downloaded_structure = all_structures - failed_structures
     print 'liczba sciagnietych plikow pdb: ', downloaded_structure
     print 'liczba plikow przy pobieraniu ktorych wystapily bledy: ', failed_structures

@@ -3,7 +3,7 @@ __author__ = 'Konrad Kopciuch'
 from time import time
 
 from Config import Config
-from StructureDownloader.main_structure_downloader import main_structure_downloader
+from main_structure_downloader import main_structure_downloader
 from TemplateExtractor.main_template_extractor import main_template_extractor
 from TemplateExtractor.main_delete_redundant import main_delete_redundant
 from TemplateExtractor.main_calculate_self_scfg_score import main_calculate_self_scfg_score
