@@ -61,6 +61,16 @@ class MongoTemplateRepository():
             secondary_structure = str(result[field_secondary_structure])
             yield (id, sequence, secondary_structure)
 
+    def get_structures_id(self):
+        collection = self.__get_templates_collection()
+        projection = [field_structure_id]
+        results = collection.find(projection=projection)
+        output = set()
+        for result in results:
+            structure_id = str(result[field_structure_id])
+            output.add(structure_id)
+        return output
+
     def delete_template(self, db_id):
         '''
         Funckcja usuwa informacje o szablonie z bazy danych

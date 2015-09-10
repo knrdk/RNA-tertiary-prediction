@@ -20,7 +20,6 @@ def main_template_delete_redundant(template_directory):
     grouped = [[(y[0], y[2]) for y in all_sequences if y[1] == x] for x in distinct_sequences]
 
     templates_to_delete = []
-    #w bazie moze byc wiele dokumentow z takim samym template_id
     for group in grouped:
         s = sorted(group, key=lambda x: x[1]) #sortowanie po rozdzielczosci, najelpsze zostaje w bazie
         for x in s[1:]:

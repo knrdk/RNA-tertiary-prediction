@@ -27,15 +27,24 @@ class MongoTrainingTemplateRepository():
         id = collection.insert_one(data).inserted_id
         return id
 
-    def get_all_unmodified_sequences(self):
+    def get_all_sequences(self):
         collection = self.__get_templates_collection()
-        projection = [field_structure_id, field_chain_id, field_sequence]
+        projection = ['_id', field_sequence]
         results = collection.find(projection=projection)
         for result in results:
-            template_id = self.__get_template_id(result[field_structure_id], result[field_chain_id])
+            db_id = result['_id']
             sequence = str(result[field_sequence])
-            resolution = 0
-            yield template_id, sequence, resolution
+            yield db_id, sequence
+
+    def get_all_templates_id(self):
+        collection = self.__get_templates_collection()
+        projection = [field_structure_id, field_chain_id]
+        results = collection.find(projection=projection)
+        for result in results:
+            structure_id = str(result[field_structure_id])
+            chain_id = str(result[field_chain_id])
+            template_id = structure_id + '_' + chain_id
+            yield template_id
 
     def get_chains_lengths(self):
         collection = self.__get_templates_collection()
@@ -48,9 +57,9 @@ class MongoTrainingTemplateRepository():
             out[id] = length
         return out
 
-    def delete_template(self, structure_id, chain_id):
+    def delete_template(self, db_id):
         collection = self.__get_templates_collection()
-        collection.remove({field_structure_id: structure_id, field_chain_id: chain_id})
+        collection.remove({'_id': db_id})
 
     def __get_templates_collection(self):
         return self.db.training_templates

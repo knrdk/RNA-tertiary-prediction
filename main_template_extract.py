@@ -20,6 +20,7 @@ def __get_thread_pool():
     return Pool(processes=cpus)
 
 def process_structure_file(structures_directory, templates_directory, file_path):
+    i = 0
     if file_path.endswith(".ent") or file_path.endswith(".pdb"):
             repo = MongoTemplateRepository()
             writer = TemplateWriter(templates_directory)
@@ -29,7 +30,6 @@ def process_structure_file(structures_directory, templates_directory, file_path)
             #logger.log_structure_path(structure_path)
             te = TemplateExtractor(structure_path)
             templates = te.get_templates()
-            i = 0
             for template in templates:
                 i+=1
                 assert isinstance(template, Template.Template)
