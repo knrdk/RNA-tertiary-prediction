@@ -45,4 +45,4 @@ def main_calculate_self_scfg_score(config_file):
     pool.map(func, tinfos)
 
 if __name__ == '__main__':
-    main_calculate_self_scfg_score('./../config.ini')
+    main_calculate_self_scfg_score('config.ini')
