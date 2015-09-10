@@ -36,9 +36,7 @@ def main_template_download_structure(result_directory, input_file_path):
     logger = __get_logger()
     logger.info("Downloading started: %s", datetime.datetime.now())
 
-    all_structures, failed_structures = 0, 0
     pdb_ids = list(NDBResultParser.get_pdb_ids(input_file_path))
-
     func = partial(__download_structure, result_directory)
     pool = __get_thread_pool()
     results = pool.map(func, pdb_ids)
