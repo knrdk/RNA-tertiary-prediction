@@ -22,7 +22,7 @@ def main_template_delete_redundant(template_directory):
     templates_to_delete = []
     #w bazie moze byc wiele dokumentow z takim samym template_id
     for group in grouped:
-        s = sorted(group, key=lambda x: x[1]) #sortowanie po rozdzielczosci
+        s = sorted(group, key=lambda x: x[1]) #sortowanie po rozdzielczosci, najelpsze zostaje w bazie
         for x in s[1:]:
             db_id = x[0]
             templates_to_delete.append(db_id)
@@ -30,7 +30,7 @@ def main_template_delete_redundant(template_directory):
     print 'Liczba szablonow do usuniecia: ', len(templates_to_delete)
 
     for db_id in templates_to_delete:
-        print "usuwanie szablonu: " + str(db_id)
+        print "usuwanie szablonu: " + str(db_id
         __delete_template(repo, db_id)
 
 if __name__ == "__main__":
