@@ -60,7 +60,7 @@ def main():
             target.append(same_fold)
 
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(
-        data, target, test_size=0.5, random_state=0)
+        data, target, test_size=0.2, random_state=0)
 
     clf = svm.SVC(gamma=0.015, C=100, kernel='rbf', probability=True).fit(data_train, target_train)
 
