@@ -64,7 +64,7 @@ def main():
 
     clf = svm.SVC(gamma=0.015, C=100, kernel='rbf', probability=True).fit(data_train, target_train)
 
-    tp, tn, fp, fn = 0, 0
+    tp, tn, fp, fn = 0, 0, 0, 0
     for (index, data_item) in enumerate(data_test):
         predicted = clf.predict(data_item)[0]
         if predicted != target_test[index]:
