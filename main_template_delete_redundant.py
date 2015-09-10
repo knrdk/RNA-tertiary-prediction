@@ -30,7 +30,7 @@ def main_template_delete_redundant(template_directory):
     print 'Liczba szablonow do usuniecia: ', len(templates_to_delete)
 
     for db_id in templates_to_delete:
-        print "usuwanie szablonu: " + str(db_id
+        print "usuwanie szablonu: " + str(db_id)
         __delete_template(repo, db_id)
 
 if __name__ == "__main__":
