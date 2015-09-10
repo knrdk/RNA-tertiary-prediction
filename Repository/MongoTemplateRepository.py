@@ -40,16 +40,16 @@ class MongoTemplateRepository():
     def get_all_unmodified_sequences(self):
         '''
         Funkcja zwraca wszystkie niemodyfikownae sekwencje znajdujace sie w bazie szablonow
-        :return: Funkcja zwraca krotke o dlugosci 3, jej kolejnymi elementami sa: template_id, sekwencja bez modyfikacji, rozdzielczosc
+        :return: Funkcja zwraca krotke o dlugosci 3, jej kolejnymi elementami sa: db_id, sekwencja bez modyfikacji, rozdzielczosc
         '''
         collection = self.__get_templates_collection()
-        projection = [field_structure_id, field_chain_id, field_sequence_without_modifications, field_resolution]
+        projection = ['_id', field_sequence_without_modifications, field_resolution]
         results = collection.find(projection=projection)
         for result in results:
-            template_id = result[field_structure_id] + "_" + result[field_chain_id]
+            db_id = result['_id']
             sequence = str(result[field_sequence_without_modifications])
             resolution = float(result[field_resolution])
-            yield template_id, sequence, resolution
+            yield db_id, sequence, resolution
 
     def get_templates_info(self):
         collection = self.__get_templates_collection()
@@ -61,15 +61,15 @@ class MongoTemplateRepository():
             secondary_structure = str(result[field_secondary_structure])
             yield (id, sequence, secondary_structure)
 
-    def delete_template(self, template_id):
+    def delete_template(self, db_id):
         '''
         Funckcja usuwa informacje o szablonie z bazy danych
-        :param template_id: id szablonu w formacie STRUCTURE_CHAIN
+        :param db_id identyfikator szablonu w bazie danych
         :return: Funkcja nic nie zwraca
         '''
-        structure_id, chain_id = template_id.split('_')
+        #structure_id, chain_id = template_id.split('_')
         collection = self.__get_templates_collection()
-        filter = {field_structure_id: structure_id, field_chain_id: chain_id}
+        filter = {'id': db_id}
         collection.remove(filter)
 
     def __get_templates_collection(self):

@@ -37,6 +37,7 @@ class TemplateExtractor:
             assert isinstance(chain, Chain)
             chain_id = chain.get_id()
             #self.logger.log_chain_id(chain_id)
+            print chain_id
             chain = load_model(data_type='chain', data=chain)
             clean_structure(chain)
             if self.__is_structure_valid(chain, chain_id):
@@ -45,9 +46,11 @@ class TemplateExtractor:
                     yield Template.Template(template_info, chain)
                 else:
                     pass
+                    print "is not rna structure"
                     #self.logger.log_not_rna_chain(chain_id)
             else:
                 pass
+                print "is not valid structure"
                 #self.logger.log_chain_not_valid(chain_id)
 
     def __is_rna_structure(self, structure): #structure must be cleaned before invoking this function
@@ -63,9 +66,11 @@ class TemplateExtractor:
             full_id = self.__get_full_id(chain_id)
             if not pdb_controller.continuous:
                 pass
+                print 'chain is discontinuous'
                 #self.logger.log_chain_discontinuous(full_id)
             if pdb_controller.disconnected_residues:
                 pass
+                print 'disconected residues'
                 #self.logger.log_disconected_residues(full_id)
             #TODO: inne bledy: moderna/CheckPdb.py
             return False
