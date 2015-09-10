@@ -33,6 +33,6 @@ def main_template_delete_redundant(template_directory):
         __delete_template(repo, db_id)
 
 if __name__ == "__main__":
-    config = Config('./../config.ini')
+    config = Config('config.ini')
     template_directory = config.get_template_directory()
     main_template_delete_redundant(template_directory)
