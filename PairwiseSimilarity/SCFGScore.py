@@ -10,7 +10,7 @@ class SCFGScore:
     def get_score(query_sequence, template_id, template_sequence, template_secondary_structure):
         repo = MongoSCFGRepository()
 
-        single_matrix, double_matrix = get_scoring_matrices('./../config.ini')
+        single_matrix, double_matrix = get_scoring_matrices('config.ini')
         parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
         scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
 

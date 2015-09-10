@@ -2,6 +2,7 @@ __author__ = 'Konrad Kopciuch'
 
 import logging
 import datetime
+import sys
 from multiprocessing import Pool, cpu_count
 from functools import partial
 from Config import Config
@@ -19,7 +20,7 @@ def __get_thread_pool():
 
 def __get_logger():
     logger = logging.getLogger()
-    fh = logging.FileHandler('structure_downloader_log.txt')
+    fh = logging.FileHandler('log_template_download_structure.txt')
     logger.addHandler(fh)
     logger.setLevel(logging.INFO)
     return logger
@@ -54,8 +55,16 @@ def main_template_download_structure(result_directory, input_file_path):
     print 'liczba plikow przy pobieraniu ktorych wystapily bledy: ', failed_structures
 
 
-if __name__ == '__main__':
-    config = Config('./../config.ini')
+def __get_data_from_config():
+    config = Config('config.ini')
     structures_directory = config.get_structure_directory()
     input_file_path = config.get_ndb_result_file_path()
+    return structures_directory, input_file_path
+
+
+if __name__ == '__main__':
+    if len(sys.argv) == 3:
+        structures_directory, input_file_path = sys.argv[1], sys.argv[2]
+    else: #wczytaj z pliku konfiguracyjnego
+        structures_directory, input_file_path = __get_data_from_config()
     main_template_download_structure(structures_directory, input_file_path)

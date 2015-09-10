@@ -4,15 +4,16 @@ from os import listdir
 
 from moderna import load_template, load_alignment, create_model
 
+from os import remove
+from multiprocessing import Pool, cpu_count
+from functools import partial
 from Config import Config
 from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from SCFG.ScoringMatrix import get_scoring_matrices
 from Utils.Alignment import *
 from RMSD.RMSD import get_rmsd
-from os import remove
-from multiprocessing import Pool, cpu_count
-from functools import partial
+from Training.SequenceProvider import get_sequences
 
 
 def __get_thread_pool():
@@ -87,29 +88,11 @@ def process_pair(templates_directory,
     print query_path, template_path, rmsd
     return (query_path, template_path, rmsd)
 
-def load_sequences(templates_directory, template_path):
-    full_path = templates_directory + template_path
-    tmpl = load_template(full_path)
-    sequence = tmpl.get_sequence()
-    unmodified_sequence = str(sequence.seq_without_modifications)
-    secondary_structure = str(tmpl.get_secstruc())
-    return str(sequence), unmodified_sequence, secondary_structure
-
-def get_sequences(directory, paths):
-    func = partial(load_sequences, directory)
-    pool = __get_thread_pool()
-    q = pool.map(func, paths)
-
-    output = dict()
-    for (index, path) in enumerate(paths):
-        output[path] = q[index]
-    return output
-
-def main():
-    cfg = Config('config.ini')
+def main_training_cross_rmsd(config_file):
+    cfg = Config(config_file)
     templates_directory = cfg.get_template_directory()
     training_templates_directory = cfg.get_training_set_directory()
-    training_results_file = cfg.get_training_results_path()
+    results_file = cfg.get_training_results_path()
 
     templates_paths = list(listdir(templates_directory))
     training_paths = list(listdir(training_templates_directory))
@@ -117,10 +100,10 @@ def main():
     print "Liczba szablonow: ", len(templates_paths)
     print "Liczba elementow zbioru treningowego: ", len(training_paths)
 
+    print 'ladowanie danych o sekwencjach'
     templates_sequences = get_sequences(templates_directory, templates_paths)
     training_sequences = get_sequences(training_templates_directory, training_paths)
-
-    print "dane o sekwencji zaladowane"
+    print "dane o sekwencjach zaladowane"
 
     data = list()
     for query_path in training_paths:
@@ -136,12 +119,12 @@ def main():
     pool = __get_thread_pool()
     results = pool.map(func, data)
 
-    with open(training_results_file, 'w') as f:
-        for (query_path, template_path, rmsd) in results:
-            f.write(query_path + '\t' + template_path + '\t' + str(rmsd) + '\n')
+    with open(results_file, 'w') as f:
+        for (query_path, template_path, value) in results:
+            f.write(query_path + '\t' + template_path + '\t' + str(value) + '\n')
             f.flush()
 
 
 if __name__ == '__main__':
-    main()
+    main_training_cross_rmsd('config.ini')
 

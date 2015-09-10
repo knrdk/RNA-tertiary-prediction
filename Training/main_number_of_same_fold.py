@@ -16,7 +16,7 @@ with open('/home/rna/RNA/TrainingResults.txt','r') as f:
         is_same_fold = pvalue < 0.01
         if is_same_fold:
             same_fold += 1
-        print query, chains_lengths[query], rmsd, is_same_fold
+        print query, chains_lengths[query], rmsd, is_same_fold, pvalue
 
 print all, same_fold
 
