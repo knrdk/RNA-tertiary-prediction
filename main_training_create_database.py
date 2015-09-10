@@ -15,3 +15,6 @@ def main_training_create_database(config_file):
     main_training_structure_downloader(structures_directory, trainig_input_pdb_file)
     main_template_extractor(structures_directory, training_set_directory)
     main_delete_redundant(training_set_directory)
+
+if __name__ == '__main__':
+    main_training_create_database('config.ini')
