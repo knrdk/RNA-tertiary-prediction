@@ -1,7 +1,6 @@
 __author__ = 'Konrad Kopciuch'
 
 from pymongo import MongoClient
-
 from Utils import Template
 
 field_structure_id = "structure_id"
@@ -11,12 +10,18 @@ field_sequence_without_modifications = "sequence_without_modifications"
 field_secondary_structure = "secondary_structure"
 field_resolution = "resolution"
 
+
 class MongoTemplateRepository():
     def __init__(self):
         client = MongoClient()
         self.db = client.RNA
 
     def add_template(self, template):
+        '''
+        Funckja dodaje informacje o szablonie do bazy danych
+        :param template: obiekt klasy Template.Template
+        :return: id w bazie danych
+        '''
         assert isinstance(template, Template.Template)
         tinfo = template.template_info
         assert isinstance(tinfo, Template.TemplateInfo)
@@ -56,9 +61,19 @@ class MongoTemplateRepository():
             secondary_structure = str(result[field_secondary_structure])
             yield (id, sequence, secondary_structure)
 
-    def delete_template(self, structure_id, chain_id):
+    def delete_template(self, template_id):
+        '''
+        Funckcja usuwa informacje o szablonie z bazy danych
+        :param template_id: id szablonu w formacie STRUCTURE_CHAIN
+        :return: Funkcja nic nie zwraca
+        '''
+        structure_id, chain_id = template_id.split('_')
         collection = self.__get_templates_collection()
-        collection.remove({field_structure_id: structure_id, field_chain_id: chain_id})
+        filter = {field_structure_id: structure_id, field_chain_id: chain_id}
+        collection.remove(filter)
 
     def __get_templates_collection(self):
+        '''
+        :return: Funckcja zwraca kolekcje szablonow w bazie danych
+        '''
         return self.db.templates
