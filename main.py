@@ -29,7 +29,7 @@ def main_build_model(sequence, svm_file, output_path):
 
 
 if __name__ == '__main__':
-    if len(sys.argv < 3):
+    if len(sys.argv) < 3:
         print 'Uzycie: main.py output_file sequence [svm_file]'
     else:
         output_file = sys.argv[1]
