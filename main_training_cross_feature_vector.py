@@ -12,26 +12,10 @@ from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from SCFG.ScoringMatrix import get_scoring_matrices
 from Utils.Alignment import *
 from RMSD.RMSD import get_rmsd
+import Utils.FloatList as fl
+import Utils.ThreadPool as tp
 from Training.SequenceProvider import get_sequences
 from PairwiseSimilarity.FeatureVectorCalculator import FeatureVectorCalculator
-
-def __get_thread_pool():
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 1   # arbitrary default
-
-    return Pool(processes=cpus)
-
-
-def __numbers_list_as_string(list):
-    length = len(list)
-    s = ''
-    for i in range(length):
-        s += str(list[i])
-        if i < length-1:
-            s += ';'
-    return s
 
 
 def process_pair(sinfo):
@@ -49,7 +33,7 @@ def process_pair(sinfo):
     vector = fvc.get_feature_vector(query_sequence_without_modifications,
                                     template_id, template_sequence_without_modifications, template_secondary_structure)
     print vector
-    return (query_path, template_path, __numbers_list_as_string(vector))
+    return (query_path, template_path, fl.convert_to_string(vector))
 
 
 
@@ -82,7 +66,7 @@ def main_training_cross_feature_vector():
                 data.append(record)
 
     #func = partial(process_pair, templates_directory, training_templates_directory)
-    pool = __get_thread_pool()
+    pool = tp.get_thread_pool()
     results = pool.map(process_pair, data)
 
     with open(results_file, 'w') as f:

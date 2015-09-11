@@ -12,17 +12,10 @@ from NeedlemanWunsch.NeedlemanWunsch import NeedlemanWunsch
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from SCFG.ScoringMatrix import get_scoring_matrices
 from Utils.Alignment import *
+import Utils.ThreadPool as tp
 from RMSD.RMSD import get_rmsd
 from Training.SequenceProvider import get_sequences
 
-
-def __get_thread_pool():
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 1   # arbitrary default
-
-    return Pool(processes=cpus)
 
 def __nw_align(template_sequence, query_sequence):
     nw = NeedlemanWunsch(template_sequence, query_sequence)
@@ -116,7 +109,7 @@ def main_training_cross_rmsd(config_file):
                 data.append(record)
 
     func = partial(process_pair, templates_directory, training_templates_directory)
-    pool = __get_thread_pool()
+    pool = tp.get_thread_pool()
     results = pool.map(func, data)
 
     with open(results_file, 'w') as f:

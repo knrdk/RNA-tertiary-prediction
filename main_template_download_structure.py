@@ -6,17 +6,10 @@ import sys
 from multiprocessing import Pool, cpu_count
 from functools import partial
 from Config import Config
+import Utils.ThreadPool as tp
 from StructureDownloader.NDBResultParser import NDBResultParser
 from StructureDownloader.PDBStructureDownloader import PDBStructureDownloader
 
-
-def __get_thread_pool():
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 1   # arbitrary default
-
-    return Pool(processes=cpus)
 
 def __get_logger():
     logger = logging.getLogger()
@@ -39,7 +32,7 @@ def main_template_download_structure(result_directory, input_file_path):
 
     pdb_ids = list(NDBResultParser.get_pdb_ids(input_file_path))
     func = partial(__download_structure, result_directory)
-    pool = __get_thread_pool()
+    pool = tp.get_thread_pool()
     results = pool.map(func, pdb_ids)
 
     downloaded_structure, failed_structures = 0, 0

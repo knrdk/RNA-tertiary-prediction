@@ -2,22 +2,20 @@ __author__ = 'Konrad Kopciuch'
 
 from Repository.MongoTrainingTemplateRepository import MongoTrainingTemplateRepository
 from RMSD.PredictionSignificance import get_pvalue
-from PairwiseSimilarity.FeatureVectorCalculator import FeatureVectorCalculator
 from Config import Config
+import Utils.FloatList as fl
 from sklearn import svm
 from sklearn import cross_validation
-
-def __parse_fv_from_file(fv):
-    x = list(fv.split(';'))
-    return map(lambda x: float(x), x)
 
 
 def get_template_id_from_filename(filename):
     return filename.split('.')[0]
 
+
 def get_trainings_chains_lenght():
     repo = MongoTrainingTemplateRepository()
     return repo.get_chains_lengths()
+
 
 def get_folds_dict(file_with_rmsd):
     chains_lengths = get_trainings_chains_lenght()
@@ -56,7 +54,7 @@ def main():
             template_id = get_template_id_from_filename(template)
 
             same_fold = folds_dict[query_id][template_id]
-            data.append(__parse_fv_from_file(fv))
+            data.append(fl.parse_from_string(fv))
             target.append(same_fold)
 
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(

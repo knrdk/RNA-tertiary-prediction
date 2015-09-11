@@ -4,18 +4,10 @@ from SCFG.ScoringMatrix import get_scoring_matrices
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Repository.MongoSCFGRepository import MongoSCFGRepository
+import Utils.ThreadPool as tp
 
 from functools import partial
-from multiprocessing import Pool, cpu_count
 
-
-def __get_thread_pool():
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 1   # arbitrary default
-
-    return Pool(processes=cpus)
 
 def process_template(config_file, tinfo):
     single_matrix, double_matrix = get_scoring_matrices(config_file)
@@ -41,7 +33,7 @@ def main_calculate_self_scfg_score(config_file):
 
     func = partial(process_template, config_file)
     tinfos = list(template_repository.get_templates_info())
-    pool = __get_thread_pool()
+    pool = tp.get_thread_pool()
     pool.map(func, tinfos)
 
 if __name__ == '__main__':

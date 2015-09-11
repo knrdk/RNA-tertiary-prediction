@@ -8,16 +8,9 @@ from Utils import Template
 from TemplateExtractor.TemplateExtractorLogger import TemplateExtractorLogger
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Config import Config
-from multiprocessing import Pool, cpu_count
+import Utils.ThreadPool as tp
 from functools import partial
 
-def __get_thread_pool():
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 1   # arbitrary default
-
-    return Pool(processes=cpus)
 
 def process_structure_file(structures_directory, templates_directory, file_path):
     i = 0
@@ -48,7 +41,7 @@ def main_template_extract(structures_directory, templates_directory):
 
     structures_path = list(os.listdir(structures_directory))
     print "Znaleziono plikow pdb:" ,len(structures_path)
-    pool = __get_thread_pool()
+    pool = tp.get_thread_pool()
     result = pool.map(func, structures_path)
     print "Wyodrebniono szablonow: ", sum(result)
 
