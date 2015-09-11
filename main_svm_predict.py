@@ -15,7 +15,7 @@ def get_feature_vector(query_sequence, tinfo):
     print template_id
     fvc = FeatureVectorCalculator()
     fv = fvc.get_feature_vector(query_sequence, template_id, template_sequence, template_secondary_structure)
-    return fv
+    return (template_id, fv)
 
 def get_feature_vectors(query_sequence):
     repo = MongoTemplateRepository()
@@ -27,11 +27,15 @@ def get_feature_vectors(query_sequence):
     return vectors
 
 def main_svm_predict(svm_file, query_sequence):
-    feature_vectors = get_feature_vectors(query_sequence)
+    data = get_feature_vectors(query_sequence)
+    feature_vectors = [x[1] for x in data]
 
     svm = __load_svm(svm_file)
-    predicted = svm.predict(feature_vectors)
-    print predicted
+    predicted = svm.predict_prob(feature_vectors)
+
+    ranking = zip(data, predicted)
+
+    print sorted(ranking, key=lambda x: x[1])
 
 
 
