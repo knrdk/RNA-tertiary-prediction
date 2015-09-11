@@ -10,7 +10,8 @@ def main_svm_train(file_with_rmsd, feature_vectors_file, svm_file):
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data, target)
 
     s = pickle.dumps(clf)
-    print s
+    with open(svm_file, 'w') as f:
+        f.write(s)
 
 
 if __name__ == '__main__':
