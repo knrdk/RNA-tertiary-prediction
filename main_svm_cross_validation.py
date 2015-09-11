@@ -1,17 +1,12 @@
 __author__ = 'Konrad Kopciuch'
 
-
 from Config import Config
 from Training.TrainingDataProvider import get_train_data
 from sklearn import svm
 from sklearn import cross_validation
 
 
-def main_cross_validation():
-    cfg = Config('config.ini')
-    file_with_rmsd = cfg.get_training_results_path()
-    feature_vectors_file = cfg.get_feature_vectors_path()
-
+def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(
         data, target, test_size=0.2, random_state=0)
@@ -42,4 +37,8 @@ def main_cross_validation():
 
 
 if __name__ == '__main__':
-    main_cross_validation()
+    cfg = Config('config.ini')
+    file_with_rmsd = cfg.get_training_results_path()
+    feature_vectors_file = cfg.get_feature_vectors_path()
+
+    main_svm_cross_validation(file_with_rmsd, feature_vectors_file)
