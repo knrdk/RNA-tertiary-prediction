@@ -35,9 +35,11 @@ def main_svm_predict(svm_file, query_sequence):
     probability = svm.predict_proba(feature_vectors)
     probability_same_fold = [x[1] for x in probability]
     ranking = zip(template_ids, probability_same_fold)
+    ranking_filtered = filter(lambda x: x[1] > 0.5, ranking)
+    ranking_sorted = sorted(ranking_filtered, key=lambda x: x[1], reverse=True)
 
-    print sorted(ranking, key=lambda x: x[1], reverse=True)
-
+    for (templated_id, prob) in ranking_sorted:
+        print templated_id, prob
 
 
 if __name__ == '__main__':
