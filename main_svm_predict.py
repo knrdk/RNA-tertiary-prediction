@@ -41,5 +41,5 @@ def main_svm_predict(svm_file, query_sequence):
 
 
 if __name__ == '__main__':
-    sequence = 'GGCGAUGAGGCCCGCCCAAACUGCCCUGAAAAGGGCUGAUGGCCUCUACUG'
+    sequence = 'GGGCCCGUAGCUUAGCCAGGUCAGAGCGCCCGGCUCAUAACCGGGCGGUCGAGGGUUCGAAUCCCUCCGGGCCCACCA'
     main_svm_predict('data.svm', sequence)
