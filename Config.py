@@ -53,3 +53,8 @@ class Config:
         section = 'Training'
         option = 'ndb_result_file'
         return self.config.get(section, option)
+
+    def get_svm_file(self):
+        section = 'SVM'
+        option = 'svm_file'
+        return self.config.get(section, option)

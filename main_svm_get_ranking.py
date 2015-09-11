@@ -1,10 +1,14 @@
 __author__ = 'Konrad Kopciuch'
 
+import sys
+from Config import Config
 from SVM.templates_ranking import get_templates_ranking
+
 
 def __print_ranking(ranking):
     for (template_id, prob) in ranking:
         print template_id, prob
+
 
 def __write_ranking(ranking, output_file):
     with open(output_file, 'w') as f:
@@ -23,5 +27,19 @@ def main_svm_predict(svm_file, query_sequence, output_file, print_ranking = True
 
 
 if __name__ == '__main__':
-    sequence = 'GGGCCCGUAGCUUAGCCAGGUCAGAGCGCCCGGCUCAUAACCGGGCGGUCGAGGGUUCGAAUCCCUCCGGGCCCACCA'
-    main_svm_predict('data.svm', sequence, 'ranking.txt')
+    if len(sys.argv) < 3:
+        print 'uzycie: main_svm_get_ranking.py sequence output_file [svm_file]'
+        #TODO: usunac ponizsze linijki
+        sequence = 'GGGCCCGUAGCUUAGCCAGGUCAGAGCGCCCGGCUCAUAACCGGGCGGUCGAGGGUUCGAAUCCCUCCGGGCCCACCA'
+        main_svm_predict('data.svm', sequence, 'ranking.txt')
+    else:
+        config = Config('config.ini')
+
+        sequence = sys.argv[1]
+        output_file = sys.argv[2]
+        if len(sys.argv) == 4:
+            svm_file = sys.argv[3]
+        else:
+            svm_file = config.get_svm_file()
+
+        main_svm_predict(svm_file, sequence, output_file)
