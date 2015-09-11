@@ -16,10 +16,11 @@ def get_alignment(query_sequence, template_unmodified_sequence, template_seconda
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
     scfg = parser.get_SCFG(template_secondary_structure, template_unmodified_sequence)
     scfg.align(query_sequence)
-
+    print template_unmodified_sequence
+    print template_sequence
     algn = scfg.get_alignment()
     assert isinstance(algn, Alignment)
-    algn.change_query_sequence(template_sequence)
+    algn.change_template_sequence(template_sequence)
     return algn
 
 
