@@ -14,9 +14,9 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data_train, target_train)
 
     tp, tn, fp, fn = 0, 0, 0, 0
-    for (index, predicted) in enumerate(clf.predict(data_test)):
-        #predicted = clf.predict(data_item)[0]
-        if predicted != target_test[index]:
+    predicted_test = clf.predict(data_test)
+    for (target_value, predicted) in zip(target_test, predicted_test):
+        if predicted != target_value:
             if predicted: fp += 1
             else: fn += 1
         else:
