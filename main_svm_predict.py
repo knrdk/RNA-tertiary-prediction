@@ -36,7 +36,7 @@ def main_svm_predict(svm_file, query_sequence):
     probability_same_fold = [x[1] for x in probability]
     ranking = zip(template_ids, probability_same_fold)
 
-    print sorted(ranking, lambda x: x[1])
+    print sorted(ranking, key=lambda x: x[1])
 
 
 
