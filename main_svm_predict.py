@@ -12,7 +12,6 @@ def __load_svm(svm_file):
 
 def get_feature_vector(query_sequence, tinfo):
     template_id, template_sequence, template_secondary_structure = tinfo
-    print template_id
     fvc = FeatureVectorCalculator()
     fv = fvc.get_feature_vector(query_sequence, template_id, template_sequence, template_secondary_structure)
     return (template_id, fv)
@@ -26,7 +25,7 @@ def get_feature_vectors(query_sequence):
     vectors = pool.map(func, templates)
     return vectors
 
-def main_svm_predict(svm_file, query_sequence):
+def get_templates_ranking(svm_file, query_sequence):
     data = get_feature_vectors(query_sequence)
     template_ids = [x[0] for x in data]
     feature_vectors = [x[1] for x in data]
@@ -38,9 +37,13 @@ def main_svm_predict(svm_file, query_sequence):
     ranking_filtered = filter(lambda x: x[1] > 0.5, ranking)
     ranking_sorted = sorted(ranking_filtered, key=lambda x: x[1], reverse=True)
 
-    for (templated_id, prob) in ranking_sorted:
-        print templated_id, prob
+    return ranking_sorted
 
+
+def main_svm_predict(svm_file, query_sequence):
+    ranking = get_templates_ranking(svm_file, query_sequence)
+    for (templated_id, prob) in ranking:
+        print templated_id, prob
 
 if __name__ == '__main__':
     sequence = 'GGGCCCGUAGCUUAGCCAGGUCAGAGCGCCCGGCUCAUAACCGGGCGGUCGAGGGUUCGAAUCCCUCCGGGCCCACCA'
