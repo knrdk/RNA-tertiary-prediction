@@ -28,12 +28,13 @@ def get_feature_vectors(query_sequence):
 
 def main_svm_predict(svm_file, query_sequence):
     data = get_feature_vectors(query_sequence)
+    template_ids = [x[0] for x in data]
     feature_vectors = [x[1] for x in data]
 
     svm = __load_svm(svm_file)
     predicted = svm.predict_proba(feature_vectors)
 
-    ranking = zip(data, predicted)
+    ranking = zip(template_ids, predicted)
 
     print ranking
 
