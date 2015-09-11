@@ -52,14 +52,18 @@ class MongoTemplateRepository():
             yield db_id, sequence, resolution
 
     def get_templates_info(self):
+        '''
+        Funkcja zwraca informacje o szablonach, potrzebne do wyliczenia FeatureVector
+        :return: trojka: (template_id, unmodified sequence, secondary_structure)
+        '''
         collection = self.__get_templates_collection()
         projection = [field_structure_id, field_chain_id, field_sequence_without_modifications, field_secondary_structure]
         results = collection.find(projection=projection)
         for result in results:
-            id = str(result[field_structure_id] + "_" + result[field_chain_id])
+            template_id = str(result[field_structure_id] + "_" + result[field_chain_id])
             sequence = str(result[field_sequence_without_modifications])
             secondary_structure = str(result[field_secondary_structure])
-            yield (id, sequence, secondary_structure)
+            yield (template_id, sequence, secondary_structure)
 
     def get_structures_id(self):
         collection = self.__get_templates_collection()
