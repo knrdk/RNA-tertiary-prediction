@@ -5,19 +5,21 @@ import os
 from Config import Config
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from SVM.templates_ranking import get_templates_ranking
-from Utils.Alignment import write_alignment
+from Utils.Alignment import Alignment, write_alignment
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 import SCFG.ScoringMatrix as sm
 from moderna import load_alignment, load_template, create_model
 
 
-def get_alignment(query_sequence, template_sequence, template_secondary_structure):
+def get_alignment(query_sequence, template_unmodified_sequence, template_secondary_structure, template_sequence):
     single_matrix, double_matrix = sm.get_scoring_matrices('config.ini')
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
-    scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
+    scfg = parser.get_SCFG(template_secondary_structure, template_unmodified_sequence)
     scfg.align(query_sequence)
 
     algn = scfg.get_alignment()
+    assert isinstance(algn, Alignment)
+    algn.change_template_sequence(template_sequence)
     return algn
 
 
@@ -34,9 +36,9 @@ def try_remove_file(file_path):
 def build_model(template_id, sequence, output_path, template_directory):
     temp_alignment_file = 'temp_alignment.fasta'
     repo = MongoTemplateRepository()
-    (template_id, template_sequence, template_secondary_structure) = repo.get_template_info(template_id)
+    (template_sequence, template_unmodified_sequence, template_secondary_structure) = repo.get_template_info(template_id)
 
-    algn = get_alignment(sequence, template_sequence, template_secondary_structure)
+    algn = get_alignment(sequence, template_unmodified_sequence, template_secondary_structure, template_sequence)
     write_alignment(algn, temp_alignment_file)
 
     template_path= get_template_path(template_directory, template_id)
