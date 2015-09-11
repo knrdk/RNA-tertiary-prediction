@@ -9,7 +9,7 @@ def __print_ranking(ranking):
 def __write_ranking(ranking, output_file):
     with open(output_file, 'w') as f:
         for (template_id, prob) in ranking:
-            line = str(template_id) + '\t' + str(prob)
+            line = str(template_id) + '\t' + str(prob) + '\n'
             f.write(line)
 
 
