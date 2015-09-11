@@ -35,7 +35,7 @@ def main_svm_predict(svm_file, query_sequence):
 
     ranking = zip(data, predicted)
 
-    print sorted(ranking, key=lambda x: x[1])
+    print ranking
 
 
 
