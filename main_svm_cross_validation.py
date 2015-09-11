@@ -36,7 +36,7 @@ def get_folds_dict(file_with_rmsd):
     return output
 
 
-def main():
+def main_cross_validation():
     cfg = Config('config.ini')
     models_rmsd_file = cfg.get_training_results_path()
     feature_vectors_file = cfg.get_feature_vectors_path()
@@ -71,14 +71,15 @@ def main():
         else:
             if predicted: tp += 1
             else: tn += 1
-        print predicted, data_item
-    print tp, tn
-    print fp, fn
 
+    print("TP: %d", tp)
+    print("TN: %d", tn)
+    print("FP: %d", fp)
+    print("FN: %d", fn)
 
     print clf.score(data_test, target_test)
 
 
 
 if __name__ == '__main__':
-    main()
+    main_cross_validation()
