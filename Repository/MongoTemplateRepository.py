@@ -51,10 +51,27 @@ class MongoTemplateRepository():
             resolution = float(result[field_resolution])
             yield db_id, sequence, resolution
 
+    def get_template_info(self, template_id):
+        '''
+        Funckja zwraca informacje o szablonie o wybranych identyfikatorze
+        :param template_id: identyfikator w formacie STRUCTURE_CHAIN
+        :return: funkcja zwraca trojke: (template_id, unmodified sequence, secondary_structure)
+        '''
+        structure_id, chain_id = template_id.split('_')
+        collection = self.__get_templates_collection()
+        projection = [field_sequence_without_modifications, field_secondary_structure]
+        filter = {field_structure_id: structure_id, field_chain_id: chain_id}
+
+        result = collection.find_one(filter=filter, projection = projection)
+        sequence = str(result[field_sequence_without_modifications])
+        secondary_structure = str(result[field_secondary_structure])
+
+        return (template_id, sequence, secondary_structure)
+
     def get_templates_info(self):
         '''
         Funkcja zwraca informacje o szablonach, potrzebne do wyliczenia FeatureVector
-        :return: trojka: (template_id, unmodified sequence, secondary_structure)
+        :return: lista trojek: (template_id, unmodified sequence, secondary_structure)
         '''
         collection = self.__get_templates_collection()
         projection = [field_structure_id, field_chain_id, field_sequence_without_modifications, field_secondary_structure]
