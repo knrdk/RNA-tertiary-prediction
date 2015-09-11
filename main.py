@@ -6,7 +6,7 @@ from Config import Config
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from SVM.templates_ranking import get_templates_ranking
 from Utils.Alignment import write_alignment
-from SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
+from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 import SCFG.ScoringMatrix as sm
 from moderna import load_alignment, load_template, create_model
 
