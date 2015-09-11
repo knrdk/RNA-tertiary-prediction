@@ -72,10 +72,15 @@ def main_cross_validation():
             if predicted: tp += 1
             else: tn += 1
 
+    sensitivity = tp / float(tp + fn)
+    specifity = tn / float(tn + fp)
+
     print "TP: ", tp
     print "TN: ", tn
     print "FP: ", fp
     print "FN: ", fn
+    print "Sensitivity: ", sensitivity
+    print "Specifity: ", specifity
     print "Cross Validation score: ", clf.score(data_test, target_test)
 
 
