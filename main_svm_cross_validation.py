@@ -72,12 +72,11 @@ def main_cross_validation():
             if predicted: tp += 1
             else: tn += 1
 
-    print("TP: %d", tp)
-    print("TN: %d", tn)
-    print("FP: %d", fp)
-    print("FN: %d", fn)
-
-    print clf.score(data_test, target_test)
+    print "TP: ", tp
+    print "TN: ", tn
+    print "FP: ", fp
+    print "FN: ", fn
+    print "Cross Validation score: ", clf.score(data_test, target_test)
 
 
 
