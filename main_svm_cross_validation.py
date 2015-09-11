@@ -8,6 +8,7 @@ from sklearn import cross_validation
 
 def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
+
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(
         data, target, test_size=0.2, random_state=0)
 
@@ -15,12 +16,12 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
 
     tp, tn, fp, fn = 0, 0, 0, 0
     predicted_test = clf.predict(data_test)
-    for (target_value, predicted) in zip(target_test, predicted_test):
-        if predicted != target_value:
-            if predicted: fp += 1
+    for (target_value, predicted_value) in zip(target_test, predicted_test):
+        if predicted_value != target_value:
+            if predicted_value: fp += 1
             else: fn += 1
         else:
-            if predicted: tp += 1
+            if predicted_value: tp += 1
             else: tn += 1
 
     sensitivity = tp / float(tp + fn)
@@ -33,7 +34,6 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
     print "Sensitivity: ", sensitivity
     print "Specifity: ", specifity
     print "Cross Validation score: ", clf.score(data_test, target_test)
-
 
 
 if __name__ == '__main__':
