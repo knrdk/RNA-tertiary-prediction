@@ -16,8 +16,6 @@ def get_alignment(query_sequence, template_unmodified_sequence, template_seconda
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
     scfg = parser.get_SCFG(template_secondary_structure, template_unmodified_sequence)
     scfg.align(query_sequence)
-    print template_unmodified_sequence
-    print template_sequence
     algn = scfg.get_alignment()
     assert isinstance(algn, Alignment)
     algn.change_template_sequence(template_sequence)
@@ -56,10 +54,17 @@ def build_model(template_id, sequence, output_path, template_directory):
 
     return True
 
+def __print_template_ranking(ranking):
+    for (template_id, probability) in ranking:
+        print template_id, probability
+
 def main_build_model(sequence, svm_file, output_path, template_directory):
     print 'Tworzenie rankingu szablonow'
     template_ranking = get_templates_ranking(svm_file, sequence)
     print 'Zakonczono tworzenie rankingu szablonow'
+
+    __print_template_ranking(template_ranking)
+
 
     for (template_id, probability) in template_ranking:
         print 'Budowanie modelu za pomoca szablonu: ', template_id
