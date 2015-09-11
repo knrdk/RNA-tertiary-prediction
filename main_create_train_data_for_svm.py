@@ -62,7 +62,7 @@ def main():
     data_train, data_test, target_train, target_test = cross_validation.train_test_split(
         data, target, test_size=0.2, random_state=0)
 
-    clf = svm.SVC(gamma=0.015, C=100, kernel='rbf', probability=True).fit(data_train, target_train)
+    clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data_train, target_train)
 
     tp, tn, fp, fn = 0, 0, 0, 0
     for (index, data_item) in enumerate(data_test):
