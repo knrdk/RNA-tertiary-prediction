@@ -32,11 +32,11 @@ def main_svm_predict(svm_file, query_sequence):
     feature_vectors = [x[1] for x in data]
 
     svm = __load_svm(svm_file)
-    predicted = svm.predict_proba(feature_vectors)
+    probability = svm.predict_proba(feature_vectors)
+    probability_same_fold = [x[1] for x in probability]
+    ranking = zip(template_ids, probability_same_fold)
 
-    ranking = zip(template_ids, predicted)
-
-    print ranking
+    print sorted(ranking, lambda x: x[1])
 
 
 
