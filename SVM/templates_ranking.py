@@ -9,6 +9,11 @@ from sklearn.externals import joblib
 
 
 def __load_svm(svm_file):
+    '''
+    Funkcja laduje z pliku zserializowane wytrenowane SVM
+    :param svm_file: sciezka do pliku z SVM
+    :return: obiekt klasy sklearn.svm
+    '''
     return joblib.load(svm_file)
 
 def __get_feature_vector(query_sequence, tinfo):
