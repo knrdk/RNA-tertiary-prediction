@@ -22,7 +22,7 @@ def get_alignment(query_sequence, template_sequence, template_secondary_structur
 
 
 def get_template_path(template_directory, template_id):
-    filename = template_id + '.pdp'
+    filename = template_id + '.pdb'
     return os.path.join(template_directory, filename)
 
 def try_remove_file(file_path):
@@ -47,7 +47,7 @@ def build_model(template_id, sequence, output_path, template_directory):
         m = create_model(t,a)
         #TODO: analyze geometry
         m.write_pdb_file(output_path)
-    except: raise
+    except: return False
 
     try_remove_file(temp_alignment_file)
 
