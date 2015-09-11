@@ -12,12 +12,24 @@ def __load_svm(svm_file):
     return joblib.load(svm_file)
 
 def __get_feature_vector(query_sequence, tinfo):
+    '''
+    Funkcja wylicza feature vector dla sekwencji i szablonu
+    :param query_sequence: sekwencja wejsciowa
+    :param tinfo: trojka (TEMPLATE_ID, TEMPLATE_SEQUENCE, TEMPLATE_SECONDARY_STRUCTURE), sekwencja jest bez zmodyfikowanych
+    nukleotydow
+    :return: zwraca pare (TEMPLATE_ID, FEATURE VECTOR)
+    '''
     template_id, template_sequence, template_secondary_structure = tinfo
     fvc = FeatureVectorCalculator()
     fv = fvc.get_feature_vector(query_sequence, template_id, template_sequence, template_secondary_structure)
     return (template_id, fv)
 
 def __get_feature_vectors(query_sequence):
+    '''
+    Funkcja wylicza wielowatkowo feature vector dla zadanej sekwencji i wszystkich szablonow
+    :param query_sequence: sekwencja wejsciowa
+    :return: lista par (TEMPLATE_ID, FEATURE VECTOR)
+    '''
     repo = MongoTemplateRepository()
     templates = list(repo.get_templates_info())
 
@@ -27,6 +39,13 @@ def __get_feature_vectors(query_sequence):
     return vectors
 
 def get_templates_ranking(svm_file, query_sequence):
+    '''
+    Funckja zwraca ranking szablonow dla danej sekwencji ktorych prawdopodobienstwo tego samego zwoju jest wieksze
+    niz 0.5. Szablonu posortowane sa malejaco po prawdopodobienstwie.
+    :param svm_file: Plik z wytrenowanym SVM
+    :param query_sequence: sekwencja dla ktorej bedzie stworzny ranking
+    :return:
+    '''
     data = __get_feature_vectors(query_sequence)
     template_ids = [x[0] for x in data]
     feature_vectors = [x[1] for x in data]
