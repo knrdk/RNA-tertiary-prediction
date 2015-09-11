@@ -31,7 +31,7 @@ def main_svm_predict(svm_file, query_sequence):
     feature_vectors = [x[1] for x in data]
 
     svm = __load_svm(svm_file)
-    predicted = svm.predict_prob(feature_vectors)
+    predicted = svm.predict_proba(feature_vectors)
 
     ranking = zip(data, predicted)
 
