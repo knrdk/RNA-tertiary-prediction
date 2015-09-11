@@ -1,25 +1,66 @@
 __author__ = 'Konrad Kopciuch'
 
 import sys
+import os
 from Config import Config
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from SVM.templates_ranking import get_templates_ranking
+from Utils.Alignment import write_alignment
+from SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
+import SCFG.ScoringMatrix as sm
+from moderna import load_alignment, load_template, create_model
 
 
-def build_model(template_id, sequence, outpup_path):
+def get_alignment(query_sequence, template_sequence, template_secondary_structure):
+    single_matrix, double_matrix = sm.get_scoring_matrices('config.ini')
+    parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
+    scfg = parser.get_SCFG(template_secondary_structure, template_sequence)
+    scfg.align(query_sequence)
+
+    algn = scfg.get_alignment()
+    return algn
+
+
+def get_template_path(template_directory, template_id):
+    filename = template_id + '.pdp'
+    return os.path.join(template_directory, filename)
+
+def try_remove_file(file_path):
+    try:
+        os.remove(file_path)
+    except: return False
+    return True
+
+def build_model(template_id, sequence, output_path, template_directory):
+    temp_alignment_file = 'temp_alignment.fasta'
     repo = MongoTemplateRepository()
     (template_id, template_sequence, template_secondary_structure) = repo.get_template_info(template_id)
 
-    print template_sequence, template_secondary_structure
+    algn = get_alignment(sequence, template_sequence, template_secondary_structure)
+    write_alignment(algn, temp_alignment_file)
 
-def main_build_model(sequence, svm_file, output_path):
-    print 'Tworzenie ranking szablonow'
+    template_path= get_template_path(template_directory, template_id)
+
+    try:
+        a = load_alignment(temp_alignment_file)
+        t = load_template(template_path)
+        m = create_model(t,a)
+        #TODO: analyze geometry
+        m.write_pdb_file(output_path)
+    except: return False
+
+    try_remove_file(temp_alignment_file)
+
+    return True
+
+def main_build_model(sequence, svm_file, output_path, template_directory):
+    print 'Tworzenie rankingu szablonow'
     template_ranking = get_templates_ranking(svm_file, sequence)
-    print 'Zakonczono tworzenie ranking szablonow'
+    print 'Zakonczono tworzenie rankingu szablonow'
 
     for (template_id, probability) in template_ranking:
         print 'Budowanie modelu za pomoca szablonu: ', template_id
-        result = build_model(template_id, sequence, output_path)
+        result = build_model(template_id, sequence, output_path, template_directory)
         if result:
             print 'model zapisany w pliku: ', output_path
             return
@@ -32,13 +73,14 @@ if __name__ == '__main__':
     if len(sys.argv) < 3:
         print 'Uzycie: main.py output_file sequence [svm_file]'
     else:
+        config = Config('config.ini')
+
         output_file = sys.argv[1]
         sequence = sys.argv[2]
         if len(sys.argv) == 4:
             svm_file = sys.argv[3]
         else:
-            config = Config('config.ini')
             svm_file = config.get_svm_file()
-
-        main_build_model(sequence, svm_file, output_file)
+        template_directory = config.get_template_directory()
+        main_build_model(sequence, svm_file, output_file, template_directory)
 
