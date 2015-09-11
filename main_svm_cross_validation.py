@@ -15,7 +15,7 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
 
     tp, tn, fp, fn = 0, 0, 0, 0
     for (index, data_item) in enumerate(data_test):
-        print clf.predict(data_item) #usunac
+        print clf.score(data_item)
         predicted = clf.predict(data_item)[0]
         if predicted != target_test[index]:
             if predicted: fp += 1
