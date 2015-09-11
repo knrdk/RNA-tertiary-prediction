@@ -1,13 +1,14 @@
 __author__ = 'Konrad Kopciuch'
 
-import pickle
 from PairwiseSimilarity.FeatureVectorCalculator import FeatureVectorCalculator
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 import Utils.ThreadPool as tp
 from functools import partial
+from sklearn import svm
+from sklearn.externals import joblib
 
 def __load_svm(svm_file):
-    return pickle.loads(svm_file)
+    return joblib.load(svm_file)
 
 def get_feature_vector(query_sequence, tinfo):
     template_id, template_sequence, template_secondary_structure = tinfo

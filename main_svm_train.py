@@ -3,15 +3,16 @@ __author__ = 'Konrad Kopciuch'
 from Config import Config
 from Training.TrainingDataProvider import get_train_data
 from sklearn import svm
-import pickle
+from sklearn.externals import joblib
+
+def __save_svm(classifier, file):
+    joblib.dump(classifier, file)
 
 def main_svm_train(file_with_rmsd, feature_vectors_file, svm_file):
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data, target)
 
-    s = pickle.dumps(clf)
-    with open(svm_file, 'w') as f:
-        f.write(s)
+    __save_svm(clf, svm_file)
 
 
 if __name__ == '__main__':
