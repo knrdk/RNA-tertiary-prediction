@@ -28,10 +28,10 @@ def get_feature_vectors(query_sequence):
 
 def main_svm_predict(svm_file, query_sequence):
     feature_vectors = get_feature_vectors(query_sequence)
-    for fv in feature_vectors:
-        print fv
 
     svm = __load_svm(svm_file)
+    predicted = svm.predict(feature_vectors)
+    print predicted
 
 
 
