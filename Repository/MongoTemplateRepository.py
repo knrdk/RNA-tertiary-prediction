@@ -55,18 +55,19 @@ class MongoTemplateRepository():
         '''
         Funckja zwraca informacje o szablonie o wybranych identyfikatorze
         :param template_id: identyfikator w formacie STRUCTURE_CHAIN
-        :return: funkcja zwraca trojke: (template_id, unmodified sequence, secondary_structure)
+        :return: funkcja zwraca trojke: (sequence, unmodified sequence, secondary_structure)
         '''
         structure_id, chain_id = template_id.split('_')
         collection = self.__get_templates_collection()
-        projection = [field_sequence_without_modifications, field_secondary_structure]
+        projection = [field_sequence, field_sequence_without_modifications, field_secondary_structure]
         filter = {field_structure_id: structure_id, field_chain_id: chain_id}
 
         result = collection.find_one(filter=filter, projection = projection)
-        sequence = str(result[field_sequence_without_modifications])
+        sequence = str(result[field_sequence])
+        unmodified_sequence = str(result[field_sequence_without_modifications])
         secondary_structure = str(result[field_secondary_structure])
 
-        return (template_id, sequence, secondary_structure)
+        return (sequence, unmodified_sequence, secondary_structure)
 
     def get_templates_info(self):
         '''
