@@ -47,7 +47,7 @@ def build_model(template_id, sequence, output_path, template_directory):
         m = create_model(t,a)
         #TODO: analyze geometry
         m.write_pdb_file(output_path)
-    except: return False
+    except: raise
 
     try_remove_file(temp_alignment_file)
 
