@@ -9,7 +9,7 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 def main():
     repo = MongoTemplateRepository()
     templates = repo.get_templates_info()
-    query = "CUCUGGAGAGAACCGUUUAAUCGGUCGCCGAAGGAGCAAGCUCUGCGCAUAUGCAGAGUGAAACUCUCAGGCAAAAGGACAGAG"
+    query = "UGGGAGGUCGUCUAACGGUAGGACGGCGGACUCUGGAUCCGCUGGUGGAGGUUCGAGUCCUCCCCUCCCAGCCA"
 
     all_vectors = []
     for (template_id, template_sequence, template_secondary_structure) in templates:

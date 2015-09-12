@@ -6,6 +6,7 @@ from LinearNeedlemanWunschIdentity import LinearNeedlemanWunschIdentity
 from Ribosum85NeedlemanWunschIdentity import Ribosum85NeedlemanWunschIdentity
 from Ribosum85NeedlemanWunschScore import Ribosum85NeedlemanWunschScore
 from DifferenceInLenght import DifferenceInLenght
+from InfernalBestFamilyScore import InfernalBestFamilyScore
 from SCFGScore import SCFGScore
 
 methods = [AffiniteNeedlemanWunschIdentity,
@@ -14,9 +15,8 @@ methods = [AffiniteNeedlemanWunschIdentity,
            Ribosum85NeedlemanWunschIdentity,
            Ribosum85NeedlemanWunschScore,
            DifferenceInLenght,
-           #InfernalBestFamilyScore,
-           #InfernalAlignmentIdentity,
-           SCFGScore]
+           InfernalBestFamilyScore]
+           #SCFGScore]
 
 class FeatureVectorCalculator:
 

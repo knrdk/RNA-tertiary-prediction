@@ -6,6 +6,10 @@ class CmScanOutputParser:
         self.output = output
 
     def get_families_above_threshold(self):
+        '''
+        Funkcja zwraca rodziny z bazy RFAM do ktorych moze nalezec dana sekwencja
+        :return: lista dwojek: family_name, score
+        '''
         families = list()
 
         data_in_next_line = False
@@ -17,6 +21,7 @@ class CmScanOutputParser:
                 families.append(x)
             else:
                 data_in_next_line = (line[1:3] == "--")
+        return families
 
     def __parse_line(self, line):
         splitted = line.split(' ')

@@ -7,12 +7,14 @@ from CmScanOutputParser import CmScanOutputParser
 
 
 class Infernal:
-    def __init__(self, config):
-        self.config = config
+    def __init__(self, cmscan_path, cmdatabase_path):
+        self.cmscan_path = cmscan_path
+        self.cmdatabase_path = cmdatabase_path
+
 
     def get_families_for_sequence(self, sequence):
-        temp_file_path = self.config['tempscanfilepath']
-        with open(temp_file_path,'w+') as f:
+        temp_file_path = 'temp_infernal_cmscan.fasta'
+        with open(temp_file_path,'w') as f:
             f.write(">sequence")
             f.write('\n')
             f.write(sequence)
@@ -23,8 +25,8 @@ class Infernal:
         return families
 
     def __scan(self, input_path):
-        cmscan_path = self.config['cmscan']
-        cmdatabase_path = self.config['cmdatabase']
+        cmscan_path = self.cmscan_path
+        cmdatabase_path = self.cmdatabase_path
         proc = subprocess.Popen([cmscan_path, cmdatabase_path, input_path], stdout=subprocess.PIPE)
         output = proc.stdout.read()
         return output

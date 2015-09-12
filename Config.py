@@ -58,3 +58,18 @@ class Config:
         section = 'SVM'
         option = 'svm_file'
         return self.config.get(section, option)
+
+    def get_infernal_cmscan(self):
+        section = 'Infernal'
+        option = 'cmscan'
+        return self.config.get(section, option)
+
+    def get_infernal_cmdatabase(self):
+        section = 'Infernal'
+        option = 'cmdatabase'
+        return self.config.get(section, option)
+
+    def get_infernal_family_file(self):
+        section = 'Infernal'
+        option = 'familyfile'
+        return self.config.get(section, option)
