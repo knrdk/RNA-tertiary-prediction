@@ -40,16 +40,20 @@ class MongoTemplateRepository():
     def get_all_unmodified_sequences(self):
         '''
         Funkcja zwraca wszystkie niemodyfikownae sekwencje znajdujace sie w bazie szablonow
-        :return: Funkcja zwraca krotke o dlugosci 3, jej kolejnymi elementami sa: db_id, sekwencja bez modyfikacji, rozdzielczosc
+        :return: Funkcja zwraca krotke 4 elementowa, jej kolejnymi elementami sa:
+        db_id, sekwencja bez modyfikacji, rozdzielczosc, template_id
         '''
         collection = self.__get_templates_collection()
-        projection = ['_id', field_sequence_without_modifications, field_resolution]
+        projection = ['_id', field_sequence_without_modifications, field_resolution, field_structure_id, field_chain_id]
         results = collection.find(projection=projection)
         for result in results:
             db_id = result['_id']
             sequence = str(result[field_sequence_without_modifications])
             resolution = float(result[field_resolution])
-            yield db_id, sequence, resolution
+            structure_id = str(result[field_structure_id])
+            chain_id = str(result[field_chain_id])
+            template_id = structure_id + '_' + chain_id
+            yield db_id, sequence, resolution, template_id
 
     def get_template_info(self, template_id):
         '''
@@ -101,7 +105,7 @@ class MongoTemplateRepository():
         '''
         #structure_id, chain_id = template_id.split('_')
         collection = self.__get_templates_collection()
-        filter = {'id': db_id}
+        filter = {'_id': db_id}
         collection.remove(filter)
 
     def __get_templates_collection(self):

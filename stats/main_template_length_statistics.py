@@ -9,7 +9,7 @@ def get_longest_and_average_sequence_length():
     max_length = 0
     sum_length = 0
     number_of_sequnces = 0
-    for id, sequence, resolution in repo.get_all_unmodified_sequences():
+    for db_id, sequence, resolution, template_id in repo.get_all_unmodified_sequences():
         number_of_sequnces+=1
         current_length = len(sequence)
         sum_length += current_length

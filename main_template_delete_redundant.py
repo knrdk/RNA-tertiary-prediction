@@ -6,14 +6,14 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Config import Config
 
 
-def __delete_template(repository, template_id):
-    repository.delete_template(template_id)
+def __delete_template(repository, db_id):
+    repository.delete_template(db_id)
     #TODO: usuwanie zbednych plikow szablonow
 
 
 def main_template_delete_redundant(template_directory):
     repo = MongoTemplateRepository()
-    result = repo.get_all_unmodified_sequences() #krotki: template_id, unmodified_sequence, resolution
+    result = repo.get_all_unmodified_sequences() #krotki: db_id, unmodified_sequence, resolution, template_id
     all_sequences = list(result) #result jest generatorem sekwencji, tworzymy liste bo bedziemy wielokrotnie po niej iterowac
 
     distinct_sequences = set(map(lambda x: x[1], all_sequences)) #zbior zawiera wszystkie rozne sekwencje
