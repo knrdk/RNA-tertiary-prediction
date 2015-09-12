@@ -31,6 +31,11 @@ def __delete_unused_template_files(repository, template_directory):
             print "usuwanie pliku szablonu: ", file_path
 
 def main_delete_redundant(template_directory):
+    '''
+    Funkcja usuwa te szablony ktorych sekwencja sie powtarza, pozostawiajac jeden z nich
+    :param template_directory: Sciezka do folderu z szablonami zbioru treningowego
+    :return:
+    '''
     repo = MongoTrainingTemplateRepository()
     all_sequences = list(repo.get_all_sequences())
     distinct_sequences = set(map(lambda x: x[1], all_sequences))
