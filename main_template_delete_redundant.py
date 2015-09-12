@@ -1,14 +1,28 @@
 __author__ = 'Konrad Kopciuch'
 
-from os import remove, path
-
+from os import remove, path, listdir
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Config import Config
 
 
 def __delete_template(repository, db_id):
     repository.delete_template(db_id)
-    #TODO: usuwanie zbednych plikow szablonow
+
+
+def __delete_unused_template_files(repository, template_directory):
+    '''
+    Funkcja usuwa pliki szablonow o ktorych informacji nie ma w bazie danych
+    :param repository: obiekt klasy MongoTrainingTemplateRepository
+    :param template_directory: sciezka do folderu z szablonami zbioru treningowego
+    :return: Funkcja nic nie zwraca
+    '''
+    templates_id = set(repository.get_templates_id())
+    for file_path in listdir(template_directory):
+        file_id = file_path.split('.')[0].upper()
+        if not file_id in templates_id:
+            full_path = path.join(template_directory, file_path)
+            remove(full_path)
+            print "usuwanie pliku szablonu: ", file_path
 
 
 def main_template_delete_redundant(template_directory):
@@ -31,6 +45,8 @@ def main_template_delete_redundant(template_directory):
     for db_id in templates_to_delete:
         print "usuwanie szablonu: " + str(db_id)
         __delete_template(repo, db_id)
+
+    __delete_unused_template_files(repo, template_directory)
 
 if __name__ == "__main__":
     config = Config('config.ini')
