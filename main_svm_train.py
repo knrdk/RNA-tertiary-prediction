@@ -31,14 +31,9 @@ def main_svm_train(file_with_rmsd, feature_vectors_file, svm_file):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 4:
-        cfg = Config('config.ini')
-        file_with_rmsd = cfg.get_training_results_path()
-        feature_vectors_file = cfg.get_feature_vectors_path()
-        svm_file = cfg.get_svm_file()
-    else:
-        file_with_rmsd = sys.argv[1]
-        feature_vectors_file = sys.argv[2]
-        svm_file = sys.argv[3]
+    cfg = Config('config.ini')
+    file_with_rmsd = cfg.get_training_results_path()
+    feature_vectors_file = cfg.get_feature_vectors_path()
+    svm_file = cfg.get_svm_file()
 
     main_svm_train(file_with_rmsd, feature_vectors_file, svm_file)
