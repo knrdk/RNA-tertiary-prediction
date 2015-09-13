@@ -5,8 +5,8 @@ import time
 
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Repository.MongoInfernalRepository import MongoInfernalRepository
-from Infernal import Infernal
-from FamilyFileParser import FamilyFileParser
+from Infernal.Infernal import Infernal
+from Infernal.FamilyFileParser import FamilyFileParser
 
 
 def __get_family_name_rfam_id_mapping(family_file_path):
@@ -14,7 +14,7 @@ def __get_family_name_rfam_id_mapping(family_file_path):
     mapping = parser.get_family_name_rfam_id_mapping()
     return mapping
 
-def main_make_template_rfam_mapping(cmscan_path, cmdatabase_path, family_file_path):
+def main_infernal_template_families(cmscan_path, cmdatabase_path, family_file_path):
     family_name_rfam_id_mapping = __get_family_name_rfam_id_mapping(family_file_path)
     infernal = Infernal(cmscan_path, cmdatabase_path)
     template_repository = MongoTemplateRepository()
@@ -35,9 +35,9 @@ def main_make_template_rfam_mapping(cmscan_path, cmdatabase_path, family_file_pa
 
 if __name__ == "__main__":
     start_time = time.time()
-    config = Config('./../config.ini')
+    config = Config('config.ini')
     cmscan_path = config.get_infernal_cmscan()
     cmdatabase_path = config.get_infernal_cmdatabase()
     family_file_path = config.get_infernal_family_file()
-    main_make_template_rfam_mapping(cmscan_path, cmdatabase_path, family_file_path)
+    main_infernal_template_families(cmscan_path, cmdatabase_path, family_file_path)
     print("--- %s seconds ---" % (time.time() - start_time))
