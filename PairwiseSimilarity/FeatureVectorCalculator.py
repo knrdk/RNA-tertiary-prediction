@@ -17,7 +17,7 @@ methods = [AffiniteNeedlemanWunschIdentity,
            DifferenceInLenght,
            InfernalBestFamilyScore,
            SCFGScore]
-methods = [SCFGScore]
+
 class FeatureVectorCalculator:
 
     @staticmethod
