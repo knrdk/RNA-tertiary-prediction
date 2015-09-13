@@ -9,9 +9,9 @@ import sklearn.cross_validation as cv
 
 def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_size_of_test_set):
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
-
+    test_size = float(percentage_size_of_test_set)/100
     data_train, data_test, target_train, target_test = cv.train_test_split(
-        data, target, test_size=(percentage_size_of_test_set/100), random_state=0)
+        data, target, test_size=test_size, random_state=0)
 
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data_train, target_train)
 
