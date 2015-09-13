@@ -15,6 +15,12 @@ def __get_thread_pool():
 
 
 def __load_sequences(templates_directory, template_path):
+    '''
+    Funkcja za pomoca pakietu moderna odczytuje informacje o sekwencji i strukturze drugorzedowej z pliku pdb
+    :param templates_directory: folder z szablonami
+    :param template_path: nazwa pliku z szablonem
+    :return: (sekwencja, niezmodyfikowana sekwencja, struktura drugorzedowa)
+    '''
     full_path = templates_directory + template_path
     tmpl = load_template(full_path)
     sequence = tmpl.get_sequence()

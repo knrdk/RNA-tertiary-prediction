@@ -1,7 +1,11 @@
-__author__ = 'rna'
+__author__ = 'Konrad Kopciuch'
 
 from Repository.MongoTrainingTemplateRepository import MongoTrainingTemplateRepository
 from RMSD.PredictionSignificance import get_pvalue
+
+'''
+Uruchomienie skryptu zwraca informacje o parach (TEMPLATE, TRAINING STRUCTURE) dla ktorych stwierdzono ze przyjmuja ten sam zwoj
+'''
 
 repo = MongoTrainingTemplateRepository()
 chains_lengths = repo.get_chains_lengths()
