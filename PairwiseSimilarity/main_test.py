@@ -5,7 +5,9 @@ import time
 from FeatureVectorCalculator import FeatureVectorCalculator
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 
-
+'''
+Skrypt uzywany podczas testowania - do usuniecia w ostatecznej wersji
+'''
 def main():
     repo = MongoTemplateRepository()
     templates = repo.get_templates_info()
