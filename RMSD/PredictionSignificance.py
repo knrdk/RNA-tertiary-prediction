@@ -2,6 +2,10 @@ __author__ = 'Konrad Kopciuch'
 
 from math import sqrt, pow, erf
 
+'''
+Implementacja na podstawie artykulu:
+Hajdin, C., Ding, F., Dokholyan, N. i Weeks, K. (2010). On the significance of an RNA tertiary structure prediction.
+'''
 
 def __get_pvalue_general(a, b, chain_length, rmsd):
     std = 1.8
