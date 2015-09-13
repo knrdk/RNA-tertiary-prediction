@@ -14,7 +14,7 @@ class Infernal:
 
     def get_families_for_sequence(self, sequence):
         process = current_process()
-        print str(process.name, process.ident)
+        print str(process.name), str(process.ident)
         temp_file_path = 'temp_infernal_cmscan.fasta'
         with open(temp_file_path,'w') as f:
             f.write(">sequence")
