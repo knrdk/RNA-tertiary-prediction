@@ -15,8 +15,8 @@ methods = [AffiniteNeedlemanWunschIdentity,
            Ribosum85NeedlemanWunschIdentity,
            Ribosum85NeedlemanWunschScore,
            DifferenceInLenght,
-           InfernalBestFamilyScore]
-           #SCFGScore]
+           InfernalBestFamilyScore,
+           SCFGScore]
 
 class FeatureVectorCalculator:
 
