@@ -1,16 +1,17 @@
 __author__ = 'Konrad Kopciuch'
 
+import sys
 from Config import Config
 from Training.TrainingDataProvider import get_train_data
 from sklearn import svm
-from sklearn import cross_validation
+import sklearn.cross_validation as cv
 
 
-def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
+def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_size_of_test_set):
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
 
-    data_train, data_test, target_train, target_test = cross_validation.train_test_split(
-        data, target, test_size=0.2, random_state=0)
+    data_train, data_test, target_train, target_test = cv.train_test_split(
+        data, target, test_size=(percentage_size_of_test_set/100), random_state=0)
 
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data_train, target_train)
 
@@ -37,8 +38,13 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file):
 
 
 if __name__ == '__main__':
-    cfg = Config('config.ini')
-    file_with_rmsd = cfg.get_training_results_path()
-    feature_vectors_file = cfg.get_feature_vectors_path()
+    if(len(sys.argv)<2):
+        print 'uzycie: main_svm_cross_validation.py percentage_size_of_test_set'
+    else:
+        percentage_size_of_test_set = int(sys.argv[1])
 
-    main_svm_cross_validation(file_with_rmsd, feature_vectors_file)
+        cfg = Config('config.ini')
+        file_with_rmsd = cfg.get_training_results_path()
+        feature_vectors_file = cfg.get_feature_vectors_path()
+
+        main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_size_of_test_set)
