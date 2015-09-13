@@ -24,9 +24,15 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_s
         else:
             if predicted_value: tp += 1
             else: tn += 1
+    if tp == 0:
+        sensitivity = 0
+    else:
+        sensitivity = tp / float(tp + fn)
 
-    sensitivity = tp / float(tp + fn)
-    specifity = tn / float(tn + fp)
+    if tn == 0:
+        specifity = 0
+    else:
+        specifity = tn / float(tn + fp)
 
     print "TP: ", tp
     print "TN: ", tn
