@@ -56,8 +56,5 @@ def __get_data_from_config():
 
 
 if __name__ == '__main__':
-    if len(sys.argv) == 3:
-        structures_directory, input_file_path = sys.argv[1], sys.argv[2]
-    else: #wczytaj z pliku konfiguracyjnego
-        structures_directory, input_file_path = __get_data_from_config()
+    structures_directory, input_file_path = __get_data_from_config()
     main_template_download_structure(structures_directory, input_file_path)
