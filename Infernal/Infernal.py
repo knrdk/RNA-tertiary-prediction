@@ -2,7 +2,7 @@ __author__ = 'Konrad Kopciuch'
 
 import subprocess
 import os
-
+from threading import current_thread
 from CmScanOutputParser import CmScanOutputParser
 
 
@@ -13,6 +13,8 @@ class Infernal:
 
 
     def get_families_for_sequence(self, sequence):
+        ct = current_thread()
+        print str(ct)
         temp_file_path = 'temp_infernal_cmscan.fasta'
         with open(temp_file_path,'w') as f:
             f.write(">sequence")
