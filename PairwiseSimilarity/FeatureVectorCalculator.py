@@ -9,7 +9,7 @@ from DifferenceInLenght import DifferenceInLenght
 from InfernalBestFamilyScore import InfernalBestFamilyScore
 from SCFGScore import SCFGScore
 
-methods = [AffiniteNeedlemanWunschIdentity]#,
+methods = [AffiniteNeedlemanWunschScore] #[AffiniteNeedlemanWunschIdentity]#,
            #AffiniteNeedlemanWunschScore,
            #LinearNeedlemanWunschIdentity,
            #Ribosum85NeedlemanWunschIdentity,
