@@ -1,4 +1,4 @@
-__author__ = 'rna'
+__author__ = 'Konrad Kopciuch'
 
 from Infernal.Infernal import Infernal
 from Config import Config

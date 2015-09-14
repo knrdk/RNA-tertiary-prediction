@@ -1,4 +1,4 @@
-__author__ = 'rna'
+__author__ = 'Konrad Kopciuch'
 
 from AffiniteNeedlemanWunschIdentity import AffiniteNeedlemanWunschIdentity
 from AffiniteNeedlemanWunschScore import AffiniteNeedlemanWunschScore

@@ -1,4 +1,4 @@
-__author__ = 'rna'
+__author__ = 'Konrad Kopciuch'
 
 from moderna import load_template
 from multiprocessing import Pool, cpu_count
