@@ -46,7 +46,6 @@ def build_model(template_id, sequence, output_path, template_directory):
         a = load_alignment(temp_alignment_file)
         t = load_template(template_path)
         m = create_model(t,a)
-        #TODO: analyze geometry
         m.write_pdb_file(output_path)
     except: return False
 
