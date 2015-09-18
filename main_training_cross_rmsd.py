@@ -56,10 +56,15 @@ def process_pair(templates_directory,
      template_sequence,
      template_sequence_without_modifications,
      template_secondary_structure) = sinfo
-    algn = get_alignment(template_path, query_path, query_sequence, query_sequence_without_modifications, template_sequence,
+    try:
+        algn = get_alignment(template_path, query_path, query_sequence, query_sequence_without_modifications, template_sequence,
                          template_sequence_without_modifications, template_secondary_structure)
-    tmp_filename = query_path.split('.')[0] + template_path.split('.')[0]
-    write_alignment(algn, tmp_filename + '.fasta')
+        tmp_filename = query_path.split('.')[0] + template_path.split('.')[0]
+        write_alignment(algn, tmp_filename + '.fasta')
+    except:
+        print "ERROR while creating alignment", query_path, template_path
+        return (query_path, template_path, float("inf"))
+
     try:
         a = load_alignment(tmp_filename + '.fasta')
         template_full_path = templates_directory + template_path
