@@ -3,6 +3,7 @@ __author__ = 'Konrad Kopciuch'
 from Config import Config
 from Training.TrainingDataProvider import get_train_data
 import sys
+import numpy as np
 from sklearn import svm
 from sklearn.externals import joblib
 
@@ -25,7 +26,8 @@ def main_svm_train(file_with_rmsd, feature_vectors_file, svm_file):
     :return: funkcja nic nie zwraca
     '''
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
-    clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data, target)
+    X = np.asarray(data)
+    clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(X, target)
 
     __save_svm(clf, svm_file)
 
