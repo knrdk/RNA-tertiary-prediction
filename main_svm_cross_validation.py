@@ -3,6 +3,7 @@ __author__ = 'Konrad Kopciuch'
 import sys
 from Config import Config
 from Training.TrainingDataProvider import get_train_data
+from sklearn.preprocessing import Imputer
 from sklearn import svm
 import sklearn.cross_validation as cv
 
@@ -12,7 +13,7 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_s
     test_size = float(percentage_size_of_test_set)/100
     data_train, data_test, target_train, target_test = cv.train_test_split(
         data, target, test_size=test_size, random_state=0)
-
+    data_train = Imputer().fit_transform(data_train)
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data_train, target_train)
 
     tp, tn, fp, fn = 0, 0, 0, 0
