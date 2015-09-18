@@ -20,9 +20,13 @@ def get_longest_and_average_sequence_length():
         average = sum_length/number_of_sequnces
     return min_length, max_length, average
 
-
-if __name__ == '__main__':
+def main():
     shortest, longest, average = get_longest_and_average_sequence_length()
     print "Najkrotsza: ", shortest
     print "Najdluzsza: ", longest
     print "Srednia: ", average
+
+
+
+if __name__ == '__main__':
+    main()
