@@ -36,7 +36,7 @@ def __get_feature_vectors(query_sequence):
     :return: lista par (TEMPLATE_ID, FEATURE VECTOR)
     '''
     repo = MongoTemplateRepository()
-    templates = list(repo.get_templates_info())
+    templates = list(repo.get_templates_info())[1:10]
 
     func = partial(__get_feature_vector, query_sequence)
     pool = tp.get_thread_pool()
