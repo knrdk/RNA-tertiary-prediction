@@ -55,6 +55,7 @@ def get_templates_ranking(svm_file, query_sequence):
     template_ids = [x[0] for x in data]
     feature_vectors = [x[1] for x in data]
     feature_vectors = Imputer().fit_transform(feature_vectors)
+    print feature_vectors
 
     classifier = __load_svm(svm_file)
     probability = classifier.predict_proba(feature_vectors)
