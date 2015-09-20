@@ -4,6 +4,7 @@ from Repository.MongoSCFGRepository import MongoSCFGRepository
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from SCFG.ScoringMatrix import get_scoring_matrices
 
+
 class SCFGScore:
 
     @staticmethod
@@ -25,4 +26,5 @@ class SCFGScore:
             return 0
 
         score = float(query_score) / self_score
+        score = max(score, -1)
         return score
