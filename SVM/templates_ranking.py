@@ -4,7 +4,7 @@ from PairwiseSimilarity.FeatureVectorCalculator import FeatureVectorCalculator
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 import Utils.ThreadPool as tp
 from functools import partial
-from sklearn import svm
+from sklearn.preprocessing import Imputer
 from sklearn.externals import joblib
 
 
@@ -54,9 +54,10 @@ def get_templates_ranking(svm_file, query_sequence):
     data = __get_feature_vectors(query_sequence)
     template_ids = [x[0] for x in data]
     feature_vectors = [x[1] for x in data]
+    feature_vectors = Imputer().fit_transform(feature_vectors)
 
-    svm = __load_svm(svm_file)
-    probability = svm.predict_proba(feature_vectors)
+    classifier = __load_svm(svm_file)
+    probability = classifier.predict_proba(feature_vectors)
     probability_same_fold = [x[1] for x in probability]
     ranking = zip(template_ids, probability_same_fold)
     ranking_filtered = filter(lambda x: x[1] > 0.5, ranking)

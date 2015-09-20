@@ -66,7 +66,7 @@ class TemplateInfoParser:
     def __get_resolution(self):
         try:
             return float(self.header['resolution'])
-        except: return -1
+        except: return float("inf")
 
     def __is_engineered(self,chain_info):
         try:
