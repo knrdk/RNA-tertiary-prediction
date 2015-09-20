@@ -6,7 +6,7 @@ import sys
 from sklearn.preprocessing import Imputer
 from sklearn import svm
 from sklearn.externals import joblib
-
+import math
 def __save_svm(classifier, file):
     '''
     Funkcja serializuje i zapisuje obiekt klasy sklearn.svm do pliku
@@ -26,6 +26,10 @@ def main_svm_train(file_with_rmsd, feature_vectors_file, svm_file):
     :return: funkcja nic nie zwraca
     '''
     data, target = get_train_data(file_with_rmsd, feature_vectors_file)
+    for x in data:
+        last = x[-1]
+        if math.isinf(last) or math.isnan(last):
+            print x
     #data = Imputer().fit_transform(data)
     clf = svm.SVC(gamma=0.015, C=10, kernel='rbf', probability=True).fit(data, target)
 
