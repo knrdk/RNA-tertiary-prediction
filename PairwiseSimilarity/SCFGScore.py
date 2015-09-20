@@ -27,4 +27,5 @@ class SCFGScore:
 
         score = float(query_score) / self_score
         score = max(score, -1)
+        score = min(score, 1)
         return score
