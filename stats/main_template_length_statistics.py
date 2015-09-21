@@ -12,6 +12,7 @@ def get_longest_and_average_sequence_length():
     for db_id, sequence, resolution, template_id in repo.get_all_unmodified_sequences():
         number_of_sequnces+=1
         current_length = len(sequence)
+        print current_length
         sum_length += current_length
         max_length = max(max_length, current_length)
         min_length = min(min_length, current_length)
