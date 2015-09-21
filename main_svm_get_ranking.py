@@ -29,9 +29,6 @@ def main_svm_predict(svm_file, query_sequence, output_file, print_ranking = True
 if __name__ == '__main__':
     if len(sys.argv) < 3:
         print 'uzycie: main_svm_get_ranking.py sequence output_file [svm_file]'
-        #TODO: usunac ponizsze linijki
-        sequence = 'GGGCCCGUAGCUUAGCCAGGUCAGAGCGCCCGGCUCAUAACCGGGCGGUCGAGGGUUCGAAUCCCUCCGGGCCCACCA'
-        main_svm_predict('data.svm', sequence, 'ranking.txt')
     else:
         config = Config('config.ini')
 
