@@ -8,7 +8,7 @@ class SCFG:
 
     def __init__(self, states, single_scoring_matrix, double_scoring_matrix):
         self.states = states
-        self.gap_penalties = get_penalties_dictionary(1,2) #TODO: prawdziwe wartosci
+        self.gap_penalties = get_penalties_dictionary(10, 5)
         self.single_matrix = single_scoring_matrix
         self.double_matrix = double_scoring_matrix
 
