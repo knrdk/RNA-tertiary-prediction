@@ -46,6 +46,21 @@ class MongoTrainingTemplateRepository():
             template_id = structure_id + '_' + chain_id
             yield template_id
 
+    def get_templates_for_sequence(self, sequence):
+        '''
+        Zwraca te lancuchy ktore maja podana sekwencje
+        :param sequence:
+        :return:
+        '''
+        collection = self.__get_templates_collection()
+        projection = [field_structure_id, field_chain_id]
+        filter = {field_sequence: sequence}
+        results = collection.find(filter=filter, projection=projection)
+        for result in results:
+            structure_id = str(result[field_structure_id])
+            chain_id = str(result[field_chain_id])
+            yield structure_id, chain_id
+
     def get_chains_lengths(self):
         collection = self.__get_templates_collection()
         projection = [field_structure_id, field_chain_id, field_sequence]
