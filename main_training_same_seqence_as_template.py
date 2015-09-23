@@ -9,9 +9,9 @@ def main():
 
     sequences = map(lambda x: x[1], template_repo.get_all_unmodified_sequences())
     for sequence in sequences:
-        y = training_repo.get_templates_for_sequence(sequence)
+        y = list(training_repo.get_templates_for_sequence(sequence))
         if len(y) > 0:
-            print "!"
+            print y
 
 if __name__ == '__main__':
     main()
