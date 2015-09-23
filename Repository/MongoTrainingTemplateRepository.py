@@ -50,16 +50,15 @@ class MongoTrainingTemplateRepository():
         '''
         Zwraca te lancuchy ktore maja podana sekwencje
         :param sequence:
-        :return:
+        :return: db_id, structure_id, chain_id
         '''
         collection = self.__get_templates_collection()
-        projection = [field_structure_id, field_chain_id]
+        projection = ['_id']
         filter = {field_sequence: sequence}
         results = collection.find(filter=filter, projection=projection)
         for result in results:
-            structure_id = str(result[field_structure_id])
-            chain_id = str(result[field_chain_id])
-            yield structure_id, chain_id
+            db_id = str(result['_id'])
+            yield db_id
 
     def get_chains_lengths(self):
         collection = self.__get_templates_collection()
