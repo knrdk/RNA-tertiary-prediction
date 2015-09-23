@@ -11,7 +11,7 @@ def main():
     for sequence in sequences:
         y = list(training_repo.get_templates_for_sequence(sequence))
         if len(y) > 0:
-            print y
+            print y, sequence
 
 if __name__ == '__main__':
     main()
