@@ -12,7 +12,7 @@ def main(training_template_directory):
     sequences = map(lambda x: x[1], template_repo.get_all_unmodified_sequences())
     for sequence in sequences:
         for db_id in training_repo.get_templates_for_sequence(sequence):
-            print db_id
+            print str(db_id)
             delete_template(training_repo, db_id)
 
     delete_unused_template_files(training_repo, training_template_directory)

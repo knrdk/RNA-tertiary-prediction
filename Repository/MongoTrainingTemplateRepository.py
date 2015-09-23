@@ -57,7 +57,7 @@ class MongoTrainingTemplateRepository():
         filter = {field_sequence: sequence}
         results = collection.find(filter=filter, projection=projection)
         for result in results:
-            db_id = str(result['_id'])
+            db_id = result['_id']
             yield db_id
 
     def get_chains_lengths(self):
