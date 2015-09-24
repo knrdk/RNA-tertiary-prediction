@@ -32,8 +32,9 @@ def process_pair(sinfo):
     fvc = FeatureVectorCalculator()
     vector = fvc.get_feature_vector(query_sequence_without_modifications,
                                     template_id, template_sequence_without_modifications, template_secondary_structure)
-    print vector
-    return (query_path, template_path, fl.convert_to_string(vector))
+    vector_as_str = fl.convert_to_string(vector)
+    print query_path, template_path, vector_as_str
+    return (query_path, template_path, vector_as_str)
 
 
 
