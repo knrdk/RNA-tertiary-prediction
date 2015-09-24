@@ -63,6 +63,7 @@ def process_pair(templates_directory,
         write_alignment(algn, tmp_filename + '.fasta')
     except:
         print "ERROR while creating alignment", query_path, template_path
+        print query_path, template_path, float("inf")
         return (query_path, template_path, float("inf"))
 
     try:
@@ -116,6 +117,8 @@ def main_training_cross_rmsd(config_file):
     func = partial(process_pair, templates_directory, training_templates_directory)
     pool = tp.get_thread_pool()
     results = pool.map(func, data)
+
+    print "Zapisywanie danych do pliku", results_file
 
     with open(results_file, 'w') as f:
         for (query_path, template_path, value) in results:
