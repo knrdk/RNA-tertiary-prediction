@@ -13,10 +13,10 @@ def main(config):
         t = load_template(full_path)
         sequence = t.get_sequence()
         model_path = 'model_'+structure
-        try:
-            main_build_model(sequence, config.get_svm_file(), model_path, config.get_template_directory())
-        except:
-            print "ERROR: ", structure
+        #try:
+        main_build_model(sequence, config.get_svm_file(), model_path, config.get_template_directory())
+        #except:
+            #print "ERROR: ", structure
 
 
 
