@@ -10,7 +10,7 @@ def main():
     structures = os.listdir(verification_directory)
     for structure in structures:
         full_path = os.path.join(verification_directory, structure)
-        t = load_template(structure)
+        t = load_template(full_path)
         sequence = t.get_sequence()
         print structure, sequence
 
