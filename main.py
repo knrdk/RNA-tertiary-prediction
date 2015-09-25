@@ -8,17 +8,25 @@ from SVM.templates_ranking import get_templates_ranking
 from Utils.Alignment import Alignment, write_alignment
 from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 import SCFG.ScoringMatrix as sm
-from moderna import load_alignment, load_template, create_model
+from moderna import load_alignment, load_template, create_model, Sequence
 
+def __get_unmodified_sequence(sequence):
+    moderna_seq = Sequence(sequence)
+    unmodified = moderna_seq.seq_without_modifications
+    return str(unmodified)
 
 def get_alignment(query_sequence, template_unmodified_sequence, template_secondary_structure, template_sequence):
     single_matrix, double_matrix = sm.get_scoring_matrices('config.ini')
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
+
+    query_unmodified_sequence = __get_unmodified_sequence(query_sequence)
+
     scfg = parser.get_SCFG(template_secondary_structure, template_unmodified_sequence)
-    scfg.align(query_sequence)
+    scfg.align(query_unmodified_sequence)
     algn = scfg.get_alignment()
     assert isinstance(algn, Alignment)
     algn.change_template_sequence(template_sequence)
+    algn.change_query_sequence(query_sequence)
     return algn
 
 
