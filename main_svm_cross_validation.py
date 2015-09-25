@@ -5,6 +5,32 @@ from Config import Config
 from Training.TrainingDataProvider import get_train_data
 from sklearn import svm
 import sklearn.cross_validation as cv
+import math
+
+
+def calculate_mcc(tp, fp, tn, fn):
+    nominator = tp*tn - fp*fn
+    denomiator_squared = (tp+fp)*(tp+fn)*(tn+fp)*(tn+fn)
+    denomiantor = math.sqrt(denomiator_squared)
+
+    if denomiantor == 0:
+        return nominator
+
+    return nominator/denomiantor
+
+
+def calculate_specifity(fp, tn):
+    if tn == 0:
+        return 0
+    else:
+        return tn / float(tn + fp)
+
+
+def calculate_senstivity(tp, fn):
+    if tp == 0:
+        return 0
+    else:
+        return tp / float(tp + fn)
 
 
 def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_size_of_test_set):
@@ -25,15 +51,10 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_s
         else:
             if predicted_value: tp += 1
             else: tn += 1
-    if tp == 0:
-        sensitivity = 0
-    else:
-        sensitivity = tp / float(tp + fn)
 
-    if tn == 0:
-        specifity = 0
-    else:
-        specifity = tn / float(tn + fp)
+    sensitivity = calculate_senstivity(tp, fn)
+    specifity = calculate_specifity(fp, tn)
+    mcc = calculate_mcc(tp, fp, tn, fn)
 
     print "TP: ", tp
     print "TN: ", tn
@@ -41,6 +62,7 @@ def main_svm_cross_validation(file_with_rmsd, feature_vectors_file, percentage_s
     print "FN: ", fn
     print "Sensitivity: ", sensitivity
     print "Specifity: ", specifity
+    print "MCC: ", mcc
     print "Cross Validation score: ", clf.score(data_test, target_test)
 
 
