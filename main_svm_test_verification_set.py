@@ -11,7 +11,7 @@ def main(config):
     for structure in structures:
         full_path = os.path.join(verification_directory, structure)
         t = load_template(full_path)
-        sequence = t.get_sequence()
+        sequence = str(t.get_sequence())
         model_path = 'model_'+structure
         print structure, sequence
         #try:
