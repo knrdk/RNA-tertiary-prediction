@@ -5,14 +5,17 @@ from Config import Config
 from main import main_build_model
 import os
 
-def main():
+def main(config):
     verification_directory = '/home/rna/RNA/VerificationSet'
     structures = os.listdir(verification_directory)
     for structure in structures:
         full_path = os.path.join(verification_directory, structure)
         t = load_template(full_path)
         sequence = t.get_sequence()
-        print structure, sequence
+        model_path = 'model_'+structure
+        try:
+            main_build_model(sequence, config.get_svm_file(), model_path, config.get_template_directory())
+        except: pass
 
 
 
