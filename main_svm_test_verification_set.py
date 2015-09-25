@@ -9,6 +9,7 @@ def main():
     verification_directory = '/home/rna/RNA/VerificationSet'
     structures = os.listdir(verification_directory)
     for structure in structures:
+        full_path = os.path.join(verification_directory, structure)
         t = load_template(structure)
         sequence = t.get_sequence()
         print structure, sequence
