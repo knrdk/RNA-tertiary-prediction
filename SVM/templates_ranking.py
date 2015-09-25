@@ -5,7 +5,7 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 import Utils.ThreadPool as tp
 from functools import partial
 from sklearn.externals import joblib
-
+from moderna import Sequence
 
 def __load_svm(svm_file):
     '''
@@ -50,7 +50,10 @@ def get_templates_ranking(svm_file, query_sequence):
     :param query_sequence: sekwencja dla ktorej bedzie stworzny ranking
     :return:
     '''
-    data = __get_feature_vectors(query_sequence)
+    moderna_seq = Sequence(query_sequence)
+    query_unmodified = str(moderna_seq.seq_without_modifications)
+
+    data = __get_feature_vectors(query_unmodified)
     template_ids = [x[0] for x in data]
     feature_vectors = [x[1] for x in data]
 
