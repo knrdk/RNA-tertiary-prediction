@@ -15,7 +15,8 @@ def main(config):
         model_path = 'model_'+structure
         try:
             main_build_model(sequence, config.get_svm_file(), model_path, config.get_template_directory())
-        except: pass
+        except:
+            print "ERROR: ", structure
 
 
 
