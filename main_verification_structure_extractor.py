@@ -46,6 +46,6 @@ def main_template_extractor(structures_directory, templates_directory):
 
 if __name__ == '__main__':
     config = Config('config.ini')
-    structures_directory = '/home/rna/RNA/VerificationStructures'
-    templates_directory = '/home/rna/RNA/VerificationSet'
+    structures_directory = '/home/rna/RNA/VerificationStructures/'
+    templates_directory = '/home/rna/RNA/VerificationSet/'
     main_template_extractor(structures_directory, templates_directory)
