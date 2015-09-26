@@ -36,10 +36,11 @@ def __get_feature_vectors(query_sequence):
     '''
     repo = MongoTemplateRepository()
     templates = list(repo.get_templates_info())
-
+    print len(templates)
     func = partial(__get_feature_vector, query_sequence)
     pool = tp.get_thread_pool()
     vectors = pool.map(func, templates)
+    print len(vectors)
     return vectors
 
 def get_templates_ranking(svm_file, query_sequence):
