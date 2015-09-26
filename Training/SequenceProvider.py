@@ -1,17 +1,9 @@
 __author__ = 'Konrad Kopciuch'
 
-from moderna import load_template
+from moderna import load_model
 from multiprocessing import Pool, cpu_count
 import functools
-
-
-def __get_thread_pool():
-    try:
-        cpus = cpu_count()
-    except NotImplementedError:
-        cpus = 1   # arbitrary default
-
-    return Pool(processes=cpus)
+from Utils.ThreadPool import get_thread_pool
 
 
 def __load_sequences(templates_directory, template_path):
@@ -22,11 +14,13 @@ def __load_sequences(templates_directory, template_path):
     :return: (sekwencja, niezmodyfikowana sekwencja, struktura drugorzedowa)
     '''
     full_path = templates_directory + template_path
-    tmpl = load_template(full_path)
-    sequence = tmpl.get_sequence()
-    unmodified_sequence = str(sequence.seq_without_modifications)
+    tmpl = load_model(full_path)
+    sequence = str(tmpl.get_sequence())
     secondary_structure = str(tmpl.get_secstruc())
-    return str(sequence), unmodified_sequence, secondary_structure
+    tmpl.remove_all_modifications()
+    unmodified_sequence = str(tmpl.get_sequence())
+
+    return sequence, unmodified_sequence, secondary_structure
 
 
 def get_sequences(directory, paths):
@@ -39,7 +33,7 @@ def get_sequences(directory, paths):
     sekwencja, niezmodyfikowana sekwencja, struktura drugorzedowa
     '''
     func = functools.partial(__load_sequences, directory)
-    pool = __get_thread_pool()
+    pool = get_thread_pool()
     q = pool.map(func, paths)
 
     output = dict()
