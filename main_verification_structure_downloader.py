@@ -39,5 +39,5 @@ def main_training_structure_downloader(result_directory, input_file_path):
 
 if __name__ == '__main__':
     structures_directory = '/home/rna/RNA/VerificationStructures'
-    input_file_path = '/home/rna/RNA/VerificationResults'
+    input_file_path = '/home/rna/RNA/Verification_Result.xls'
     main_training_structure_downloader(structures_directory, input_file_path)
