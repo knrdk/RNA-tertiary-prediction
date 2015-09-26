@@ -21,6 +21,8 @@ def main_training_structure_downloader(result_directory, input_file_path):
         if not pdb_id in structure_as_templates:
             pdb_ids.append(pdb_id)
 
+    print len(pdb_ids)
+
     func = partial(__download_structure, result_directory)
     pool = tp.get_thread_pool()
     results = pool.map(func, pdb_ids)
@@ -30,6 +32,7 @@ def main_training_structure_downloader(result_directory, input_file_path):
         if value:
             downloaded_structure += 1
         else:
+            failed_structures += 1
             pdb_id = pdb_ids[index]
             print 'Blad przy sciaganiu pliku: ', pdb_id
 
