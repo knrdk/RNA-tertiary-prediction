@@ -11,18 +11,9 @@ from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 import SCFG.ScoringMatrix as sm
 from moderna import load_alignment, load_template, create_model, Sequence
 
-
-def __get_unmodified_sequence(sequence):
-    moderna_seq = Sequence(sequence)
-    unmodified = moderna_seq.seq_without_modifications
-    return str(unmodified)
-
-
-def get_alignment(query_sequence, template_unmodified_sequence, template_secondary_structure, template_sequence):
+def get_alignment(query_sequence, query_unmodified_sequence, template_unmodified_sequence, template_secondary_structure, template_sequence):
     single_matrix, double_matrix = sm.get_scoring_matrices('config.ini')
     parser = SecondaryStructureToSCFGParser(single_matrix, double_matrix)
-
-    query_unmodified_sequence = __get_unmodified_sequence(query_sequence)
 
     scfg = parser.get_SCFG(template_secondary_structure, template_unmodified_sequence)
     scfg.align(query_unmodified_sequence)
@@ -50,16 +41,16 @@ def __get_temp_alignment_file_path():
     return process_id + '_temp_alignment.fasta'
 
 
-def build_model(template_id, sequence, output_path, template_directory):
+def build_model(template_id, query_sequence, query_unmodified_sequence, output_path, template_directory):
     repo = MongoTemplateRepository()
     (template_sequence, template_unmodified_sequence, template_secondary_structure) = repo.get_template_info(template_id)
 
     temp_alignment_file = __get_temp_alignment_file_path()
     try:
-        algn = get_alignment(sequence, template_unmodified_sequence, template_secondary_structure, template_sequence)
+        algn = get_alignment(query_sequence, query_unmodified_sequence, template_unmodified_sequence, template_secondary_structure, template_sequence)
         write_alignment(algn, temp_alignment_file)
     except:
-        print 'BLAD w trakcie dopasowania sekwencji: ', str(template_id), str(sequence)
+        print 'BLAD w trakcie dopasowania sekwencji: ', str(template_id), str(query_sequence)
         return False
 
     template_path= get_template_path(template_directory, template_id)
@@ -70,7 +61,7 @@ def build_model(template_id, sequence, output_path, template_directory):
         m = create_model(t,a)
         m.write_pdb_file(output_path)
     except:
-        print 'BLAD w trakcie budowania modelu: ', str(template_id), str(sequence)
+        print 'BLAD w trakcie budowania modelu: ', str(template_id), str(query_sequence)
         return False
 
     try_remove_file(temp_alignment_file)
@@ -82,23 +73,32 @@ def __print_template_ranking(ranking):
     for (template_id, probability) in ranking:
         print template_id, probability
 
+def __get_unmodified_sequence(sequence):
+    '''
+    Ta funkcja moze nie usunac wszystkich modyfikacji, jesli to mozliwe lepiej usuwac modyfikacje z modelu PDB
+    i wtedy pobierac sekwence, ale nie zawsze jest dostep do modelu
+    :param sequence:
+    :return:
+    '''
+    moderna_sequence = Sequence(sequence)
+    return str(moderna_sequence.seq_without_modifications)
 
-def main_build_model(sequence, svm_file, output_path, template_directory):
+def main_build_model(sequence, unmodified_sequence, svm_file, output_path, template_directory):
     print 'Tworzenie rankingu szablonow'
     try:
-        unmodified_sequence = str(Sequence(sequence).seq_without_modifications)
         template_ranking = get_templates_ranking(svm_file, unmodified_sequence)
     except:
-        print 'Blad w trakcie tworzenia rankingu szablonow', unmodified_sequence
+        print 'Blad w trakcie tworzenia rankingu szablonow'
         return
     print 'Zakonczono tworzenie rankingu szablonow'
-
     __print_template_ranking(template_ranking)
 
 
     for (template_id, probability) in template_ranking:
         print 'Budowanie modelu za pomoca szablonu: ', template_id
-        result = build_model(template_id, sequence, output_path, template_directory)
+        try:
+            result = build_model(template_id, sequence, unmodified_sequence, output_path, template_directory)
+        except: result = False
         if result:
             print 'model zapisany w pliku: ', output_path
             return
@@ -120,5 +120,6 @@ if __name__ == '__main__':
         else:
             svm_file = config.get_svm_file()
         template_directory = config.get_template_directory()
-        main_build_model(sequence, svm_file, output_file, template_directory)
+        unmodified_sequence = __get_unmodified_sequence(sequence)
+        main_build_model(sequence, unmodified_sequence, svm_file, output_file, template_directory)
 
