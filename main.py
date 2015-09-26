@@ -84,9 +84,13 @@ def __print_template_ranking(ranking):
 
 
 def main_build_model(sequence, svm_file, output_path, template_directory):
-    unmodified_sequence = str(Sequence(sequence).seq_without_modifications)
     print 'Tworzenie rankingu szablonow'
-    template_ranking = get_templates_ranking(svm_file, sequence)
+    try:
+        unmodified_sequence = str(Sequence(sequence).seq_without_modifications)
+        template_ranking = get_templates_ranking(svm_file, unmodified_sequence)
+    except:
+        print 'Blad w trakcie tworzenia rankingu szablonow'
+        return
     print 'Zakonczono tworzenie rankingu szablonow'
 
     __print_template_ranking(template_ranking)
