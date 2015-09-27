@@ -20,7 +20,7 @@ def main():
             is_same_fold = pvalue < 0.01
             if is_same_fold:
                 same_fold += 1
-                print query, chains_lengths[query], rmsd, is_same_fold, pvalue
+                print query, template, chains_lengths[query], rmsd
 
     print all, same_fold
 
