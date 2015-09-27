@@ -5,7 +5,9 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 import Utils.ThreadPool as tp
 from functools import partial
 from sklearn.externals import joblib
-from moderna import Sequence
+import  traceback, sys
+
+
 
 def __load_svm(svm_file):
     '''
@@ -24,8 +26,12 @@ def __get_feature_vector(query_sequence, tinfo):
     :return: zwraca pare (TEMPLATE_ID, FEATURE VECTOR)
     '''
     template_id, template_sequence, template_secondary_structure = tinfo
-    fvc = FeatureVectorCalculator()
-    fv = fvc.get_feature_vector(query_sequence, template_id, template_sequence, template_secondary_structure)
+    try:
+        fvc = FeatureVectorCalculator()
+        fv = fvc.get_feature_vector(query_sequence, template_id, template_sequence, template_secondary_structure)
+    except:
+        traceback.print_exc(file=sys.stdout)
+        raise 
     return (template_id, fv)
 
 def __get_feature_vectors(query_sequence):
