@@ -5,7 +5,8 @@ from SCFG.SecondaryStructureToSCFGParser import SecondaryStructureToSCFGParser
 from Repository.MongoTemplateRepository import MongoTemplateRepository
 from Repository.MongoSCFGRepository import MongoSCFGRepository
 import Utils.ThreadPool as tp
-
+from Config import Config
+from main_infernal_template_families import main_infernal_template_families
 from functools import partial
 
 
@@ -22,6 +23,7 @@ def process_template(config_file, tinfo):
     scfg_repository.add_scfg_self_score(template_id, self_score)
     #print template_id, self_score
 
+
 def main_calculate_self_scfg_score(config_file):
     '''
     Funkcja dla szablonow zapisanych w bazie danych tworzy SCFG, nastepnie wylicza dopasowanie sekwencji szablonu
@@ -36,5 +38,15 @@ def main_calculate_self_scfg_score(config_file):
     pool = tp.get_thread_pool()
     pool.map(func, tinfos)
 
+
+def preprocess_infernal(config_file):
+    config = Config(config_file)
+    cmscan_path = config.get_infernal_cmscan()
+    cmdatabase_path = config.get_infernal_cmdatabase()
+    family_file_path = config.get_infernal_family_file()
+    main_infernal_template_families(cmscan_path, cmdatabase_path, family_file_path)
+
+
 if __name__ == '__main__':
     main_calculate_self_scfg_score('config.ini')
+    preprocess_infernal('config.ini')
