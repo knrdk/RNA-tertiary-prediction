@@ -49,15 +49,21 @@ def get_templates_ranking(svm_file, query_sequence):
     :param query_sequence: sekwencja dla ktorej bedzie stworzny ranking
     :return:
     '''
-    moderna_seq = Sequence(query_sequence)
-    query_unmodified = str(moderna_seq.seq_without_modifications)
+    try:
+        data = __get_feature_vectors(query_sequence)
+        template_ids = [x[0] for x in data]
+        feature_vectors = [x[1] for x in data]
+    except:
+        print 'Blad w trakcie pobieranie feature vectors: ', query_sequence
+        raise
 
-    data = __get_feature_vectors(query_unmodified)
-    template_ids = [x[0] for x in data]
-    feature_vectors = [x[1] for x in data]
+    try:
+        classifier = __load_svm(svm_file)
+        probability = classifier.predict_proba(feature_vectors)
+    except:
+        print 'Blad w trakcie przewidywania prawdopodobienstwa szablonow'
+        raise
 
-    classifier = __load_svm(svm_file)
-    probability = classifier.predict_proba(feature_vectors)
     probability_same_fold = [x[1] for x in probability]
     ranking = zip(template_ids, probability_same_fold)
     ranking_filtered = filter(lambda x: x[1] > 0.5, ranking)
