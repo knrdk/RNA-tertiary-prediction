@@ -30,8 +30,8 @@ def __get_feature_vector(query_sequence, tinfo):
         fvc = FeatureVectorCalculator()
         fv = fvc.get_feature_vector(query_sequence, template_id, template_sequence, template_secondary_structure)
     except:
-        traceback.print_exc(file=sys.stdout)
-        raise 
+        print 'Blad w trakcie wyliczania feature vector: ', query_sequence, template_id, template_sequence
+        raise
     return (template_id, fv)
 
 def __get_feature_vectors(query_sequence):
