@@ -38,11 +38,18 @@ def __get_feature_vectors(query_sequence):
     :param query_sequence: sekwencja wejsciowa
     :return: lista par (TEMPLATE_ID, FEATURE VECTOR)
     '''
-    repo = MongoTemplateRepository()
-    templates = list(repo.get_templates_info())
+    try:
+        repo = MongoTemplateRepository()
+        templates = list(repo.get_templates_info())
+    except:
+        print 'Blad w trakcie pobierania listy szablonow'
+        raise
+
     func = partial(__get_feature_vector, query_sequence)
     pool = tp.get_thread_pool()
     vectors = pool.map(func, templates)
+    pool.close()
+    pool.join()
     return vectors
 
 def get_templates_ranking(svm_file, query_sequence):
@@ -58,7 +65,7 @@ def get_templates_ranking(svm_file, query_sequence):
         template_ids = [x[0] for x in data]
         feature_vectors = [x[1] for x in data]
     except:
-        print 'Blad w trakcie pobieranie feature vectors: ', query_sequence
+        print 'Blad w trakcie pobierania feature vectors: ', query_sequence
         raise
 
     try:
