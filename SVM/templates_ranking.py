@@ -5,8 +5,6 @@ from Repository.MongoTemplateRepository import MongoTemplateRepository
 import Utils.ThreadPool as tp
 from functools import partial
 from sklearn.externals import joblib
-import  traceback, sys
-
 
 
 def __load_svm(svm_file):
